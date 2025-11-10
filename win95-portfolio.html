@@ -572,8 +572,8 @@
                 <p><strong>Fonctionnalités :</strong> [Liste les features principales]</p>
                 <p><strong>Date :</strong> [Mois Année]</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Homepage" alt="Homepage">
-                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Page+intérieure" alt="Page 2">
+                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Homepage" alt="Homepage" onclick="openLightbox(this.src)">
+                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Page+intérieure" alt="Page 2" onclick="openLightbox(this.src)">
                 </div>
                 <p><strong>🔗 Liens :</strong> <a href="#">[Site live]</a> | <a href="#">[GitHub]</a></p>
             </div>
@@ -586,7 +586,7 @@
                 <p><strong>Utilité :</strong> [À quoi sert ce projet]</p>
                 <p><strong>Date :</strong> [Mois Année]</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/228B22/FFFFFF?text=Code+Preview" alt="Code">
+                    <img src="https://via.placeholder.com/350x200/228B22/FFFFFF?text=Code+Preview" alt="Code" onclick="openLightbox(this.src)">
                 </div>
                 <p><strong>🔗 GitHub :</strong> <a href="#">[Lien repo]</a></p>
             </div>
@@ -598,7 +598,7 @@
                 <p><strong>Technologies :</strong> React, APIs, etc.</p>
                 <p><strong>Date :</strong> [Mois Année]</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/9370DB/FFFFFF?text=App+Screenshot" alt="App">
+                    <img src="https://via.placeholder.com/350x200/9370DB/FFFFFF?text=App+Screenshot" alt="App" onclick="openLightbox(this.src)">
                 </div>
                 <p><strong>🔗 Démo :</strong> <a href="#">[Lien démo]</a></p>
             </div>
@@ -610,7 +610,7 @@
                 <p><strong>Technologies :</strong> p5.js / Three.js / Canvas</p>
                 <p><strong>Date :</strong> [Mois Année]</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/FF1493/FFFFFF?text=Creative+Code" alt="Creative">
+                    <img src="https://via.placeholder.com/350x200/FF1493/FFFFFF?text=Creative+Code" alt="Creative" onclick="openLightbox(this.src)">
                 </div>
                 <p><strong>🔗 Voir :</strong> <a href="#">[CodePen / Observable]</a></p>
             </div>
@@ -820,9 +820,39 @@
         </div>
     </div>
 
+    <!-- Lightbox -->
+    <div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:20000; align-items:center; justify-content:center; flex-direction:column;">
+        <button onclick="closeLightbox()" style="position:absolute; top:30px; right:40px; font-size:32px; background:none; color:white; border:none; cursor:pointer;">×</button>
+        <div style="display:flex; align-items:center; justify-content:center; gap:30px;">
+            <button onclick="lightboxPrev()" style="font-size:32px; background:none; color:white; border:none; cursor:pointer;">⟨</button>
+            <img id="lightboxImg" src="" alt="Lightbox" style="max-width:80vw; max-height:80vh; box-shadow:0 0 20px #000; border:4px solid #fff;">
+            <button onclick="lightboxNext()" style="font-size:32px; background:none; color:white; border:none; cursor:pointer;">⟩</button>
+        </div>
+    </div>
+
+    <!-- Start Menu -->
+    <div id="startMenu" style="display:none; position:fixed; left:2px; bottom:30px; width:220px; background:#c0c0c0; border:2px solid #000; z-index:10001; box-shadow:2px 2px 8px #000;">
+        <div style="background:#000080; color:white; padding:8px; font-weight:bold; font-size:13px;">Menu Démarrer</div>
+        <div style="padding:6px; display:flex; flex-direction:column; gap:4px;">
+            <button onclick="openWindow('about-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">À propos</button>
+            <button onclick="openWindow('projets-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Mes Projets</button>
+            <button onclick="openWindow('design-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Design</button>
+            <button onclick="openWindow('dessins-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Dessins</button>
+            <button onclick="openWindow('jeuxvideo-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Jeux Vidéo</button>
+            <button onclick="openWindow('code-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Code</button>
+            <button onclick="openWindow('asso-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Engagements</button>
+            <button onclick="openWindow('cv-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">CV</button>
+            <button onclick="openWindow('contact-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Contact</button>
+            <hr>
+            <button onclick="secretCalculator();toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Calculatrice secrète</button>
+            <button onclick="secretNotepad();toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Bloc-notes secret</button>
+            <button onclick="matrixMode();toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Matrix Mode</button>
+        </div>
+    </div>
+
     <!-- Taskbar -->
     <div class="taskbar">
-        <div class="start-button" onclick="alert('Menu Démarrer - À venir : Mes favoris, Paramètres, etc !')">
+        <div class="start-button" onclick="toggleStartMenu()">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FF0000' d='M0,0 L8,0 L8,8 L0,8 Z'/%3E%3Cpath fill='%23008000' d='M8,0 L16,0 L16,8 L8,8 Z'/%3E%3Cpath fill='%230000FF' d='M0,8 L8,8 L8,16 L0,16 Z'/%3E%3Cpath fill='%23FFFF00' d='M8,8 L16,8 L16,16 L8,16 Z'/%3E%3C/svg%3E" alt="Start">
             Démarrer
         </div>
@@ -1304,6 +1334,161 @@
             const duration = tracks[currentTrack].duration;
             currentTime = Math.floor((e.target.value / 100) * duration);
             document.getElementById('currentTime').textContent = formatTime(currentTime);
+        });
+
+        // LIGHTBOX FUNCTIONALITY
+        let currentImageIndex = 0;
+        let allImages = [];
+
+        function openLightbox(src) {
+            allImages = Array.from(document.querySelectorAll('.screenshots img')).map(img => img.src);
+            currentImageIndex = allImages.indexOf(src);
+            
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        function lightboxNext() {
+            currentImageIndex = (currentImageIndex + 1) % allImages.length;
+            document.getElementById('lightboxImg').src = allImages[currentImageIndex];
+        }
+
+        function lightboxPrev() {
+            currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+            document.getElementById('lightboxImg').src = allImages[currentImageIndex];
+        }
+
+        // Close lightbox with ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                if (e.key === 'ArrowRight') lightboxNext();
+                if (e.key === 'ArrowLeft') lightboxPrev();
+            }
+        });
+
+        // START MENU
+        function toggleStartMenu() {
+            const menu = document.getElementById('startMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Close start menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('startMenu');
+            const startBtn = document.querySelector('.start-button');
+            if (!menu.contains(e.target) && !startBtn.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // PDF DOWNLOAD
+        function downloadPDF() {
+            alert('📥 Génération du PDF en cours...\n\nNote : Cette fonctionnalité nécessite un backend pour générer un vrai PDF.\nPour l\'instant, voici une démo simulée ! ✨');
+            
+            // Simulation de téléchargement
+            const link = document.createElement('a');
+            link.href = '#';
+            link.download = 'Portfolio_2025.pdf';
+            
+            setTimeout(() => {
+                alert('✅ PDF téléchargé ! (simulation)\n\nPour un vrai PDF, tu peux utiliser :\n- Print to PDF du navigateur\n- jsPDF pour générer côté client\n- Un service backend');
+                incrementEasterEgg();
+            }, 500);
+        }
+
+        // EASTER EGGS
+        let easterEggsFound = 0;
+        const totalEasterEggs = 5;
+
+        function incrementEasterEgg() {
+            if (easterEggsFound < totalEasterEggs) {
+                easterEggsFound++;
+                document.getElementById('easterEggCount').textContent = easterEggsFound;
+                
+                if (easterEggsFound === totalEasterEggs) {
+                    setTimeout(() => {
+                        alert('🏆 ACHIEVEMENT UNLOCKED!\n\nTu as trouvé tous les Easter Eggs !\n\n🎉 Champion de la nostalgie ! 🎉');
+                        launchConfetti();
+                    }, 300);
+                }
+            }
+        }
+
+        // Secret Calculator
+        function secretCalculator() {
+            const result = prompt('🔢 Calculatrice secrète\n\nRésous cette énigme :\n\n95 + 98 + 2000 + XP = ?\n\n(Indice : années des OS Microsoft)');
+            if (result === '2195' || result === '2193') {
+                alert('✅ Bravo ! Tu connais ton histoire informatique ! 🖥️');
+                incrementEasterEgg();
+            } else {
+                alert('❌ Presque ! Réessaie... 💡');
+            }
+        }
+
+        // Secret Notepad
+        function secretNotepad() {
+            const message = prompt('📝 Bloc-notes secret\n\nÉcris un mot de passe magique :\n(Indice : célèbre assistant paperclip)');
+            if (message && message.toLowerCase().includes('clippy') || message && message.toLowerCase().includes('clippit')) {
+                alert('🎉 CLIPPY EST DE RETOUR !\n\n"Vous avez l\'air de créer un portfolio. Voulez-vous de l\'aide ?" 📎');
+                incrementEasterEgg();
+            } else {
+                alert('❓ Clippy ne se souvient pas de ce mot de passe...');
+            }
+        }
+
+        // Matrix Mode
+        let matrixActive = false;
+        function matrixMode() {
+            matrixActive = !matrixActive;
+            if (matrixActive) {
+                document.body.style.background = '#000';
+                document.body.style.color = '#00ff00';
+                alert('💚 THE MATRIX MODE ACTIVATED 💚\n\nWelcome to the real world.');
+                incrementEasterEgg();
+                setTimeout(() => {
+                    document.body.style.background = '#008080';
+                    document.body.style.color = '';
+                    matrixActive = false;
+                }, 5000);
+            }
+        }
+
+        // Secret triple-click on logo
+        let logoClickCount = 0;
+        let logoClickTimer;
+        document.querySelector('.start-button img').addEventListener('click', (e) => {
+            e.stopPropagation();
+            logoClickCount++;
+            clearTimeout(logoClickTimer);
+            
+            if (logoClickCount === 3) {
+                alert('🎮 SUPER SECRET UNLOCKED!\n\n"Windows 95... Plus JAMAIS sans toi!" 💾\n\nNostalgie level: 9000');
+                incrementEasterEgg();
+                logoClickCount = 0;
+            }
+            
+            logoClickTimer = setTimeout(() => {
+                logoClickCount = 0;
+            }, 500);
+        });
+
+        // Secret: Type "win95" anywhere
+        let secretCode = '';
+        document.addEventListener('keypress', (e) => {
+            secretCode += e.key.toLowerCase();
+            if (secretCode.includes('win95')) {
+                alert('🎊 CODE SECRET ACTIVÉ!\n\n"C\'est en 1995 que tout a commencé..."\n\nWindows 95 startup sound playing in your mind 🎵');
+                incrementEasterEgg();
+                secretCode = '';
+            }
+            if (secretCode.length > 10) {
+                secretCode = secretCode.slice(-10);
+            }
         });
     </script>
 
