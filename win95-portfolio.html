@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Windows 95</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'MS Sans Serif', Arial, sans-serif;
+            background: #008080;
+            overflow: hidden;
+            height: 100vh;
+            cursor: default;
+            user-select: none;
+        }
+
+        /* Desktop */
+        .desktop {
+            height: calc(100vh - 28px);
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 80px);
+            grid-auto-rows: 90px;
+            gap: 20px;
+            align-content: start;
+        }
+
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .icon:active {
+            filter: brightness(1.2);
+        }
+
+        .icon img {
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+        }
+
+        .icon span {
+            color: white;
+            font-size: 11px;
+            text-align: center;
+            text-shadow: 1px 1px 2px black;
+            word-wrap: break-word;
+            max-width: 70px;
+        }
+
+        /* Window */
+        .window {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            min-width: 400px;
+            min-height: 300px;
+            display: none;
+        }
+
+        .window.active {
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 2px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .title-bar-text {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .title-bar-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .title-bar-controls button {
+            width: 16px;
+            height: 14px;
+            padding: 0;
+            font-size: 10px;
+            font-weight: bold;
+            background: #c0c0c0;
+            border: 1px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            cursor: pointer;
+        }
+
+        .title-bar-controls button:active {
+            border-color: #000000 #ffffff #ffffff #000000;
+        }
+
+        .window-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: white;
+            font-size: 11px;
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 28px;
+            background: #c0c0c0;
+            border-top: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            gap: 2px;
+            z-index: 10000;
+        }
+
+        .start-button {
+            height: 24px;
+            padding: 0 8px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .start-button:active {
+            border-color: #000000 #ffffff #ffffff #000000;
+        }
+
+        .start-button img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .clock {
+            height: 22px;
+            padding: 0 8px;
+            border: 1px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            margin-left: auto;
+        }
+
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .project-card {
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            padding: 10px;
+            background: #c0c0c0;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            background: #d4d0c8;
+        }
+
+        .project-card h3 {
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #000080;
+        }
+
+        .project-card p {
+            font-size: 10px;
+            color: #333;
+        }
+
+        /* Folder content */
+        .folder-view {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        .folder-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        .folder-item img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* About section */
+        .about-content {
+            line-height: 1.6;
+        }
+
+        .about-content h2 {
+            color: #000080;
+            font-size: 14px;
+            margin: 15px 0 8px 0;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        .about-content ul {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        .about-content li {
+            margin: 3px 0;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 16px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #c0c0c0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #808080;
+            border: 1px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <div class="icon" data-window="about">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23008080' width='32' height='32'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='20' fill='white' text-anchor='middle'%3Ei%3C/text%3E%3C/svg%3E" alt="Info">
+            <span>À propos</span>
+        </div>
+        
+        <div class="icon" data-window="projets">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23FFFF00' d='M4,8 L16,4 L16,28 L4,24 Z'/%3E%3Cpath fill='%23FFD700' d='M16,4 L28,8 L28,24 L16,28 Z'/%3E%3C/svg%3E" alt="Folder">
+            <span>Mes Projets</span>
+        </div>
+
+        <div class="icon" data-window="design">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23FF69B4' width='28' height='28' x='2' y='2'/%3E%3Crect fill='white' width='24' height='20' x='4' y='6'/%3E%3C/svg%3E" alt="Design">
+            <span>Design</span>
+        </div>
+
+        <div class="icon" data-window="dessins">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23FF6347' d='M8,24 L12,8 L20,12 L24,20 Z'/%3E%3Ccircle fill='%23FFD700' cx='20' cy='12' r='3'/%3E%3C/svg%3E" alt="Brush">
+            <span>Dessins</span>
+        </div>
+
+        <div class="icon" data-window="jeuxvideo">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%238B008B' width='26' height='16' x='3' y='8' rx='3'/%3E%3Ccircle fill='%23FF0000' cx='22' cy='14' r='2'/%3E%3Crect fill='%23A9A9A9' width='4' height='2' x='8' y='13'/%3E%3Crect fill='%23A9A9A9' width='2' height='4' x='9' y='12'/%3E%3C/svg%3E" alt="Game">
+            <span>Jeux Vidéo</span>
+        </div>
+
+        <div class="icon" data-window="code">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23000080' width='32' height='32'/%3E%3Ctext x='16' y='22' font-family='Courier' font-size='18' fill='%2300FF00' text-anchor='middle'%3E%3C/%3E%3C/text%3E%3C/svg%3E" alt="Code">
+            <span>Code</span>
+        </div>
+
+        <div class="icon" data-window="asso">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle fill='%234169E1' cx='16' cy='16' r='12'/%3E%3Cpath fill='white' d='M12,20 L16,12 L20,20 Z'/%3E%3C/svg%3E" alt="Association">
+            <span>Engagements</span>
+        </div>
+
+        <div class="icon" data-window="cv">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='white' d='M6,2 L22,2 L26,6 L26,30 L6,30 Z'/%3E%3Cpath fill='%23c0c0c0' d='M22,2 L22,6 L26,6'/%3E%3Crect fill='%23000080' width='12' height='2' x='10' y='10'/%3E%3Crect fill='%23000080' width='12' height='2' x='10' y='15'/%3E%3Crect fill='%23000080' width='12' height='2' x='10' y='20'/%3E%3C/svg%3E" alt="CV">
+            <span>CV.pdf</span>
+        </div>
+
+        <div class="icon" data-window="contact">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23FFD700' d='M4,8 L16,18 L28,8 L28,24 L4,24 Z'/%3E%3Cpath fill='%23FFA500' d='M4,8 L16,18 L28,8 Z'/%3E%3C/svg%3E" alt="Mail">
+            <span>Contact</span>
+        </div>
+
+        <div class="icon" data-window="paint">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='white' width='28' height='28' x='2' y='2'/%3E%3Cpath fill='%23FF0000' d='M8,12 L12,8 L16,12 L20,8 L24,12 L20,16 L16,12 L12,16 Z'/%3E%3Crect fill='%230000FF' width='4' height='8' x='10' y='18'/%3E%3C/svg%3E" alt="Paint">
+            <span>Paint</span>
+        </div>
+
+        <div class="icon" data-window="demineur">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23c0c0c0' width='32' height='32'/%3E%3Ccircle fill='%23000' cx='16' cy='16' r='8'/%3E%3Crect fill='%23FF0000' width='2' height='16' x='15' y='8'/%3E%3Crect fill='%23FF0000' width='16' height='2' x='8' y='15'/%3E%3C/svg%3E" alt="Démineur">
+            <span>Démineur</span>
+        </div>
+
+        <div class="icon" data-window="winamp">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%234169E1' width='32' height='24' rx='2'/%3E%3Ctext x='16' y='16' font-size='14' fill='%2300FF00' text-anchor='middle' font-family='monospace'%3E▶%3C/text%3E%3C/svg%3E" alt="Winamp">
+            <span>Winamp</span>
+        </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="window" id="about-window" style="left: 100px; top: 80px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>📄</span> À propos
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('about-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>Salut !</h2>
+                <p>Moi c'est Val ! Je suis étudiant en BUT MMI 2ème année, passionné par la création sous toutes ses formes.</p>
+                
+                <h2>Mes domaines</h2>
+                <ul>
+                    <li><strong>Design</strong> - Interfaces, identité visuelle, UX/UI</li>
+                    <li><strong>Dessin</strong> - Illustration digitale et traditionnelle</li>
+                    <li><strong>Jeux Vidéo</strong> - Game design et développement</li>
+                    <li><strong>Code</strong> - Web dev, Python, et plus encore</li>
+                </ul>
+
+                <h2>Engagements</h2>
+                <p><strong>EEDF (Éclaireuses Éclaireurs de France)</strong> - Scouts laïques<br>
+                Une expérience riche en apprentissage, solidarité et projets collectifs en nature.</p>
+
+                <h2>Objectif</h2>
+                <p>Créer des expériences numériques mémorables en alliant créativité technique et réflexion design.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="projets-window" style="left: 150px; top: 100px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>📁</span> Mes Projets
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('projets-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="folder-view">
+                <div class="folder-item" onclick="openWindow('design-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>🎨 Design</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('dessins-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>✏️ Dessins</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('jeuxvideo-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>🎮 Jeux Vidéo</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('code-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>💻 Code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="design-window" style="left: 200px; top: 120px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>🎨</span> Design
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('design-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <h2 style="color: #000080; margin-bottom: 10px;">Projets de Design</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>🎭 Identité Visuelle</h3>
+                    <p>Création de logos et chartes graphiques pour associations</p>
+                </div>
+                <div class="project-card">
+                    <h3>📱 UI/UX Design</h3>
+                    <p>Interfaces d'applications mobiles et web</p>
+                </div>
+                <div class="project-card">
+                    <h3>📰 Print Design</h3>
+                    <p>Affiches, flyers et supports de communication</p>
+                </div>
+                <div class="project-card">
+                    <h3>🎨 Motion Design</h3>
+                    <p>Animations et visuels dynamiques</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="dessins-window" style="left: 220px; top: 140px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>✏️</span> Dessins
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('dessins-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <h2 style="color: #000080; margin-bottom: 10px;">Portfolio Artistique</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>🖼️ Illustration Digitale</h3>
+                    <p>Character design et concept art</p>
+                </div>
+                <div class="project-card">
+                    <h3>✍️ Dessin Traditionnel</h3>
+                    <p>Croquis, encre et techniques mixtes</p>
+                </div>
+                <div class="project-card">
+                    <h3>🎭 Fanart</h3>
+                    <p>Réinterprétations de personnages et univers</p>
+                </div>
+                <div class="project-card">
+                    <h3>📚 BD & Strips</h3>
+                    <p>Narration visuelle et storytelling</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="jeuxvideo-window" style="left: 240px; top: 160px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>🎮</span> Jeux Vidéo
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('jeuxvideo-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <h2 style="color: #000080; margin-bottom: 10px;">Projets Game Dev</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>🕹️ Prototype Platformer</h3>
+                    <p>Jeu de plateforme 2D avec mécanique originale</p>
+                </div>
+                <div class="project-card">
+                    <h3>🎯 Game Jam</h3>
+                    <p>Participations et créations en temps limité</p>
+                </div>
+                <div class="project-card">
+                    <h3>📝 Game Design</h3>
+                    <p>Conception de mécaniques et level design</p>
+                </div>
+                <div class="project-card">
+                    <h3>🎨 Asset Creation</h3>
+                    <p>Sprites, tiles et éléments graphiques</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="code-window" style="left: 260px; top: 180px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>💻</span> Code
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('code-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <h2 style="color: #000080; margin-bottom: 10px;">Projets de Développement</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>🌐 Sites Web</h3>
+                    <p>HTML, CSS, JavaScript - Sites responsives</p>
+                </div>
+                <div class="project-card">
+                    <h3>🐍 Python</h3>
+                    <p>Scripts, automatisation et data viz</p>
+                </div>
+                <div class="project-card">
+                    <h3>⚛️ React</h3>
+                    <p>Applications web interactives</p>
+                </div>
+                <div class="project-card">
+                    <h3>🎨 Creative Coding</h3>
+                    <p>Expérimentations p5.js et canvas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="asso-window" style="left: 280px; top: 200px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>🎯</span> Engagements Associatifs
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('asso-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>🏕️ EEDF - Éclaireuses Éclaireurs de France</h2>
+                <p>Mouvement de scoutisme laïque français, les EEDF prônent la solidarité, l'engagement citoyen et l'éducation par l'action.</p>
+                
+                <h2>🎯 Mon parcours</h2>
+                <ul>
+                    <li>Organisation de camps et sorties</li>
+                    <li>Animation d'ateliers créatifs</li>
+                    <li>Projets solidaires et environnementaux</li>
+                    <li>Développement de compétences en leadership</li>
+                </ul>
+
+                <h2>💡 Apports</h2>
+                <p>Cette expérience m'a permis de développer mon autonomie, ma créativité et mon sens du collectif - des valeurs que j'applique dans tous mes projets.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="cv-window" style="left: 300px; top: 100px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>📄</span> CV.pdf
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('cv-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>📋 Curriculum Vitae</h2>
+                
+                <h2>🎓 Formation</h2>
+                <p><strong>BUT MMI - 2ème année</strong><br>
+                Métiers du Multimédia et de l'Internet</p>
+
+                <h2>🛠️ Compétences</h2>
+                <ul>
+                    <li><strong>Design :</strong> Photoshop, Illustrator, Figma</li>
+                    <li><strong>Dessin :</strong> Digital painting, traditional art</li>
+                    <li><strong>Développement :</strong> HTML/CSS, JavaScript, Python, React</li>
+                    <li><strong>Game Dev :</strong> Unity, Game Maker, Aseprite</li>
+                </ul>
+
+                <h2>💼 Soft Skills</h2>
+                <ul>
+                    <li>Créativité et innovation</li>
+                    <li>Travail en équipe</li>
+                    <li>Gestion de projets</li>
+                    <li>Communication visuelle</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="contact-window" style="left: 320px; top: 120px; width: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>📧</span> Contact
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('contact-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>📬 Me contacter</h2>
+                <p>N'hésite pas à me contacter pour :</p>
+                <ul>
+                    <li>Projets collaboratifs</li>
+                    <li>Opportunités professionnelles</li>
+                    <li>Questions ou échanges</li>
+                </ul>
+
+                <h2>🔗 Liens</h2>
+                <p style="margin-top: 10px;">
+                    📧 <strong>Email :</strong> votre.email@exemple.com<br>
+                    🔗 <strong>LinkedIn :</strong> /votre-profil<br>
+                    🎨 <strong>Portfolio :</strong> votre-site.com<br>
+                    💼 <strong>GitHub :</strong> @votre-username
+                </p>
+
+                <p style="margin-top: 15px; padding: 10px; background: #ffffcc; border: 1px solid #000;">
+                    ⚡ <em>Disponible pour des projets freelance et stages !</em>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paint Window -->
+    <div class="window" id="paint-window" style="left: 150px; top: 100px; width: 600px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>🎨</span> Paint
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('paint-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 0; display: flex; flex-direction: column;">
+            <div style="background: #c0c0c0; padding: 4px; border-bottom: 1px solid #808080; display: flex; gap: 4px; flex-wrap: wrap;">
+                <button class="tool-btn" onclick="setPaintTool('pen')" style="background: #000; width: 24px; height: 24px; border: 2px solid #fff;"></button>
+                <button class="tool-btn" onclick="setPaintTool('eraser')" style="background: #fff; width: 24px; height: 24px; border: 2px solid #000;"></button>
+                <input type="color" id="paintColor" value="#000000" style="width: 30px; height: 24px;">
+                <button onclick="clearPaint()" style="padding: 2px 8px; font-size: 10px;">Effacer</button>
+                <select id="brushSize" style="font-size: 10px;">
+                    <option value="2">Petit</option>
+                    <option value="5" selected>Moyen</option>
+                    <option value="10">Gros</option>
+                </select>
+            </div>
+            <canvas id="paintCanvas" width="580" height="420" style="background: white; cursor: crosshair; flex: 1;"></canvas>
+        </div>
+    </div>
+
+    <!-- Démineur Window -->
+    <div class="window" id="demineur-window" style="left: 200px; top: 120px; width: 320px; height: 420px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>💣</span> Démineur
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('demineur-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 5px; display: flex; flex-direction: column; gap: 5px;">
+            <div style="background: #c0c0c0; padding: 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; display: flex; justify-content: space-between; align-items: center;">
+                <div style="background: #000; color: #f00; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; padding: 2px 6px; border: 1px solid #808080;" id="mineCount">010</div>
+                <button onclick="resetDemineur()" style="font-size: 16px; padding: 0; width: 26px; height: 26px; background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff;">🙂</button>
+                <div style="background: #000; color: #f00; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; padding: 2px 6px; border: 1px solid #808080;" id="timer">000</div>
+            </div>
+            <div id="mineGrid" style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 0; border: 3px solid; border-color: #808080 #fff #fff #808080;"></div>
+        </div>
+    </div>
+
+    <!-- Winamp Window -->
+    <div class="window" id="winamp-window" style="left: 250px; top: 140px; width: 275px; height: 320px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>🎵</span> Winamp
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('winamp-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 0; background: linear-gradient(180deg, #1a1a1a, #0d0d0d); color: #00ff00;">
+            <div style="padding: 10px;">
+                <div style="background: #000; border: 1px solid #333; padding: 8px; font-family: monospace; font-size: 12px; margin-bottom: 10px;">
+                    <div id="trackTitle" style="color: #00ff00;">♪ Portfolio BGM - Chill Beats</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; color: #00ff00; font-size: 10px;">
+                        <span id="currentTime">0:00</span>
+                        <span id="duration">3:45</span>
+                    </div>
+                </div>
+                
+                <div style="background: #000; height: 60px; margin-bottom: 10px; border: 1px solid #333; display: flex; align-items: center; justify-content: center;" id="visualizer">
+                    <div style="display: flex; gap: 2px; height: 40px; align-items: flex-end;">
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 20%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 40%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 80%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 60%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 100%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 70%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 30%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 50%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 90%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 40%;"></div>
+                    </div>
+                </div>
+
+                <input type="range" id="progressBar" value="0" max="100" style="width: 100%; margin-bottom: 10px;">
+
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                    <button onclick="prevTrack()" style="width: 40px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">⏮</button>
+                    <button onclick="togglePlay()" id="playBtn" style="width: 50px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">▶</button>
+                    <button onclick="stopTrack()" style="width: 40px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">⏹</button>
+                    <button onclick="nextTrack()" style="width: 40px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">⏭</button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 10px;">🔊</span>
+                    <input type="range" id="volumeSlider" value="70" max="100" style="flex: 1;">
+                    <span id="volumeDisplay" style="font-size: 10px;">70%</span>
+                </div>
+
+                <div id="playlist" style="margin-top: 10px; max-height: 80px; overflow-y: auto; font-size: 10px; background: #000; border: 1px solid #333; padding: 5px;">
+                    <div class="track-item active" onclick="selectTrack(0)">1. Portfolio BGM - Chill Beats</div>
+                    <div class="track-item" onclick="selectTrack(1)">2. Windows 95 Startup Sound</div>
+                    <div class="track-item" onclick="selectTrack(2)">3. Creative Flow - Lofi Hip Hop</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" onclick="alert('Menu Démarrer - À venir : Mes favoris, Paramètres, etc !')">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FF0000' d='M0,0 L8,0 L8,8 L0,8 Z'/%3E%3Cpath fill='%23008000' d='M8,0 L16,0 L16,8 L8,8 Z'/%3E%3Cpath fill='%230000FF' d='M0,8 L8,8 L8,16 L0,16 Z'/%3E%3Cpath fill='%23FFFF00' d='M8,8 L16,8 L16,16 L8,16 Z'/%3E%3C/svg%3E" alt="Start">
+            Démarrer
+        </div>
+        <div class="clock" id="clock">12:00</div>
+    </div>
+
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Window management
+        let zIndexCounter = 1000;
+        let activeWindow = null;
+
+        function openWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (!win) return;
+            
+            win.classList.add('active');
+            win.style.display = 'flex';
+            win.style.zIndex = ++zIndexCounter;
+            activeWindow = win;
+        }
+
+        function closeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (!win) return;
+            
+            win.classList.remove('active');
+            win.style.display = 'none';
+        }
+
+        // Desktop icons click
+        document.querySelectorAll('.icon').forEach(icon => {
+            icon.addEventListener('dblclick', (e) => {
+                const windowId = icon.getAttribute('data-window') + '-window';
+                openWindow(windowId);
+            });
+        });
+
+        // Draggable windows
+        let isDragging = false;
+        let currentWindow = null;
+        let offsetX, offsetY;
+
+        document.querySelectorAll('.title-bar').forEach(titleBar => {
+            titleBar.addEventListener('mousedown', (e) => {
+                if (e.target.tagName === 'BUTTON') return;
+                
+                isDragging = true;
+                currentWindow = titleBar.closest('.window');
+                currentWindow.style.zIndex = ++zIndexCounter;
+                
+                const rect = currentWindow.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+                
+                currentWindow.style.cursor = 'move';
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging || !currentWindow) return;
+            
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+            
+            // Keep window in viewport
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+            
+            currentWindow.style.left = newX + 'px';
+            currentWindow.style.top = newY + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (currentWindow) {
+                currentWindow.style.cursor = 'default';
+            }
+            isDragging = false;
+            currentWindow = null;
+        });
+
+        // Prevent text selection while dragging
+        document.addEventListener('selectstart', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+            }
+        });
+
+        // Easter egg - Konami code
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            if (konamiCode.length > 10) konamiCode.shift();
+            
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+                alert('🎮 Code activé ! Tu as trouvé l\'easter egg ! 🏆');
+                document.body.style.animation = 'rainbow 2s infinite';
+                konamiCode = [];
+            }
+        });
+
+        // Random window position on first open
+        const windows = document.querySelectorAll('.window');
+        windows.forEach((win, index) => {
+            const randomX = 100 + (index * 30);
+            const randomY = 80 + (index * 30);
+            win.style.left = randomX + 'px';
+            win.style.top = randomY + 'px';
+        });
+
+        // Welcome message
+        setTimeout(() => {
+            const welcomeMsg = confirm('👋 Bienvenue sur mon portfolio Windows 95 !\n\nDouble-clique sur les icônes pour explorer mes projets.\n\n🎮 Astuce : Essaie le code Konami !\n\nCommencer la visite ?');
+            if (welcomeMsg) {
+                openWindow('about-window');
+            }
+        }, 500);
+
+        // Responsive mobile warning
+        if (window.innerWidth < 768) {
+            setTimeout(() => {
+                alert('📱 Info : Ce portfolio est optimisé pour desktop.\nPour une meilleure expérience, visite-le sur ordinateur !');
+            }, 1000);
+        }
+
+        // PAINT FUNCTIONALITY
+        const paintCanvas = document.getElementById('paintCanvas');
+        const paintCtx = paintCanvas ? paintCanvas.getContext('2d') : null;
+        let isPainting = false;
+        let paintTool = 'pen';
+
+        if (paintCanvas) {
+            paintCanvas.addEventListener('mousedown', startPaint);
+            paintCanvas.addEventListener('mousemove', paint);
+            paintCanvas.addEventListener('mouseup', stopPaint);
+            paintCanvas.addEventListener('mouseleave', stopPaint);
+        }
+
+        function startPaint(e) {
+            isPainting = true;
+            const rect = paintCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            paintCtx.beginPath();
+            paintCtx.moveTo(x, y);
+        }
+
+        function paint(e) {
+            if (!isPainting) return;
+            const rect = paintCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const color = document.getElementById('paintColor').value;
+            const size = parseInt(document.getElementById('brushSize').value);
+            
+            paintCtx.lineCap = 'round';
+            paintCtx.lineWidth = size;
+            paintCtx.strokeStyle = paintTool === 'eraser' ? '#ffffff' : color;
+            paintCtx.lineTo(x, y);
+            paintCtx.stroke();
+            paintCtx.beginPath();
+            paintCtx.moveTo(x, y);
+        }
+
+        function stopPaint() {
+            isPainting = false;
+            paintCtx.beginPath();
+        }
+
+        function setPaintTool(tool) {
+            paintTool = tool;
+        }
+
+        function clearPaint() {
+            paintCtx.fillStyle = 'white';
+            paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+        }
+
+        // DÉMINEUR FUNCTIONALITY
+        let mineGrid = [];
+        let mineGameOver = false;
+        let mineTimer = 0;
+        let mineTimerInterval;
+        const GRID_SIZE = 9;
+        const MINE_COUNT = 10;
+
+        function initDemineur() {
+            mineGrid = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill().map(() => ({
+                isMine: false,
+                isRevealed: false,
+                isFlagged: false,
+                neighborMines: 0
+            })));
+            
+            // Place mines
+            let placed = 0;
+            while (placed < MINE_COUNT) {
+                const row = Math.floor(Math.random() * GRID_SIZE);
+                const col = Math.floor(Math.random() * GRID_SIZE);
+                if (!mineGrid[row][col].isMine) {
+                    mineGrid[row][col].isMine = true;
+                    placed++;
+                }
+            }
+            
+            // Calculate neighbor mines
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (!mineGrid[row][col].isMine) {
+                        let count = 0;
+                        for (let dr = -1; dr <= 1; dr++) {
+                            for (let dc = -1; dc <= 1; dc++) {
+                                const nr = row + dr;
+                                const nc = col + dc;
+                                if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+                                    if (mineGrid[nr][nc].isMine) count++;
+                                }
+                            }
+                        }
+                        mineGrid[row][col].neighborMines = count;
+                    }
+                }
+            }
+            
+            renderDemineur();
+            mineGameOver = false;
+            mineTimer = 0;
+            document.getElementById('timer').textContent = '000';
+            if (mineTimerInterval) clearInterval(mineTimerInterval);
+        }
+
+        function renderDemineur() {
+            const gridEl = document.getElementById('mineGrid');
+            if (!gridEl) return;
+            gridEl.innerHTML = '';
+            
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'mine-cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    
+                    if (mineGrid[row][col].isRevealed) {
+                        cell.classList.add('revealed');
+                        if (mineGrid[row][col].isMine) {
+                            cell.classList.add('mine');
+                        } else if (mineGrid[row][col].neighborMines > 0) {
+                            cell.textContent = mineGrid[row][col].neighborMines;
+                            const colors = ['', '#0000FF', '#008000', '#FF0000', '#000080', '#800000', '#008080', '#000000', '#808080'];
+                            cell.style.color = colors[mineGrid[row][col].neighborMines];
+                        }
+                    } else if (mineGrid[row][col].isFlagged) {
+                        cell.classList.add('flagged');
+                    }
+                    
+                    cell.addEventListener('click', () => revealCell(row, col));
+                    cell.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        toggleFlag(row, col);
+                    });
+                    
+                    gridEl.appendChild(cell);
+                }
+            }
+        }
+
+        function revealCell(row, col) {
+            if (mineGameOver || mineGrid[row][col].isRevealed || mineGrid[row][col].isFlagged) return;
+            
+            if (!mineTimerInterval) {
+                mineTimerInterval = setInterval(() => {
+                    mineTimer++;
+                    document.getElementById('timer').textContent = String(mineTimer).padStart(3, '0');
+                }, 1000);
+            }
+            
+            if (mineGrid[row][col].isMine) {
+                mineGameOver = true;
+                revealAllMines();
+                clearInterval(mineTimerInterval);
+                setTimeout(() => alert('💥 BOOM ! Partie terminée !'), 100);
+                return;
+            }
+            
+            mineGrid[row][col].isRevealed = true;
+            
+            if (mineGrid[row][col].neighborMines === 0) {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        const nr = row + dr;
+                        const nc = col + dc;
+                        if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+                            if (!mineGrid[nr][nc].isRevealed) {
+                                revealCell(nr, nc);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            renderDemineur();
+            checkWin();
+        }
+
+        function toggleFlag(row, col) {
+            if (mineGameOver || mineGrid[row][col].isRevealed) return;
+            mineGrid[row][col].isFlagged = !mineGrid[row][col].isFlagged;
+            renderDemineur();
+        }
+
+        function revealAllMines() {
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (mineGrid[row][col].isMine) {
+                        mineGrid[row][col].isRevealed = true;
+                    }
+                }
+            }
+            renderDemineur();
+        }
+
+        function checkWin() {
+            let revealedCount = 0;
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (mineGrid[row][col].isRevealed && !mineGrid[row][col].isMine) {
+                        revealedCount++;
+                    }
+                }
+            }
+            if (revealedCount === GRID_SIZE * GRID_SIZE - MINE_COUNT) {
+                mineGameOver = true;
+                clearInterval(mineTimerInterval);
+                setTimeout(() => alert('🎉 Gagné ! Toutes les cases sûres ont été révélées !'), 100);
+            }
+        }
+
+        function resetDemineur() {
+            if (mineTimerInterval) clearInterval(mineTimerInterval);
+            initDemineur();
+        }
+
+        initDemineur();
+
+        // WINAMP FUNCTIONALITY
+        let isPlaying = false;
+        let currentTrack = 0;
+        let currentTime = 0;
+        let winampInterval;
+        const tracks = [
+            { title: 'Portfolio BGM - Chill Beats', duration: 225 },
+            { title: 'Windows 95 Startup Sound', duration: 6 },
+            { title: 'Creative Flow - Lofi Hip Hop', duration: 180 }
+        ];
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playBtn');
+            if (isPlaying) {
+                btn.textContent = '⏸';
+                startWinampTimer();
+            } else {
+                btn.textContent = '▶';
+                if (winampInterval) clearInterval(winampInterval);
+            }
+        }
+
+        function stopTrack() {
+            isPlaying = false;
+            currentTime = 0;
+            document.getElementById('playBtn').textContent = '▶';
+            document.getElementById('currentTime').textContent = '0:00';
+            document.getElementById('progressBar').value = 0;
+            if (winampInterval) clearInterval(winampInterval);
+        }
+
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % tracks.length;
+            selectTrack(currentTrack);
+        }
+
+        function prevTrack() {
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+            selectTrack(currentTrack);
+        }
+
+        function selectTrack(index) {
+            currentTrack = index;
+            currentTime = 0;
+            document.getElementById('trackTitle').textContent = '♪ ' + tracks[index].title;
+            document.getElementById('duration').textContent = formatTime(tracks[index].duration);
+            document.getElementById('currentTime').textContent = '0:00';
+            document.getElementById('progressBar').value = 0;
+            
+            document.querySelectorAll('.track-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            
+            if (isPlaying) {
+                if (winampInterval) clearInterval(winampInterval);
+                startWinampTimer();
+            }
+        }
+
+        function startWinampTimer() {
+            winampInterval = setInterval(() => {
+                currentTime++;
+                const duration = tracks[currentTrack].duration;
+                document.getElementById('currentTime').textContent = formatTime(currentTime);
+                document.getElementById('progressBar').value = (currentTime / duration) * 100;
+                
+                if (currentTime >= duration) {
+                    nextTrack();
+                    if (isPlaying) {
+                        currentTime = 0;
+                        startWinampTimer();
+                    }
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${String(secs).padStart(2, '0')}`;
+        }
+
+        document.getElementById('volumeSlider').addEventListener('input', (e) => {
+            document.getElementById('volumeDisplay').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('progressBar').addEventListener('input', (e) => {
+            const duration = tracks[currentTrack].duration;
+            currentTime = Math.floor((e.target.value / 100) * duration);
+            document.getElementById('currentTime').textContent = formatTime(currentTime);
+        });
+    </script>
+
+    <style>
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* Resize handle */
+        .window::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, transparent 50%, #808080 50%);
+            cursor: nwse-resize;
+        }
+
+        /* Window focus effect */
+        .window.active .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+        }
+
+        .window:not(.active) .title-bar {
+            background: linear-gradient(90deg, #808080, #a0a0a0);
+        }
+
+        /* Selection highlight */
+        ::selection {
+            background: #000080;
+            color: white;
+        }
+
+        /* Loading cursor animation */
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Pixel perfect borders */
+        .project-card:active {
+            border-color: #000000 #ffffff #ffffff #000000;
+            transform: translate(1px, 1px);
+        }
+
+        /* Scrollbar arrows */
+        ::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 1px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            width: 16px;
+            height: 16px;
+        }
+
+        ::-webkit-scrollbar-button:active {
+            border-color: #000000 #ffffff #ffffff #000000;
+        }
+
+        /* Desktop hover effect */
+        .desktop::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 28px;
+            pointer-events: none;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.02) 2px,
+                    rgba(0,0,0,0.02) 4px
+                );
+        }
+
+        /* Icon selection effect */
+        .icon.selected {
+            background: rgba(0, 0, 128, 0.3);
+            outline: 1px dotted white;
+        }
+
+        /* Status bar for windows */
+        .window-status {
+            height: 20px;
+            border-top: 1px solid #808080;
+            padding: 2px 4px;
+            font-size: 10px;
+            color: #000;
+            background: #c0c0c0;
+        }
+
+        /* Menu bar */
+        .menu-bar {
+            background: #c0c0c0;
+            border-bottom: 1px solid #808080;
+            padding: 2px;
+            font-size: 11px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .menu-item {
+            padding: 2px 8px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        /* Tooltip style */
+        [title] {
+            position: relative;
+        }
+
+        /* Loading animation for projects */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-card {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Paint styles */
+        .tool-btn {
+            cursor: pointer;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+        }
+        .tool-btn:active {
+            border-color: #000000 #ffffff #ffffff #000000;
+        }
+
+        /* Démineur styles */
+        .mine-cell {
+            width: 30px;
+            height: 30px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .mine-cell.revealed {
+            border: 1px solid #808080;
+            background: #bdbdbd;
+        }
+        .mine-cell.flagged::after {
+            content: '🚩';
+        }
+        .mine-cell.mine::after {
+            content: '💣';
+        }
+
+        /* Winamp styles */
+        .track-item {
+            padding: 3px;
+            cursor: pointer;
+            color: #00ff00;
+        }
+        .track-item:hover {
+            background: #1a1a1a;
+        }
+        .track-item.active {
+            background: #003300;
+            font-weight: bold;
+        }
+
+        @keyframes visualize {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+
+        .bar {
+            animation: visualize 0.5s ease-in-out infinite;
+        }
+        .bar:nth-child(1) { animation-delay: 0s; }
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+        .bar:nth-child(5) { animation-delay: 0.4s; }
+        .bar:nth-child(6) { animation-delay: 0.3s; }
+        .bar:nth-child(7) { animation-delay: 0.2s; }
+        .bar:nth-child(8) { animation-delay: 0.1s; }
+        .bar:nth-child(9) { animation-delay: 0.2s; }
+        .bar:nth-child(10) { animation-delay: 0.1s; }
+    </style>
+</body>
+</html>
