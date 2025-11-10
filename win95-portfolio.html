@@ -343,10 +343,10 @@
         </div>
         <div class="window-body">
             <div class="about-content">
-                <h2>Salut !</h2>
-                <p>Moi c'est Val ! Je suis étudiant en BUT MMI 2ème année, passionné par la création sous toutes ses formes.</p>
+                <h2>👋 Salut !</h2>
+                <p>Je suis étudiant en BUT MMI 2ème année, passionné par la création sous toutes ses formes.</p>
                 
-                <h2>Mes domaines</h2>
+                <h2>🎨 Mes domaines</h2>
                 <ul>
                     <li><strong>Design</strong> - Interfaces, identité visuelle, UX/UI</li>
                     <li><strong>Dessin</strong> - Illustration digitale et traditionnelle</li>
@@ -354,11 +354,11 @@
                     <li><strong>Code</strong> - Web dev, Python, et plus encore</li>
                 </ul>
 
-                <h2>Engagements</h2>
+                <h2>🎯 Engagements</h2>
                 <p><strong>EEDF (Éclaireuses Éclaireurs de France)</strong> - Scouts laïques<br>
-                Une expérience riche en apprentissage, solidarité et projets collectifs en nature.</p>
+                Une expérience riche en apprentissage, solidarité et projets collectifs.</p>
 
-                <h2>Objectif</h2>
+                <h2>🚀 Objectif</h2>
                 <p>Créer des expériences numériques mémorables en alliant créativité technique et réflexion design.</p>
             </div>
         </div>
@@ -395,7 +395,7 @@
         </div>
     </div>
 
-    <div class="window" id="design-window" style="left: 200px; top: 120px; width: 600px; height: 450px;">
+    <div class="window" id="design-window" style="left: 200px; top: 120px; width: 700px; height: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
                 <span>🎨</span> Design
@@ -404,30 +404,50 @@
                 <button onclick="closeWindow('design-window')">×</button>
             </div>
         </div>
-        <div class="window-body">
-            <h2 style="color: #000080; margin-bottom: 10px;">Projets de Design</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <h3>🎭 Identité Visuelle</h3>
-                    <p>Création de logos et chartes graphiques pour associations</p>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets de Design</h2>
+            
+            <!-- Projet 1 -->
+            <div class="project-detail">
+                <h3>🎭 [NOM DU PROJET 1]</h3>
+                <p><strong>Description :</strong> [Décris ton projet ici - contexte, objectifs, ta démarche créative]</p>
+                <p><strong>Outils :</strong> Figma, Photoshop, Illustrator, etc.</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/008080/FFFFFF?text=Screenshot+1" alt="Screenshot 1" onclick="openLightbox(this.src)">
+                    <img src="https://via.placeholder.com/300x200/008080/FFFFFF?text=Screenshot+2" alt="Screenshot 2" onclick="openLightbox(this.src)">
                 </div>
-                <div class="project-card">
-                    <h3>📱 UI/UX Design</h3>
-                    <p>Interfaces d'applications mobiles et web</p>
+                <p><strong>🔗 Lien :</strong> <a href="#">[Lien vers Behance/Dribbble]</a></p>
+            </div>
+
+            <!-- Projet 2 -->
+            <div class="project-detail">
+                <h3>📱 [NOM DU PROJET 2]</h3>
+                <p><strong>Description :</strong> [Décris ton projet ici]</p>
+                <p><strong>Outils :</strong> [Liste tes outils]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/FF69B4/FFFFFF?text=Screenshot+1" alt="Screenshot 1" onclick="openLightbox(this.src)">
+                    <img src="https://via.placeholder.com/300x200/FF69B4/FFFFFF?text=Screenshot+2" alt="Screenshot 2" onclick="openLightbox(this.src)">
                 </div>
-                <div class="project-card">
-                    <h3>📰 Print Design</h3>
-                    <p>Affiches, flyers et supports de communication</p>
+                <p><strong>🔗 Lien :</strong> <a href="#">[Lien vers ton projet]</a></p>
+            </div>
+
+            <!-- Projet 3 -->
+            <div class="project-detail">
+                <h3>📰 [NOM DU PROJET 3]</h3>
+                <p><strong>Description :</strong> [Décris ton projet ici]</p>
+                <p><strong>Outils :</strong> [Liste tes outils]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/4169E1/FFFFFF?text=Screenshot+1" alt="Screenshot 1" onclick="openLightbox(this.src)">
                 </div>
-                <div class="project-card">
-                    <h3>🎨 Motion Design</h3>
-                    <p>Animations et visuels dynamiques</p>
-                </div>
+                <p><strong>🔗 Lien :</strong> <a href="#">[Lien vers ton projet]</a></p>
             </div>
         </div>
     </div>
 
-    <div class="window" id="dessins-window" style="left: 220px; top: 140px; width: 600px; height: 450px;">
+    <div class="window" id="dessins-window" style="left: 220px; top: 140px; width: 700px; height: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
                 <span>✏️</span> Dessins
@@ -436,30 +456,49 @@
                 <button onclick="closeWindow('dessins-window')">×</button>
             </div>
         </div>
-        <div class="window-body">
-            <h2 style="color: #000080; margin-bottom: 10px;">Portfolio Artistique</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <h3>🖼️ Illustration Digitale</h3>
-                    <p>Character design et concept art</p>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Portfolio Artistique</h2>
+            
+            <!-- Dessin 1 -->
+            <div class="project-detail">
+                <h3>🖼️ [TITRE DU DESSIN 1]</h3>
+                <p><strong>Description :</strong> [Parle de ton inspiration, technique, style utilisé]</p>
+                <p><strong>Technique :</strong> Digital / Traditionnel / Mixte</p>
+                <p><strong>Logiciels :</strong> Procreate, Photoshop, Clip Studio Paint, etc.</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/400x300/FF6347/FFFFFF?text=Illustration+1" alt="Illustration 1" onclick="openLightbox(this.src)">
                 </div>
-                <div class="project-card">
-                    <h3>✍️ Dessin Traditionnel</h3>
-                    <p>Croquis, encre et techniques mixtes</p>
+                <p><strong>🔗 Voir plus :</strong> <a href="#">[Instagram/ArtStation]</a></p>
+            </div>
+
+            <!-- Dessin 2 -->
+            <div class="project-detail">
+                <h3>✍️ [TITRE DU DESSIN 2]</h3>
+                <p><strong>Description :</strong> [Décris ton œuvre]</p>
+                <p><strong>Technique :</strong> [Ta technique]</p>
+                <p><strong>Logiciels :</strong> [Tes outils]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/400x300/9370DB/FFFFFF?text=Illustration+2" alt="Illustration 2" onclick="openLightbox(this.src)">
                 </div>
-                <div class="project-card">
-                    <h3>🎭 Fanart</h3>
-                    <p>Réinterprétations de personnages et univers</p>
-                </div>
-                <div class="project-card">
-                    <h3>📚 BD & Strips</h3>
-                    <p>Narration visuelle et storytelling</p>
+                <p><strong>🔗 Voir plus :</strong> <a href="#">[Ton lien]</a></p>
+            </div>
+
+            <!-- Dessin 3 -->
+            <div class="project-detail">
+                <h3>🎭 [TITRE DU DESSIN 3]</h3>
+                <p><strong>Description :</strong> [Décris ton œuvre]</p>
+                <p><strong>Technique :</strong> [Ta technique]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/400x300/20B2AA/FFFFFF?text=Illustration+3" alt="Illustration 3" onclick="openLightbox(this.src)">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="window" id="jeuxvideo-window" style="left: 240px; top: 160px; width: 600px; height: 450px;">
+    <div class="window" id="jeuxvideo-window" style="left: 240px; top: 160px; width: 700px; height: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
                 <span>🎮</span> Jeux Vidéo
@@ -468,30 +507,52 @@
                 <button onclick="closeWindow('jeuxvideo-window')">×</button>
             </div>
         </div>
-        <div class="window-body">
-            <h2 style="color: #000080; margin-bottom: 10px;">Projets Game Dev</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <h3>🕹️ Prototype Platformer</h3>
-                    <p>Jeu de plateforme 2D avec mécanique originale</p>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets Game Dev</h2>
+            
+            <!-- Jeu 1 -->
+            <div class="project-detail">
+                <h3>🕹️ [NOM DU JEU 1]</h3>
+                <p><strong>Description :</strong> [Décris le concept, les mécaniques de gameplay, l'univers]</p>
+                <p><strong>Genre :</strong> Platformer / Puzzle / Adventure / etc.</p>
+                <p><strong>Engine :</strong> Unity / Unreal / Game Maker / Godot / etc.</p>
+                <p><strong>Rôle :</strong> Game Designer / Programmer / Artist</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/8B008B/FFFFFF?text=Gameplay+Screenshot+1" alt="Gameplay 1" onclick="openLightbox(this.src)">
+                    <img src="https://via.placeholder.com/350x200/8B008B/FFFFFF?text=Gameplay+Screenshot+2" alt="Gameplay 2" onclick="openLightbox(this.src)">
                 </div>
-                <div class="project-card">
-                    <h3>🎯 Game Jam</h3>
-                    <p>Participations et créations en temps limité</p>
+                <p><strong>🔗 Jouer :</strong> <a href="#">[itch.io / Steam / GitHub]</a></p>
+            </div>
+
+            <!-- Jeu 2 -->
+            <div class="project-detail">
+                <h3>🎯 [NOM DU JEU 2 - Game Jam]</h3>
+                <p><strong>Description :</strong> [Parle du contexte de la jam, du thème, de ta création]</p>
+                <p><strong>Game Jam :</strong> [Nom de la jam]</p>
+                <p><strong>Durée :</strong> 48h / 72h</p>
+                <p><strong>Engine :</strong> [Ton moteur]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/FF4500/FFFFFF?text=Game+Jam+Screenshot" alt="Game Jam" onclick="openLightbox(this.src)">
                 </div>
-                <div class="project-card">
-                    <h3>📝 Game Design</h3>
-                    <p>Conception de mécaniques et level design</p>
-                </div>
-                <div class="project-card">
-                    <h3>🎨 Asset Creation</h3>
-                    <p>Sprites, tiles et éléments graphiques</p>
+                <p><strong>🔗 Jouer :</strong> <a href="#">[Lien itch.io]</a></p>
+            </div>
+
+            <!-- Jeu 3 -->
+            <div class="project-detail">
+                <h3>🎨 [PROJET ASSETS / GAME DESIGN]</h3>
+                <p><strong>Description :</strong> [Parle de ta contribution - sprites, level design, etc.]</p>
+                <p><strong>Type :</strong> Pixel Art / 3D / Concept Art</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/32CD32/FFFFFF?text=Asset+Pack" alt="Assets" onclick="openLightbox(this.src)">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="window" id="code-window" style="left: 260px; top: 180px; width: 600px; height: 450px;">
+    <div class="window" id="code-window" style="left: 260px; top: 180px; width: 700px; height: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
                 <span>💻</span> Code
@@ -500,25 +561,58 @@
                 <button onclick="closeWindow('code-window')">×</button>
             </div>
         </div>
-        <div class="window-body">
-            <h2 style="color: #000080; margin-bottom: 10px;">Projets de Développement</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <h3>🌐 Sites Web</h3>
-                    <p>HTML, CSS, JavaScript - Sites responsives</p>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets de Développement</h2>
+            
+            <!-- Projet Code 1 -->
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE WEB]</h3>
+                <p><strong>Description :</strong> [Décris le site - fonctionnalités, objectifs, public cible]</p>
+                <p><strong>Technologies :</strong> HTML5, CSS3, JavaScript, React, etc.</p>
+                <p><strong>Fonctionnalités :</strong> [Liste les features principales]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Homepage" alt="Homepage">
+                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Page+intérieure" alt="Page 2">
                 </div>
-                <div class="project-card">
-                    <h3>🐍 Python</h3>
-                    <p>Scripts, automatisation et data viz</p>
+                <p><strong>🔗 Liens :</strong> <a href="#">[Site live]</a> | <a href="#">[GitHub]</a></p>
+            </div>
+
+            <!-- Projet Code 2 -->
+            <div class="project-detail">
+                <h3>🐍 [PROJET PYTHON]</h3>
+                <p><strong>Description :</strong> [Script, automatisation, data viz, bot, etc.]</p>
+                <p><strong>Technologies :</strong> Python, bibliothèques utilisées</p>
+                <p><strong>Utilité :</strong> [À quoi sert ce projet]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/228B22/FFFFFF?text=Code+Preview" alt="Code">
                 </div>
-                <div class="project-card">
-                    <h3>⚛️ React</h3>
-                    <p>Applications web interactives</p>
+                <p><strong>🔗 GitHub :</strong> <a href="#">[Lien repo]</a></p>
+            </div>
+
+            <!-- Projet Code 3 -->
+            <div class="project-detail">
+                <h3>⚛️ [APPLICATION REACT]</h3>
+                <p><strong>Description :</strong> [Ton app interactive]</p>
+                <p><strong>Technologies :</strong> React, APIs, etc.</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/9370DB/FFFFFF?text=App+Screenshot" alt="App">
                 </div>
-                <div class="project-card">
-                    <h3>🎨 Creative Coding</h3>
-                    <p>Expérimentations p5.js et canvas</p>
+                <p><strong>🔗 Démo :</strong> <a href="#">[Lien démo]</a></p>
+            </div>
+
+            <!-- Projet Code 4 -->
+            <div class="project-detail">
+                <h3>🎨 [CREATIVE CODING]</h3>
+                <p><strong>Description :</strong> [Expérimentation artistique avec du code]</p>
+                <p><strong>Technologies :</strong> p5.js / Three.js / Canvas</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/FF1493/FFFFFF?text=Creative+Code" alt="Creative">
                 </div>
+                <p><strong>🔗 Voir :</strong> <a href="#">[CodePen / Observable]</a></p>
             </div>
         </div>
     </div>
@@ -1078,8 +1172,38 @@
             if (revealedCount === GRID_SIZE * GRID_SIZE - MINE_COUNT) {
                 mineGameOver = true;
                 clearInterval(mineTimerInterval);
-                setTimeout(() => alert('🎉 Gagné ! Toutes les cases sûres ont été révélées !'), 100);
+                
+                // CONFETTI EASTER EGG! 🎉
+                launchConfetti();
+                
+                setTimeout(() => alert('🎉 BRAVO ! Tu as gagné au Démineur !\n\nTemps : ' + mineTimer + ' secondes\n\nTu mérites des confettis ! 🎊'), 500);
             }
+        }
+
+        function launchConfetti() {
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#FF69B4'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = '0s';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+            
+            // Son de victoire simulé
+            console.log('🎵 *Windows XP Victory Sound* 🎵');
         }
 
         function resetDemineur() {
@@ -1390,6 +1514,79 @@
         .bar:nth-child(8) { animation-delay: 0.1s; }
         .bar:nth-child(9) { animation-delay: 0.2s; }
         .bar:nth-child(10) { animation-delay: 0.1s; }
+
+        /* Project detail styles */
+        .project-detail {
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .project-detail h3 {
+            color: #000080;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #c0c0c0;
+            padding-bottom: 5px;
+        }
+
+        .project-detail p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .screenshots {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .screenshots img {
+            max-width: 100%;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .screenshots img:hover {
+            transform: scale(1.05);
+        }
+
+        .project-detail a {
+            color: #0000FF;
+            text-decoration: underline;
+        }
+
+        .project-detail a:visited {
+            color: #800080;
+        }
+
+        /* Confetti animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f00;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotateZ(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(720deg);
+                opacity: 0;
+            }
+        }
     </style>
 </body>
 </html>
