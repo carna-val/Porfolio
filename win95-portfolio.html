@@ -35,9 +35,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
             gap: 4px;
             cursor: pointer;
             padding: 4px;
+            width: 80px;
+            height: 90px;
+            box-sizing: border-box;
         }
 
         .icon:active {
@@ -47,7 +51,13 @@
         .icon img {
             width: 32px;
             height: 32px;
+            min-width: 32px;
+            min-height: 32px;
+            max-width: 32px;
+            max-height: 32px;
             image-rendering: pixelated;
+            object-fit: contain;
+            flex-shrink: 0;
         }
 
         .icon span {
@@ -57,6 +67,11 @@
             text-shadow: 1px 1px 2px black;
             word-wrap: break-word;
             max-width: 70px;
+            height: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
         /* Window */
@@ -271,62 +286,62 @@
 <body>
     <div class="desktop" id="desktop">
         <div class="icon" data-window="about">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23008080' width='32' height='32'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='20' fill='white' text-anchor='middle'%3Ei%3C/text%3E%3C/svg%3E" alt="Info">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23008080' width='32' height='32'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='20' fill='white' text-anchor='middle'%3Ei%3C/text%3E%3C/svg%3E" alt="Info" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>À propos</span>
         </div>
         
         <div class="icon" data-window="projets">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23FFFF00' d='M4,8 L16,4 L16,28 L4,24 Z'/%3E%3Cpath fill='%23FFD700' d='M16,4 L28,8 L28,24 L16,28 Z'/%3E%3C/svg%3E" alt="Folder">
+            <img src="Assets/folder.png" alt="Folder" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Mes Projets</span>
         </div>
 
         <div class="icon" data-window="design">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23FF69B4' width='28' height='28' x='2' y='2'/%3E%3Crect fill='white' width='24' height='20' x='4' y='6'/%3E%3C/svg%3E" alt="Design">
+            <img src="Assets/Design.png" alt="Design" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Design</span>
         </div>
 
         <div class="icon" data-window="dessins">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23FF6347' d='M8,24 L12,8 L20,12 L24,20 Z'/%3E%3Ccircle fill='%23FFD700' cx='20' cy='12' r='3'/%3E%3C/svg%3E" alt="Brush">
+            <img src="Assets/Dessin.png" alt="Dessin" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Dessins</span>
         </div>
 
         <div class="icon" data-window="jeuxvideo">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%238B008B' width='26' height='16' x='3' y='8' rx='3'/%3E%3Ccircle fill='%23FF0000' cx='22' cy='14' r='2'/%3E%3Crect fill='%23A9A9A9' width='4' height='2' x='8' y='13'/%3E%3Crect fill='%23A9A9A9' width='2' height='4' x='9' y='12'/%3E%3C/svg%3E" alt="Game">
+            <img src="Assets/Game.png" alt="Game" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Jeux Vidéo</span>
         </div>
 
         <div class="icon" data-window="code">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23000080' width='32' height='32'/%3E%3Ctext x='16' y='22' font-family='Courier' font-size='18' fill='%2300FF00' text-anchor='middle'%3E%3C/%3E%3C/text%3E%3C/svg%3E" alt="Code">
+            <img src="Assets/code.png" alt="Code" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Code</span>
         </div>
 
         <div class="icon" data-window="asso">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle fill='%234169E1' cx='16' cy='16' r='12'/%3E%3Cpath fill='white' d='M12,20 L16,12 L20,20 Z'/%3E%3C/svg%3E" alt="Association">
+            <img src="Assets/engagement.png" alt="Arbre" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Engagements</span>
         </div>
 
         <div class="icon" data-window="cv">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='white' d='M6,2 L22,2 L26,6 L26,30 L6,30 Z'/%3E%3Cpath fill='%23c0c0c0' d='M22,2 L22,6 L26,6'/%3E%3Crect fill='%23000080' width='12' height='2' x='10' y='10'/%3E%3Crect fill='%23000080' width='12' height='2' x='10' y='15'/%3E%3Crect fill='%23000080' width='12' height='2' x='10' y='20'/%3E%3C/svg%3E" alt="CV">
+            <img src="Assets/CV.png" alt="CV" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>CV.pdf</span>
         </div>
 
         <div class="icon" data-window="contact">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23FFD700' d='M4,8 L16,18 L28,8 L28,24 L4,24 Z'/%3E%3Cpath fill='%23FFA500' d='M4,8 L16,18 L28,8 Z'/%3E%3C/svg%3E" alt="Mail">
+            <img src="Assets/mail.png" alt="Mail" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Contact</span>
         </div>
 
         <div class="icon" data-window="paint">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='white' width='28' height='28' x='2' y='2'/%3E%3Cpath fill='%23FF0000' d='M8,12 L12,8 L16,12 L20,8 L24,12 L20,16 L16,12 L12,16 Z'/%3E%3Crect fill='%230000FF' width='4' height='8' x='10' y='18'/%3E%3C/svg%3E" alt="Paint">
+            <img src="Assets/Paint.png" alt="Paint" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Paint</span>
         </div>
 
         <div class="icon" data-window="demineur">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23c0c0c0' width='32' height='32'/%3E%3Ccircle fill='%23000' cx='16' cy='16' r='8'/%3E%3Crect fill='%23FF0000' width='2' height='16' x='15' y='8'/%3E%3Crect fill='%23FF0000' width='16' height='2' x='8' y='15'/%3E%3C/svg%3E" alt="Démineur">
+            <img src="Assets/Mine.png" alt="Démineur" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Démineur</span>
         </div>
 
         <div class="icon" data-window="winamp">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%234169E1' width='32' height='24' rx='2'/%3E%3Ctext x='16' y='16' font-size='14' fill='%2300FF00' text-anchor='middle' font-family='monospace'%3E▶%3C/text%3E%3C/svg%3E" alt="Winamp">
+            <img src="Assets/winamp.png" alt="Winamp" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Winamp</span>
         </div>
     </div>
@@ -345,6 +360,12 @@
             <div class="about-content">
                 <h2>👋 Salut !</h2>
                 <p>Je suis étudiant en BUT MMI 2ème année, passionné par la création sous toutes ses formes.</p>
+                
+                <h2>🖼️ Photo</h2>
+                <div style="width: 150px; height: 150px; background: #e0e0e0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; margin: 10px 0; display: flex; align-items: center; justify-content: center; color: #666; font-size: 12px;">
+                    <img id="profilePhoto" src="" alt="Ma photo" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span id="photoPlaceholder" style="text-align: center;">Ajoute ta photo ici</span>
+                </div>
                 
                 <h2>🎨 Mes domaines</h2>
                 <ul>
@@ -656,7 +677,7 @@
         </div>
         <div class="window-body">
             <div class="about-content">
-                <h2>📋 Curriculum Vitae</h2>
+                <h2>Curriculum Vitae</h2>
                 
                 <h2>🎓 Formation</h2>
                 <p><strong>BUT MMI - 2ème année</strong><br>
@@ -679,6 +700,7 @@
                 </ul>
             </div>
         </div>
+        <a href="CV.pdf" download="CV_Val_Lombart--Bertolus.pdf">Cliquez ici pour télécharger le PDF</a>
     </div>
 
     <div class="window" id="contact-window" style="left: 320px; top: 120px; width: 450px;">
@@ -754,7 +776,9 @@
         <div class="window-body" style="padding: 5px; display: flex; flex-direction: column; gap: 5px;">
             <div style="background: #c0c0c0; padding: 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; display: flex; justify-content: space-between; align-items: center;">
                 <div style="background: #000; color: #f00; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; padding: 2px 6px; border: 1px solid #808080;" id="mineCount">010</div>
-                <button onclick="resetDemineur()" style="font-size: 16px; padding: 0; width: 26px; height: 26px; background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff;">🙂</button>
+                <button onclick="resetDemineur()" style="font-size: 16px; padding: 0; width: 26px; height: 26px; background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff; display: flex; align-items: center; justify-content: center;">
+                    <img src="Assets/smiley.png" alt="Smiley" style="width: 40px; height: 40px;">
+                </button>
                 <div style="background: #000; color: #f00; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; padding: 2px 6px; border: 1px solid #808080;" id="timer">000</div>
             </div>
             <div id="mineGrid" style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 0; border: 3px solid; border-color: #808080 #fff #fff #808080;"></div>
@@ -835,17 +859,9 @@
         <div style="background:#000080; color:white; padding:8px; font-weight:bold; font-size:13px;">Menu Démarrer</div>
         <div style="padding:6px; display:flex; flex-direction:column; gap:4px;">
             <button onclick="openWindow('about-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">À propos</button>
-            <button onclick="openWindow('projets-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Mes Projets</button>
-            <button onclick="openWindow('design-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Design</button>
-            <button onclick="openWindow('dessins-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Dessins</button>
-            <button onclick="openWindow('jeuxvideo-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Jeux Vidéo</button>
-            <button onclick="openWindow('code-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Code</button>
-            <button onclick="openWindow('asso-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Engagements</button>
-            <button onclick="openWindow('cv-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">CV</button>
-            <button onclick="openWindow('contact-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Contact</button>
             <hr>
-            <button onclick="secretCalculator();toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Calculatrice secrète</button>
-            <button onclick="secretNotepad();toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Bloc-notes secret</button>
+            <button onclick="window.location.href='portfolio-modern.html';" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Portfolio Modern</button>
+            <hr>
             <button onclick="matrixMode();toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Matrix Mode</button>
         </div>
     </div>
@@ -1386,21 +1402,6 @@
             }
         });
 
-        // PDF DOWNLOAD
-        function downloadPDF() {
-            alert('📥 Génération du PDF en cours...\n\nNote : Cette fonctionnalité nécessite un backend pour générer un vrai PDF.\nPour l\'instant, voici une démo simulée ! ✨');
-            
-            // Simulation de téléchargement
-            const link = document.createElement('a');
-            link.href = '#';
-            link.download = 'Portfolio_2025.pdf';
-            
-            setTimeout(() => {
-                alert('✅ PDF téléchargé ! (simulation)\n\nPour un vrai PDF, tu peux utiliser :\n- Print to PDF du navigateur\n- jsPDF pour générer côté client\n- Un service backend');
-                incrementEasterEgg();
-            }, 500);
-        }
-
         // EASTER EGGS
         let easterEggsFound = 0;
         const totalEasterEggs = 5;
@@ -1412,70 +1413,113 @@
                 
                 if (easterEggsFound === totalEasterEggs) {
                     setTimeout(() => {
-                        alert('🏆 ACHIEVEMENT UNLOCKED!\n\nTu as trouvé tous les Easter Eggs !\n\n🎉 Champion de la nostalgie ! 🎉');
+                        alert('ACHIEVEMENT UNLOCKED!\n\nTu as trouvé tous les Easter Eggs !\n\n Champion de la nostalgie !');
                         launchConfetti();
                     }, 300);
                 }
             }
         }
 
-        // Secret Calculator
-        function secretCalculator() {
-            const result = prompt('🔢 Calculatrice secrète\n\nRésous cette énigme :\n\n95 + 98 + 2000 + XP = ?\n\n(Indice : années des OS Microsoft)');
-            if (result === '2195' || result === '2193') {
-                alert('✅ Bravo ! Tu connais ton histoire informatique ! 🖥️');
-                incrementEasterEgg();
-            } else {
-                alert('❌ Presque ! Réessaie... 💡');
-            }
-        }
-
-        // Secret Notepad
-        function secretNotepad() {
-            const message = prompt('📝 Bloc-notes secret\n\nÉcris un mot de passe magique :\n(Indice : célèbre assistant paperclip)');
-            if (message && message.toLowerCase().includes('clippy') || message && message.toLowerCase().includes('clippit')) {
-                alert('🎉 CLIPPY EST DE RETOUR !\n\n"Vous avez l\'air de créer un portfolio. Voulez-vous de l\'aide ?" 📎');
-                incrementEasterEgg();
-            } else {
-                alert('❓ Clippy ne se souvient pas de ce mot de passe...');
-            }
-        }
-
         // Matrix Mode
         let matrixActive = false;
+        let matrixParticles = [];
+
         function matrixMode() {
             matrixActive = !matrixActive;
             if (matrixActive) {
                 document.body.style.background = '#000';
                 document.body.style.color = '#00ff00';
-                alert('💚 THE MATRIX MODE ACTIVATED 💚\n\nWelcome to the real world.');
+                document.body.style.overflow = 'hidden';
+                
+                // Créer le canvas pour le mode Matrix
+                let canvas = document.getElementById('matrixCanvas');
+                if (!canvas) {
+                    canvas = document.createElement('canvas');
+                    canvas.id = 'matrixCanvas';
+                    canvas.style.position = 'fixed';
+                    canvas.style.top = '0';
+                    canvas.style.left = '0';
+                    canvas.style.zIndex = '5000';
+                    canvas.style.pointerEvents = 'none';
+                    document.body.appendChild(canvas);
+                }
+                
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                canvas.style.display = 'block';
+                
+                const ctx = canvas.getContext('2d');
+                const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+                const fontSize = 20;
+                const columns = canvas.width / fontSize;
+                let drops = [];
+                
+                for (let i = 0; i < columns; i++) {
+                    drops[i] = 1;
+                }
+                
+                let mouseX = canvas.width / 2;
+                let mouseY = canvas.height / 2;
+                
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+                
+                const matrixDraw = () => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    ctx.fillStyle = '#00ff00';
+                    ctx.font = fontSize + 'px monospace';
+                    
+                    for (let i = 0; i < drops.length; i++) {
+                        const text = chars[Math.floor(Math.random() * chars.length)];
+                        const x = i * fontSize;
+                        const y = drops[i] * fontSize;
+                        
+                        // Calculer la distance avec la souris
+                        const dx = x - mouseX;
+                        const dy = y - mouseY;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const maxDistance = 150;
+                        
+                        if (distance < maxDistance) {
+                            const intensity = 1 - (distance / maxDistance);
+                            ctx.fillStyle = `rgba(0, 255, 0, ${0.5 + intensity * 0.5})`;
+                            ctx.font = 'bold ' + (fontSize + intensity * 10) + 'px monospace';
+                        } else {
+                            ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+                            ctx.font = fontSize + 'px monospace';
+                        }
+                        
+                        ctx.fillText(text, x, y);
+                        
+                        if (y > canvas.height && Math.random() > 0.975) {
+                            drops[i] = 0;
+                        }
+                        drops[i]++;
+                    }
+                    
+                    if (matrixActive) {
+                        requestAnimationFrame(matrixDraw);
+                    }
+                };
+                
+                matrixDraw();
+                alert('MATRIX MODE ACTIVATED ✨\n\n Bienvenue dans le cyberespace...');
                 incrementEasterEgg();
+                
                 setTimeout(() => {
+                    matrixActive = false;
                     document.body.style.background = '#008080';
                     document.body.style.color = '';
-                    matrixActive = false;
-                }, 5000);
+                    document.body.style.overflow = 'auto';
+                    const canvas = document.getElementById('matrixCanvas');
+                    if (canvas) canvas.style.display = 'none';
+                }, 2);
             }
         }
-
-        // Secret triple-click on logo
-        let logoClickCount = 0;
-        let logoClickTimer;
-        document.querySelector('.start-button img').addEventListener('click', (e) => {
-            e.stopPropagation();
-            logoClickCount++;
-            clearTimeout(logoClickTimer);
-            
-            if (logoClickCount === 3) {
-                alert('🎮 SUPER SECRET UNLOCKED!\n\n"Windows 95... Plus JAMAIS sans toi!" 💾\n\nNostalgie level: 9000');
-                incrementEasterEgg();
-                logoClickCount = 0;
-            }
-            
-            logoClickTimer = setTimeout(() => {
-                logoClickCount = 0;
-            }, 500);
-        });
 
         // Secret: Type "win95" anywhere
         let secretCode = '';
@@ -1661,10 +1705,22 @@
             background: #bdbdbd;
         }
         .mine-cell.flagged::after {
-            content: '🚩';
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url("Assets/Flag.png");
+            background-size: contain;
+            background-position: center;
         }
         .mine-cell.mine::after {
-            content: '💣';
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url("Assets/Mine.png");
+            background-size: contain;
+            background-position: center;;
         }
 
         /* Winamp styles */
