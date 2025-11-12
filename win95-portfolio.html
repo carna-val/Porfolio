@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio - Windows 95</title>
+    <link rel="stylesheet" href="font.css">
     <style>
         * {
             margin: 0;
@@ -12,7 +13,7 @@
         }
 
         body {
-            font-family: 'MS Sans Serif', Arial, sans-serif;
+            font-family: 'W95FA', 'MS Sans Serif', Arial, sans-serif;
             background: #008080;
             overflow: hidden;
             height: 100vh;
@@ -315,6 +316,11 @@
             <span>Code</span>
         </div>
 
+        <div class="icon" data-window="sites">
+            <img src="Assets/Site_Web.png" alt="Sites Web">
+            <span>Sites Web</span>
+        </div>
+
         <div class="icon" data-window="asso">
             <img src="Assets/engagement.png" alt="Arbre" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Engagements</span>
@@ -344,6 +350,12 @@
             <img src="Assets/winamp.png" alt="Winamp" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Winamp</span>
         </div>
+
+        <div class="icon">
+            <img src="Assets/recycle_bin.png" alt="Corbeille">
+            <span>Corbeille</span>
+        </div>
+    </div>
     </div>
 
     <!-- Windows -->
@@ -569,6 +581,40 @@
                 <div class="screenshots">
                     <img src="https://via.placeholder.com/350x200/32CD32/FFFFFF?text=Asset+Pack" alt="Assets" onclick="openLightbox(this.src)">
                 </div>
+            </div>
+        </div>
+    </div>
+        <!-- Sites Web Window -->
+    <div class="window" id="sites-window" style="left: 180px; top: 100px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🌐 Sites Web</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('sites-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px;">Mes Sites Web</h2>
+            
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE 1]</h3>
+                <p><strong>Description :</strong> [Décris ton site web]</p>
+                <p><strong>Technologies :</strong> HTML, CSS, JavaScript</p>
+                <p><strong>Date :</strong> [Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/4682B4/FFFFFF?text=Site+1" alt="Site 1" onclick="openLightbox(this.src)">
+                </div>
+                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
+            </div>
+
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE 2]</h3>
+                <p><strong>Description :</strong> [Décris ton site web]</p>
+                <p><strong>Technologies :</strong> React, Node.js</p>
+                <p><strong>Date :</strong> [Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/9370DB/FFFFFF?text=Site+2" alt="Site 2" onclick="openLightbox(this.src)">
+                </div>
+                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
             </div>
         </div>
     </div>
@@ -843,6 +889,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Matrix Canvas -->
+    <canvas id="matrixCanvas"></canvas>
 
     <!-- Lightbox -->
     <div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:20000; align-items:center; justify-content:center; flex-direction:column;">
@@ -1420,105 +1469,129 @@
             }
         }
 
-        // Matrix Mode
+        // MATRIX MODE AMÉLIORÉ
         let matrixActive = false;
-        let matrixParticles = [];
+        let matrixAnimationId;
 
         function matrixMode() {
-            matrixActive = !matrixActive;
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
             if (matrixActive) {
-                document.body.style.background = '#000';
-                document.body.style.color = '#00ff00';
-                document.body.style.overflow = 'hidden';
-                
-                // Créer le canvas pour le mode Matrix
-                let canvas = document.getElementById('matrixCanvas');
-                if (!canvas) {
-                    canvas = document.createElement('canvas');
-                    canvas.id = 'matrixCanvas';
-                    canvas.style.position = 'fixed';
-                    canvas.style.top = '0';
-                    canvas.style.left = '0';
-                    canvas.style.zIndex = '5000';
-                    canvas.style.pointerEvents = 'none';
-                    document.body.appendChild(canvas);
-                }
-                
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                canvas.style.display = 'block';
-                
-                const ctx = canvas.getContext('2d');
-                const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-                const fontSize = 20;
-                const columns = canvas.width / fontSize;
-                let drops = [];
-                
-                for (let i = 0; i < columns; i++) {
-                    drops[i] = 1;
-                }
-                
-                let mouseX = canvas.width / 2;
-                let mouseY = canvas.height / 2;
-                
-                document.addEventListener('mousemove', (e) => {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                });
-                
-                const matrixDraw = () => {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    ctx.fillStyle = '#00ff00';
-                    ctx.font = fontSize + 'px monospace';
-                    
-                    for (let i = 0; i < drops.length; i++) {
-                        const text = chars[Math.floor(Math.random() * chars.length)];
-                        const x = i * fontSize;
-                        const y = drops[i] * fontSize;
-                        
-                        // Calculer la distance avec la souris
-                        const dx = x - mouseX;
-                        const dy = y - mouseY;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        const maxDistance = 150;
-                        
-                        if (distance < maxDistance) {
-                            const intensity = 1 - (distance / maxDistance);
-                            ctx.fillStyle = `rgba(0, 255, 0, ${0.5 + intensity * 0.5})`;
-                            ctx.font = 'bold ' + (fontSize + intensity * 10) + 'px monospace';
-                        } else {
-                            ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-                            ctx.font = fontSize + 'px monospace';
-                        }
-                        
-                        ctx.fillText(text, x, y);
-                        
-                        if (y > canvas.height && Math.random() > 0.975) {
-                            drops[i] = 0;
-                        }
-                        drops[i]++;
-                    }
-                    
-                    if (matrixActive) {
-                        requestAnimationFrame(matrixDraw);
-                    }
-                };
-                
-                matrixDraw();
-                alert('MATRIX MODE ACTIVATED ✨\n\n Bienvenue dans le cyberespace...');
-                incrementEasterEgg();
-                
-                setTimeout(() => {
-                    matrixActive = false;
-                    document.body.style.background = '#008080';
-                    document.body.style.color = '';
-                    document.body.style.overflow = 'auto';
-                    const canvas = document.getElementById('matrixCanvas');
-                    if (canvas) canvas.style.display = 'none';
-                }, 2);
+                matrixActive = false;
+                cancelAnimationFrame(matrixAnimationId);
+                canvas.classList.remove('active');
+                return;
             }
+
+            matrixActive = true;
+            canvas.classList.add('active');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ01';
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+            
+            let mouseX = canvas.width / 2;
+            let mouseY = canvas.height / 2;
+            let particles = [];
+
+            // Écouter les mouvements de souris sur le canvas
+            const handleMouseMove = (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Créer des particules au passage de la souris
+                for (let i = 0; i < 3; i++) {
+                    particles.push({
+                        x: mouseX + (Math.random() - 0.5) * 50,
+                        y: mouseY + (Math.random() - 0.5) * 50,
+                        vx: (Math.random() - 0.5) * 4,
+                        vy: (Math.random() - 0.5) * 4,
+                        life: 1,
+                        size: Math.random() * 3 + 2
+                    });
+                }
+            };
+            
+            document.addEventListener('mousemove', handleMouseMove);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Dessiner les particules de souris
+                particles = particles.filter(p => p.life > 0);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.02;
+                    
+                    ctx.fillStyle = `rgba(0, 255, 0, ${p.life})`;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                    
+                    // Traînée
+                    ctx.fillStyle = `rgba(0, 255, 0, ${p.life * 0.3})`;
+                    ctx.fillRect(p.x - p.vx * 2, p.y - p.vy * 2, p.size * 0.5, p.size * 0.5);
+                });
+
+                // Effet Matrix classique avec interaction souris
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    
+                    // Calculer distance avec la souris
+                    const dx = x - mouseX;
+                    const dy = y - mouseY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const maxDistance = 150;
+                    
+                    if (distance < maxDistance) {
+                        // Effet de "répulsion" - les caractères s'éloignent de la souris
+                        const intensity = 1 - (distance / maxDistance);
+                        const offsetX = (dx / distance) * intensity * 30;
+                        const offsetY = (dy / distance) * intensity * 30;
+                        
+                        ctx.fillStyle = `rgba(0, 255, 100, ${0.8 + intensity * 0.2})`;
+                        ctx.font = `bold ${fontSize + intensity * 8}px monospace`;
+                        ctx.fillText(char, x + offsetX, y + offsetY);
+                        
+                        // Effet de lueur
+                        ctx.shadowBlur = 20 * intensity;
+                        ctx.shadowColor = '#00ff00';
+                    } else {
+                        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+                        ctx.font = fontSize + 'px monospace';
+                        ctx.shadowBlur = 0;
+                        ctx.fillText(char, x, y);
+                    }
+                    
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+                
+                if (matrixActive) {
+                    matrixAnimationId = requestAnimationFrame(draw);
+                }
+            }
+
+            draw();
+            alert('🎮 MATRIX MODE ACTIVÉ !\n\nBouge ta souris pour interagir avec le code...');
+            
+            setTimeout(() => {
+                matrixActive = false;
+                cancelAnimationFrame(matrixAnimationId);
+                canvas.classList.remove('active');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.removeEventListener('mousemove', handleMouseMove);
+            }, 15000);
         }
 
         // Secret: Type "win95" anywhere
@@ -1827,6 +1900,20 @@
                 transform: translateY(100vh) rotateZ(720deg);
                 opacity: 0;
             }
+        }
+
+        /* Matrix Mode */
+        #matrixCanvas {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 5000;
+            pointer-events: none;
+        }
+
+        #matrixCanvas.active {
+            display: block;
         }
     </style>
 </body>

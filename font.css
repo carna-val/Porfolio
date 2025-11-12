@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'W95FA';
+    src: url('fonts/W95FA.woff2') format('woff2'), /* 1. Le plus léger et rapide, pour les navigateurs modernes */
+         url('fonts/W95FA.woff') format('woff'),   /* 2. Bon format compressé, pour une large compatibilité */
+         url('fonts/W95FA.otf') format('opentype'); /* 3. Format de secours si les autres échouent (certains navigateurs supportent le chargement OTF) */
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; 
+}

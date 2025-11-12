@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Windows 95</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'MS Sans Serif', Arial, sans-serif;
+            background: #008080;
+            overflow: hidden;
+            height: 100vh;
+            cursor: default;
+            user-select: none;
+        }
+
+        /* Desktop */
+        .desktop {
+            height: calc(100vh - 28px);
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 80px);
+            grid-auto-rows: 90px;
+            gap: 20px;
+            align-content: start;
+        }
+
+        /* ICONES - Taille fixe garantie */
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 4px;
+            cursor: pointer;
+            padding: 4px;
+            width: 80px;
+            height: 90px;
+        }
+
+        .icon:active {
+            filter: brightness(1.2);
+        }
+
+        .icon img {
+            display: block;
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            min-height: 32px !important;
+            max-width: 32px !important;
+            max-height: 32px !important;
+            object-fit: contain !important;
+            image-rendering: -webkit-optimize-contrast !important;
+            image-rendering: crisp-edges !important;
+            flex-shrink: 0 !important;
+        }
+
+        .icon span {
+            color: white;
+            font-size: 11px;
+            text-align: center;
+            text-shadow: 1px 1px 2px black;
+            word-wrap: break-word;
+            max-width: 70px;
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .icon.disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        /* Window */
+        .window {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            min-width: 400px;
+            min-height: 300px;
+            display: none;
+        }
+
+        .window.active {
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 2px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .title-bar-text {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .title-bar-controls button {
+            width: 16px;
+            height: 14px;
+            padding: 0;
+            font-size: 10px;
+            font-weight: bold;
+            background: #c0c0c0;
+            border: 1px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            cursor: pointer;
+        }
+
+        .title-bar-controls button:active {
+            border-color: #000000 #ffffff #ffffff #000000;
+        }
+
+        .window-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: white;
+            font-size: 11px;
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 28px;
+            background: #c0c0c0;
+            border-top: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            gap: 2px;
+            z-index: 10000;
+        }
+
+        .start-button {
+            height: 24px;
+            padding: 0 8px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .start-button:active {
+            border-color: #000000 #ffffff #ffffff #000000;
+        }
+
+        .start-button img {
+            width: 60px;
+            height: 40px;
+        }
+
+        .clock {
+            height: 22px;
+            padding: 0 8px;
+            border: 1px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            margin-left: auto;
+        }
+
+        /* Start Menu */
+        .start-menu {
+            display: none;
+            position: fixed;
+            left: 2px;
+            bottom: 30px;
+            width: 220px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            z-index: 10001;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .start-menu.active {
+            display: block;
+        }
+
+        .start-menu-header {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .start-menu-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            background: #c0c0c0;
+            border: none;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .start-menu-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        .start-menu hr {
+            margin: 2px 0;
+            border: none;
+            border-top: 1px solid #808080;
+        }
+
+        /* Folder view */
+        .folder-view {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        .folder-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        .folder-item img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* About content */
+        .about-content {
+            line-height: 1.6;
+        }
+
+        .about-content h2 {
+            color: #000080;
+            font-size: 14px;
+            margin: 15px 0 8px 0;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        .about-content ul {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        .about-content li {
+            margin: 3px 0;
+        }
+
+        /* Project detail */
+        .project-detail {
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .project-detail h3 {
+            color: #000080;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #c0c0c0;
+            padding-bottom: 5px;
+        }
+
+        .project-detail p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .screenshots {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .screenshots img {
+            max-width: 300px;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .screenshots img:hover {
+            transform: scale(1.05);
+        }
+
+        .project-detail a {
+            color: #0000FF;
+            text-decoration: underline;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 20000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 80vw;
+            max-height: 80vh;
+            border: 4px solid #c0c0c0;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .lightbox-nav {
+            font-size: 40px;
+            background: none;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 20px;
+        }
+
+        /* Paint */
+        .tool-btn {
+            cursor: pointer;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+        }
+
+        /* Démineur */
+        .mine-cell {
+            width: 30px;
+            height: 30px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .mine-cell.revealed {
+            border: 1px solid #808080;
+            background: #bdbdbd;
+        }
+
+        .mine-cell.flagged::after {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url("Assets/Flag.png");
+            background-size: contain;
+        }
+
+        .mine-cell.mine::after {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url("Assets/Mine.png");
+            background-size: contain;
+        }
+
+        /* Winamp */
+        .track-item {
+            padding: 3px;
+            cursor: pointer;
+            color: #00ff00;
+        }
+
+        .track-item:hover {
+            background: #1a1a1a;
+        }
+
+        .track-item.active {
+            background: #003300;
+            font-weight: bold;
+        }
+
+        .bar {
+            animation: visualize 0.5s ease-in-out infinite;
+        }
+
+        @keyframes visualize {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+
+        .bar:nth-child(1) { animation-delay: 0s; }
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+        .bar:nth-child(5) { animation-delay: 0.4s; }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s linear forwards;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotateZ(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Matrix Mode */
+        #matrixCanvas {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 5000;
+            pointer-events: none;
+        }
+
+        #matrixCanvas.active {
+            display: block;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 16px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #c0c0c0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #808080;
+            border: 1px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <div class="icon" data-window="about">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23008080' width='32' height='32'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='20' fill='white' text-anchor='middle'%3Ei%3C/text%3E%3C/svg%3E" alt="Info">
+            <span>À propos</span>
+        </div>
+        
+        <div class="icon" data-window="projets">
+            <img src="Assets/folder.png" alt="Folder">
+            <span>Mes Projets</span>
+        </div>
+
+        <div class="icon" data-window="design">
+            <img src="Assets/Design.png" alt="Design">
+            <span>Design</span>
+        </div>
+
+        <div class="icon" data-window="dessins">
+            <img src="Assets/Dessin.png" alt="Dessin">
+            <span>Dessins</span>
+        </div>
+
+        <div class="icon" data-window="jeuxvideo">
+            <img src="Assets/Game.png" alt="Game">
+            <span>Jeux Vidéo</span>
+        </div>
+
+        <div class="icon" data-window="code">
+            <img src="Assets/code.png" alt="Code">
+            <span>Code</span>
+        </div>
+
+        <div class="icon" data-window="sites">
+            <img src="Assets/Site_Web.png" alt="Sites Web">
+            <span>Sites Web</span>
+        </div>
+
+        <div class="icon" data-window="asso">
+            <img src="Assets/engagement.png" alt="Engagement">
+            <span>Engagements</span>
+        </div>
+
+        <div class="icon" data-window="cv">
+            <img src="Assets/CV.png" alt="CV">
+            <span>CV.pdf</span>
+        </div>
+
+        <div class="icon" data-window="contact">
+            <img src="Assets/mail.png" alt="Mail">
+            <span>Contact</span>
+        </div>
+
+        <div class="icon" data-window="paint">
+            <img src="Assets/Paint.png" alt="Paint">
+            <span>Paint</span>
+        </div>
+
+        <div class="icon" data-window="demineur">
+            <img src="Assets/Mine.png" alt="Démineur">
+            <span>Démineur</span>
+        </div>
+
+        <div class="icon" data-window="winamp">
+            <img src="Assets/winamp.png" alt="Winamp">
+            <span>Winamp</span>
+        </div>
+
+        <div class="icon disabled">
+            <img src="Assets/recycle_bin.png" alt="Corbeille">
+            <span>Corbeille</span>
+        </div>
+    </div>
+
+    <!-- Windows (identiques mais clean) -->
+    <div class="window" id="about-window" style="left: 100px; top: 80px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">📄 À propos</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('about-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>👋 Salut !</h2>
+                <p>Je suis étudiant en BUT MMI 2ème année, passionné par la création sous toutes ses formes.</p>
+                
+                <h2>🎨 Mes domaines</h2>
+                <ul>
+                    <li><strong>Design</strong> - Interfaces, identité visuelle, UX/UI</li>
+                    <li><strong>Dessin</strong> - Illustration digitale et traditionnelle</li>
+                    <li><strong>Jeux Vidéo</strong> - Game design et développement</li>
+                    <li><strong>Code</strong> - Web dev, Python, et plus encore</li>
+                </ul>
+
+                <h2>🎯 Engagements</h2>
+                <p><strong>EEDF (Éclaireuses Éclaireurs de France)</strong> - Scouts laïques</p>
+
+                <h2>🚀 Objectif</h2>
+                <p>Créer des expériences numériques mémorables en alliant créativité technique et réflexion design.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sites Web Window -->
+    <div class="window" id="sites-window" style="left: 180px; top: 100px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🌐 Sites Web</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('sites-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px;">Mes Sites Web</h2>
+            
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE 1]</h3>
+                <p><strong>Description :</strong> [Décris ton site web]</p>
+                <p><strong>Technologies :</strong> HTML, CSS, JavaScript</p>
+                <p><strong>Date :</strong> [Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/4682B4/FFFFFF?text=Site+1" alt="Site 1" onclick="openLightbox(this.src)">
+                </div>
+                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
+            </div>
+
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE 2]</h3>
+                <p><strong>Description :</strong> [Décris ton site web]</p>
+                <p><strong>Technologies :</strong> React, Node.js</p>
+                <p><strong>Date :</strong> [Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/9370DB/FFFFFF?text=Site+2" alt="Site 2" onclick="openLightbox(this.src)">
+                </div>
+                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projets Window -->
+    <div class="window" id="projets-window" style="left: 150px; top: 100px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">📁 Mes Projets</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('projets-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="folder-view">
+                <div class="folder-item" onclick="openWindow('design-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>🎨 Design</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('dessins-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>✏️ Dessins</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('jeuxvideo-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>🎮 Jeux Vidéo</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('code-window')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
+                    <span>💻 Code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Design Window -->
+    <div class="window" id="design-window" style="left: 200px; top: 120px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🎨 Design</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('design-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px;">Projets de Design</h2>
+            <div class="project-detail">
+                <h3>🎭 [NOM DU PROJET 1]</h3>
+                <p><strong>Description :</strong> [Décris ton projet]</p>
+                <p><strong>Outils :</strong> Figma, Photoshop</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/008080/FFFFFF?text=Design+1" alt="Design 1" onclick="openLightbox(this.src)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dessins Window -->
+    <div class="window" id="dessins-window" style="left: 220px; top: 140px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">✏️ Dessins</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('dessins-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px;">Portfolio Artistique</h2>
+            <div class="project-detail">
+                <h3>🖼️ [TITRE DU DESSIN 1]</h3>
+                <p><strong>Description :</strong> [Parle de ton dessin]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/FF6347/FFFFFF?text=Dessin+1" alt="Dessin 1" onclick="openLightbox(this.src)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jeux Vidéo Window -->
+    <div class="window" id="jeuxvideo-window" style="left: 240px; top: 160px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🎮 Jeux Vidéo</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('jeuxvideo-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px;">Projets Game Dev</h2>
+            <div class="project-detail">
+                <h3>🕹️ [NOM DU JEU 1]</h3>
+                <p><strong>Description :</strong> [Décris ton jeu]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/8B008B/FFFFFF?text=Jeu+1" alt="Jeu 1" onclick="openLightbox(this.src)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Window -->
+    <div class="window" id="code-window" style="left: 260px; top: 180px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">💻 Code</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('code-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px;">Projets de Développement</h2>
+            <div class="project-detail">
+                <h3>🌐 [NOM DU PROJET CODE]</h3>
+                <p><strong>Description :</strong> [Décris ton projet]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/4682B4/FFFFFF?text=Code+1" alt="Code 1" onclick="openLightbox(this.src)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Engagements Window -->
+    <div class="window" id="asso-window" style="left: 280px; top: 200px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🎯 Engagements</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('asso-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>🏕️ EEDF - Éclaireuses Éclaireurs de France</h2>
+                <p>Mouvement de scoutisme laïque français.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CV Window -->
+    <div class="window" id="cv-window" style="left: 300px; top: 100px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">📄 CV.pdf</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('cv-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>📋 Curriculum Vitae</h2>
+                <h2>🎓 Formation</h2>
+                <p><strong>BUT MMI - 2ème année</strong></p>
+                <h2>🛠️ Compétences</h2>
+                <ul>
+                    <li><strong>Design :</strong> Photoshop, Illustrator, Figma</li>
+                    <li><strong>Développement :</strong> HTML/CSS, JavaScript, Python</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Window -->
+    <div class="window" id="contact-window" style="left: 320px; top: 120px; width: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">📧 Contact</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('contact-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>📬 Me contacter</h2>
+                <p>N'hésite pas à me contacter pour des projets !</p>
+                <h2>🔗 Liens</h2>
+                <p>📧 <strong>Email :</strong> votre.email@exemple.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paint Window -->
+    <div class="window" id="paint-window" style="left: 150px; top: 100px; width: 600px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🎨 Paint</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('paint-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 0; display: flex; flex-direction: column;">
+            <div style="background: #c0c0c0; padding: 4px; border-bottom: 1px solid #808080; display: flex; gap: 4px;">
+                <button class="tool-btn" onclick="setPaintTool('pen')" style="background: #000; width: 24px; height: 24px;"></button>
+                <button class="tool-btn" onclick="setPaintTool('eraser')" style="background: #fff; width: 24px; height: 24px;"></button>
+                <input type="color" id="paintColor" value="#000000" style="width: 30px; height: 24px;">
+                <button onclick="clearPaint()" style="padding: 2px 8px; font-size: 10px;">Effacer</button>
+            </div>
+            <canvas id="paintCanvas" width="580" height="420" style="background: white; cursor: crosshair;"></canvas>
+        </div>
+    </div>
+
+    <!-- Démineur Window -->
+    <div class="window" id="demineur-window" style="left: 200px; top: 120px; width: 320px; height: 420px;">
+        <div class="title-bar">
+            <div class="title-bar-text">💣 Démineur</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('demineur-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 5px;">
+            <div style="background: #c0c0c0; padding: 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <div style="background: #000; color: #f00; font-family: monospace; font-size: 16px; padding: 2px 6px;" id="mineCount">010</div>
+                <button onclick="resetDemineur()" style="font-size: 16px; width: 26px; height: 26px; background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff;">🙂</button>
+                <div style="background: #000; color: #f00; font-family: monospace; font-size: 16px; padding: 2px 6px;" id="timer">000</div>
+            </div>
+            <div id="mineGrid" style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 0; border: 3px solid; border-color: #808080 #fff #fff #808080;"></div>
+        </div>
+    </div>
+
+    <!-- Winamp Window -->
+    <div class="window" id="winamp-window" style="left: 250px; top: 140px; width: 275px; height: 320px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🎵 Winamp</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('winamp-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 10px; background: #1a1a1a; color: #00ff00;">
+            <div style="background: #000; border: 1px solid #333; padding: 8px; margin-bottom: 10px;">
+                <div id="trackTitle">♪ Portfolio BGM</div>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button onclick="togglePlay()" id="playBtn" style="width: 50px; height: 40px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">▶</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">×</span>
+        <button class="lightbox-nav" onclick="event.stopPropagation(); lightboxPrev()" style="position: absolute; left: 20px;">‹</button>
+        <img id="lightboxImg" src="" alt="Lightbox">
+        <button class="lightbox-nav" onclick="event.stopPropagation(); lightboxNext()" style="position: absolute; right: 20px;">›</button>
+    </div>
+
+    <!-- Start Menu -->
+    <div id="startMenu" class="start-menu">
+        <div class="start-menu-header">Menu Démarrer</div>
+        <div style="padding: 6px; display: flex; flex-direction: column;">
+            <button class="start-menu-item" onclick="openWindow('about-window'); toggleStartMenu();">📄 À propos</button>
+            <hr>
+            <button class="start-menu-item" onclick="window.location.href='portfolio-modern.html';">📱 Portfolio Modern</button>
+            <hr>
+            <button class="start-menu-item" onclick="matrixMode(); toggleStartMenu();">🎮 Matrix Mode</button>
+            <button class="start-menu-item" onclick="openAllWindows(); toggleStartMenu();">📂 Ouvrir tout</button>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" onclick="toggleStartMenu()">
+            <img src="Assets/win_logo.png" alt="Start">
+            Démarrer
+        </div>
+        <div class="clock" id="clock">12:00</div>
+    </div>
+
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Window management
+        let zIndexCounter = 1000;
+
+        function openWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (!win) return;
+            win.classList.add('active');
+            win.style.zIndex = ++zIndexCounter;
+        }
+
+        function closeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (!win) return;
+            win.classList.remove('active');
+        }
+
+        function openAllWindows() {
+            const windows = ['about', 'projets', 'design', 'sites'];
+            windows.forEach((win, i) => {
+                setTimeout(() => openWindow(win + '-window'), i * 150);
+            });
+        }
+
+        // Desktop icons
+        document.querySelectorAll('.icon:not(.disabled)').forEach(icon => {
+            icon.addEventListener('dblclick', () => {
+                const windowId = icon.getAttribute('data-window') + '-window';
+                openWindow(windowId);
+            });
+        });
+
+        // Draggable windows
+        let isDragging = false;
+        let currentWindow = null;
+        let offsetX, offsetY;
+
+        document.querySelectorAll('.title-bar').forEach(titleBar => {
+            titleBar.addEventListener('mousedown', (e) => {
+                if (e.target.tagName === 'BUTTON') return;
+                isDragging = true;
+                currentWindow = titleBar.closest('.window');
+                currentWindow.style.zIndex = ++zIndexCounter;
+                const rect = currentWindow.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging || !currentWindow) return;
+            let newX = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - 100));
+            let newY = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - 100));
+            currentWindow.style.left = newX + 'px';
+            currentWindow.style.top = newY + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            currentWindow = null;
+        });
+
+        // Start Menu
+        function toggleStartMenu() {
+            document.getElementById('startMenu').classList.toggle('active');
+        }
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('startMenu');
+            const startBtn = document.querySelector('.start-button');
+            if (!menu.contains(e.target) && !startBtn.contains(e.target)) {
+                menu.classList.remove('active');
+            }
+        });
+
+        // Lightbox
+        let currentImageIndex = 0;
+        let allImages = [];
+
+        function openLightbox(src) {
+            allImages = Array.from(document.querySelectorAll('.screenshots img')).map(img => img.src);
+            currentImageIndex = allImages.indexOf(src);
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function lightboxNext() {
+            currentImageIndex = (currentImageIndex + 1) % allImages.length;
+            document.getElementById('lightboxImg').src = allImages[currentImageIndex];
+        }
+
+        function lightboxPrev() {
+            currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+            document.getElementById('lightboxImg').src = allImages[currentImageIndex];
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') lightboxNext();
+                if (e.key === 'ArrowLeft') lightboxPrev();
+            }
+        });
+
+        // MATRIX MODE AMÉLIORÉ
+        let matrixActive = false;
+        let matrixAnimationId;
+
+        function matrixMode() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            if (matrixActive) {
+                matrixActive = false;
+                cancelAnimationFrame(matrixAnimationId);
+                canvas.classList.remove('active');
+                return;
+            }
+
+            matrixActive = true;
+            canvas.classList.add('active');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ01';
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+            
+            let mouseX = canvas.width / 2;
+            let mouseY = canvas.height / 2;
+            let particles = [];
+
+            // Écouter les mouvements de souris sur le canvas
+            const handleMouseMove = (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Créer des particules au passage de la souris
+                for (let i = 0; i < 3; i++) {
+                    particles.push({
+                        x: mouseX + (Math.random() - 0.5) * 50,
+                        y: mouseY + (Math.random() - 0.5) * 50,
+                        vx: (Math.random() - 0.5) * 4,
+                        vy: (Math.random() - 0.5) * 4,
+                        life: 1,
+                        size: Math.random() * 3 + 2
+                    });
+                }
+            };
+            
+            document.addEventListener('mousemove', handleMouseMove);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Dessiner les particules de souris
+                particles = particles.filter(p => p.life > 0);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.02;
+                    
+                    ctx.fillStyle = `rgba(0, 255, 0, ${p.life})`;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                    
+                    // Traînée
+                    ctx.fillStyle = `rgba(0, 255, 0, ${p.life * 0.3})`;
+                    ctx.fillRect(p.x - p.vx * 2, p.y - p.vy * 2, p.size * 0.5, p.size * 0.5);
+                });
+
+                // Effet Matrix classique avec interaction souris
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    
+                    // Calculer distance avec la souris
+                    const dx = x - mouseX;
+                    const dy = y - mouseY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const maxDistance = 150;
+                    
+                    if (distance < maxDistance) {
+                        // Effet de "répulsion" - les caractères s'éloignent de la souris
+                        const intensity = 1 - (distance / maxDistance);
+                        const offsetX = (dx / distance) * intensity * 30;
+                        const offsetY = (dy / distance) * intensity * 30;
+                        
+                        ctx.fillStyle = `rgba(0, 255, 100, ${0.8 + intensity * 0.2})`;
+                        ctx.font = `bold ${fontSize + intensity * 8}px monospace`;
+                        ctx.fillText(char, x + offsetX, y + offsetY);
+                        
+                        // Effet de lueur
+                        ctx.shadowBlur = 20 * intensity;
+                        ctx.shadowColor = '#00ff00';
+                    } else {
+                        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+                        ctx.font = fontSize + 'px monospace';
+                        ctx.shadowBlur = 0;
+                        ctx.fillText(char, x, y);
+                    }
+                    
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+                
+                if (matrixActive) {
+                    matrixAnimationId = requestAnimationFrame(draw);
+                }
+            }
+
+            draw();
+            alert('🎮 MATRIX MODE ACTIVÉ !\n\nBouge ta souris pour interagir avec le code...');
+            
+            setTimeout(() => {
+                matrixActive = false;
+                cancelAnimationFrame(matrixAnimationId);
+                canvas.classList.remove('active');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.removeEventListener('mousemove', handleMouseMove);
+            }, 15000);
+        }
+
+        // Paint fonctions
+        const paintCanvas = document.getElementById('paintCanvas');
+        const paintCtx = paintCanvas ? paintCanvas.getContext('2d') : null;
+        let isPainting = false;
+        let paintTool = 'pen';
+
+        if (paintCanvas) {
+            paintCanvas.addEventListener('mousedown', (e) => {
+                isPainting = true;
+                const rect = paintCanvas.getBoundingClientRect();
+                paintCtx.beginPath();
+                paintCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            });
+
+            paintCanvas.addEventListener('mousemove', (e) => {
+                if (!isPainting) return;
+                const rect = paintCanvas.getBoundingClientRect();
+                const color = document.getElementById('paintColor').value;
+                paintCtx.lineCap = 'round';
+                paintCtx.lineWidth = 5;
+                paintCtx.strokeStyle = paintTool === 'eraser' ? '#ffffff' : color;
+                paintCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+                paintCtx.stroke();
+                paintCtx.beginPath();
+                paintCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            });
+
+            paintCanvas.addEventListener('mouseup', () => isPainting = false);
+            paintCanvas.addEventListener('mouseleave', () => isPainting = false);
+        }
+
+        function setPaintTool(tool) {
+            paintTool = tool;
+        }
+
+        function clearPaint() {
+            if (paintCtx) {
+                paintCtx.fillStyle = 'white';
+                paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+            }
+        }
+
+        // Démineur
+        let mineGrid = [];
+        let mineGameOver = false;
+        let mineTimer = 0;
+        let mineTimerInterval;
+        const GRID_SIZE = 9;
+        const MINE_COUNT = 10;
+
+        function initDemineur() {
+            mineGrid = Array(GRID_SIZE).fill().map(() => 
+                Array(GRID_SIZE).fill().map(() => ({
+                    isMine: false,
+                    isRevealed: false,
+                    isFlagged: false,
+                    neighborMines: 0
+                }))
+            );
+            
+            let placed = 0;
+            while (placed < MINE_COUNT) {
+                const row = Math.floor(Math.random() * GRID_SIZE);
+                const col = Math.floor(Math.random() * GRID_SIZE);
+                if (!mineGrid[row][col].isMine) {
+                    mineGrid[row][col].isMine = true;
+                    placed++;
+                }
+            }
+            
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (!mineGrid[row][col].isMine) {
+                        let count = 0;
+                        for (let dr = -1; dr <= 1; dr++) {
+                            for (let dc = -1; dc <= 1; dc++) {
+                                const nr = row + dr;
+                                const nc = col + dc;
+                                if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE && mineGrid[nr][nc].isMine) {
+                                    count++;
+                                }
+                            }
+                        }
+                        mineGrid[row][col].neighborMines = count;
+                    }
+                }
+            }
+            
+            renderDemineur();
+            mineGameOver = false;
+            mineTimer = 0;
+            if (document.getElementById('timer')) {
+                document.getElementById('timer').textContent = '000';
+            }
+            if (mineTimerInterval) clearInterval(mineTimerInterval);
+        }
+
+        function renderDemineur() {
+            const gridEl = document.getElementById('mineGrid');
+            if (!gridEl) return;
+            gridEl.innerHTML = '';
+            
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'mine-cell';
+                    
+                    if (mineGrid[row][col].isRevealed) {
+                        cell.classList.add('revealed');
+                        if (mineGrid[row][col].isMine) {
+                            cell.classList.add('mine');
+                        } else if (mineGrid[row][col].neighborMines > 0) {
+                            cell.textContent = mineGrid[row][col].neighborMines;
+                            const colors = ['', '#0000FF', '#008000', '#FF0000', '#000080'];
+                            cell.style.color = colors[Math.min(mineGrid[row][col].neighborMines, 4)];
+                        }
+                    } else if (mineGrid[row][col].isFlagged) {
+                        cell.classList.add('flagged');
+                    }
+                    
+                    cell.addEventListener('click', () => revealCell(row, col));
+                    cell.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        toggleFlag(row, col);
+                    });
+                    
+                    gridEl.appendChild(cell);
+                }
+            }
+        }
+
+        function revealCell(row, col) {
+            if (mineGameOver || mineGrid[row][col].isRevealed || mineGrid[row][col].isFlagged) return;
+            
+            if (!mineTimerInterval) {
+                mineTimerInterval = setInterval(() => {
+                    mineTimer++;
+                    if (document.getElementById('timer')) {
+                        document.getElementById('timer').textContent = String(mineTimer).padStart(3, '0');
+                    }
+                }, 1000);
+            }
+            
+            if (mineGrid[row][col].isMine) {
+                mineGameOver = true;
+                for (let r = 0; r < GRID_SIZE; r++) {
+                    for (let c = 0; c < GRID_SIZE; c++) {
+                        if (mineGrid[r][c].isMine) mineGrid[r][c].isRevealed = true;
+                    }
+                }
+                renderDemineur();
+                clearInterval(mineTimerInterval);
+                setTimeout(() => alert('💥 BOOM ! Partie terminée !'), 100);
+                return;
+            }
+            
+            mineGrid[row][col].isRevealed = true;
+            
+            if (mineGrid[row][col].neighborMines === 0) {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        const nr = row + dr;
+                        const nc = col + dc;
+                        if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+                            revealCell(nr, nc);
+                        }
+                    }
+                }
+            }
+            
+            renderDemineur();
+            checkWin();
+        }
+
+        function toggleFlag(row, col) {
+            if (mineGameOver || mineGrid[row][col].isRevealed) return;
+            mineGrid[row][col].isFlagged = !mineGrid[row][col].isFlagged;
+            renderDemineur();
+        }
+
+        function checkWin() {
+            let revealedCount = 0;
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (mineGrid[row][col].isRevealed && !mineGrid[row][col].isMine) {
+                        revealedCount++;
+                    }
+                }
+            }
+            if (revealedCount === GRID_SIZE * GRID_SIZE - MINE_COUNT) {
+                mineGameOver = true;
+                clearInterval(mineTimerInterval);
+                launchConfetti();
+                setTimeout(() => alert('🎉 GAGNÉ ! Temps : ' + mineTimer + 's'), 500);
+            }
+        }
+
+        function resetDemineur() {
+            if (mineTimerInterval) clearInterval(mineTimerInterval);
+            initDemineur();
+        }
+
+        initDemineur();
+
+        // Winamp
+        let isPlaying = false;
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playBtn');
+            if (btn) {
+                btn.textContent = isPlaying ? '⏸' : '▶';
+            }
+        }
+
+        // Confetti pour victoires
+        function launchConfetti() {
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#FF69B4'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        // Welcome message
+        setTimeout(() => {
+            if (confirm('👋 Bienvenue sur mon portfolio Windows 95 !\n\nDouble-clique sur les icônes pour explorer.\n\nCommencer la visite ?')) {
+                openWindow('about-window');
+            }
+        }, 500);
+    </script>
+</body>
+</html>
