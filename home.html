@@ -1,6 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Windows 95</title>
+    <link rel="stylesheet" href="font.css">
+  
   <style>
   /* Login Screen */
         #loginScreen {
+            font-family: 'W95FA', 'MS Sans Serif', Arial, sans-serif;
             position: fixed;
             top: 0;
             left: 0;
@@ -150,20 +159,21 @@
             text-decoration: underline;
         }
 </style>
- 
+</head>
+<body>
  <div id="loginScreen">
         <div class="login-box">
             <div class="login-header">
                 <div class="login-icon">
                     <img src="Assets/users.png" alt="User">
                 </div>
-                <h1>Bienvenue sur Windows 95</h1>
-                <p>Sélectionnez votre session pour explorer le portfolio</p>
+                <h1>Bienvenue sur Val 95</h1>
+                <p>Sélectionnez votre session pour explorer le portfolio (ça change rien dans tout les cas)</p>
             </div>
 
             <div class="user-select">
                 <div class="user-option selected" onclick="selectUser(this)">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle fill='%234169E1' cx='16' cy='16' r='14'/%3E%3Ccircle fill='%23FFD700' cx='16' cy='12' r='5'/%3E%3Cpath fill='%23FFD700' d='M16,18 C10,18 6,21 6,26 L26,26 C26,21 22,18 16,18 Z'/%3E%3C/svg%3E" alt="Visiteur">
+                    <img src="Assets/user.png" alt="Visiteur">
                     <div class="user-info">
                         <strong>Visiteur</strong>
                         <span>Accès invité - Exploration du portfolio</span>
@@ -171,7 +181,7 @@
                 </div>
 
                 <div class="user-option" onclick="selectUser(this)">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle fill='%23FF6347' cx='16' cy='16' r='14'/%3E%3Ccircle fill='%23FFD700' cx='16' cy='12' r='5'/%3E%3Cpath fill='%23FFD700' d='M16,18 C10,18 6,21 6,26 L26,26 C26,21 22,18 16,18 Z'/%3E%3C/svg%3E" alt="Recruteur">
+                    <img src="Assets/user.png" alt="Recruteur">
                     <div class="user-info">
                         <strong>Recruteur</strong>
                         <span>Accès complet - CV et projets détaillés</span>
@@ -179,10 +189,10 @@
                 </div>
 
                 <div class="user-option" onclick="selectUser(this)">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle fill='%239370DB' cx='16' cy='16' r='14'/%3E%3Ccircle fill='%23FFD700' cx='16' cy='12' r='5'/%3E%3Cpath fill='%23FFD700' d='M16,18 C10,18 6,21 6,26 L26,26 C26,21 22,18 16,18 Z'/%3E%3C/svg%3E" alt="Curieux">
+                    <img src="Assets/user.png" alt="Curieux">
                     <div class="user-info">
                         <strong>Curieux</strong>
-                        <span>Mode exploration - Easter eggs inclus</span>
+                        <span>Mode exploration</span>
                     </div>
                 </div>
             </div>
@@ -193,10 +203,11 @@
             </div>
 
             <div class="login-footer">
-                <p>💡 Aucun mot de passe requis - Cliquez sur "Entrer" pour commencer</p>
-                <p style="margin-top: 5px;">Portfolio Win95 - Version nostalgique</p>
+                <p>Aucun mot de passe requis - Cliquez sur "Entrer" pour commencer</p>
+                <p style="margin-top: 5px;">Portfolio inspiré de Win95 - Fait par Val Lombart--Bertolus</p>
+                <p> Essayez de trouver tout les easters eggs !</p>
             </div>
         </div>
     </div>
-
+</body>
     

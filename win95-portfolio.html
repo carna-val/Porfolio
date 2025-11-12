@@ -362,7 +362,7 @@
     <div class="window" id="about-window" style="left: 100px; top: 80px; width: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
-                <span>📄</span> À propos
+                <span></span> À propos
             </div>
             <div class="title-bar-controls">
                 <button onclick="closeWindow('about-window')">×</button>
@@ -370,16 +370,20 @@
         </div>
         <div class="window-body">
             <div class="about-content">
-                <h2>👋 Salut !</h2>
-                <p>Je suis étudiant en BUT MMI 2ème année, passionné par la création sous toutes ses formes.</p>
+                <h2>Salut ! Moi c'est Val !</h2>
+                <p> Bienvenue sur mon Portfolio inspiré du très célèbre Windows 95. Il suffit de double-clique sur les icons pour explorer mes projets.</p>
+                <p> </p>
+                <p>Depuis toujours, je collectionne les passions comme d’autres collectionnent les mugs : dessin, design, informatique… chacune m’a poussée à plonger tête la première.</p>
+                <p>Entre créativité et technologie, j’ai trouvé mon équilibre en BUT Métiers du Multimédia et de l’Internet et aujourd'hui en 2ème année, mon objectif est clair : Mettre en lumière ma polyvalence pour créer l’avenir à mon image ! </p>
+                <p>En bref, je suis votre futur artiste multimédia et développeur créatif.</p>
                 
-                <h2>🖼️ Photo</h2>
+                <h2>Photo</h2>
                 <div style="width: 150px; height: 150px; background: #e0e0e0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; margin: 10px 0; display: flex; align-items: center; justify-content: center; color: #666; font-size: 12px;">
                     <img id="profilePhoto" src="" alt="Ma photo" style="width: 100%; height: 100%; object-fit: cover;">
                     <span id="photoPlaceholder" style="text-align: center;">Ajoute ta photo ici</span>
                 </div>
                 
-                <h2>🎨 Mes domaines</h2>
+                <h2>Mes domaines</h2>
                 <ul>
                     <li><strong>Design</strong> - Interfaces, identité visuelle, UX/UI</li>
                     <li><strong>Dessin</strong> - Illustration digitale et traditionnelle</li>
@@ -387,11 +391,11 @@
                     <li><strong>Code</strong> - Web dev, Python, et plus encore</li>
                 </ul>
 
-                <h2>🎯 Engagements</h2>
+                <h2>Engagements</h2>
                 <p><strong>EEDF (Éclaireuses Éclaireurs de France)</strong> - Scouts laïques<br>
-                Une expérience riche en apprentissage, solidarité et projets collectifs.</p>
+                Une expérience riche en apprentissage, solidarité et projets collectifs en pleine nature.</p>
 
-                <h2>🚀 Objectif</h2>
+                <h2>Objectif</h2>
                 <p>Créer des expériences numériques mémorables en alliant créativité technique et réflexion design.</p>
             </div>
         </div>
@@ -400,7 +404,7 @@
     <div class="window" id="projets-window" style="left: 150px; top: 100px; width: 600px; height: 450px;">
         <div class="title-bar">
             <div class="title-bar-text">
-                <span>📁</span> Mes Projets
+                <span></span> Mes Projets
             </div>
             <div class="title-bar-controls">
                 <button onclick="closeWindow('projets-window')">×</button>
@@ -409,20 +413,16 @@
         <div class="window-body">
             <div class="folder-view">
                 <div class="folder-item" onclick="openWindow('design-window')">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
-                    <span>🎨 Design</span>
+                    <img src="Assets/folder2.png" alt=""> <span> Design</span>
                 </div>
                 <div class="folder-item" onclick="openWindow('dessins-window')">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
-                    <span>✏️ Dessins</span>
+                    <img src="Assets/folder2.png" alt=""> <span>Dessins</span>
                 </div>
                 <div class="folder-item" onclick="openWindow('jeuxvideo-window')">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
-                    <span>🎮 Jeux Vidéo</span>
+                    <img src="Assets/folder2.png" alt=""> <span>Jeux Vidéo</span>
                 </div>
                 <div class="folder-item" onclick="openWindow('code-window')">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFFF00' d='M2,4 L8,2 L8,14 L2,12 Z'/%3E%3Cpath fill='%23FFD700' d='M8,2 L14,4 L14,12 L8,14 Z'/%3E%3C/svg%3E" alt="">
-                    <span>💻 Code</span>
+                    <img src="Assets/folder2.png" alt=""> <span>Code</span>
                 </div>
             </div>
         </div>
@@ -431,7 +431,7 @@
     <div class="window" id="design-window" style="left: 200px; top: 120px; width: 700px; height: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
-                <span>🎨</span> Design
+                <span></span> Design
             </div>
             <div class="title-bar-controls">
                 <button onclick="closeWindow('design-window')">×</button>
@@ -442,7 +442,7 @@
             
             <!-- Projet 1 -->
             <div class="project-detail">
-                <h3>🎭 [NOM DU PROJET 1]</h3>
+                <h3> [NOM DU PROJET 1]</h3>
                 <p><strong>Description :</strong> [Décris ton projet ici - contexte, objectifs, ta démarche créative]</p>
                 <p><strong>Outils :</strong> Figma, Photoshop, Illustrator, etc.</p>
                 <p><strong>Date :</strong> [Mois Année]</p>
@@ -1044,7 +1044,7 @@
 
         // Welcome message
         setTimeout(() => {
-            const welcomeMsg = confirm('👋 Bienvenue sur mon portfolio Windows 95 !\n\nDouble-clique sur les icônes pour explorer mes projets.\n\n🎮 Astuce : Essaie le code Konami !\n\nCommencer la visite ?');
+            const welcomeMsg = true;
             if (welcomeMsg) {
                 openWindow('about-window');
             }
