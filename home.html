@@ -8,45 +8,37 @@
     <link rel="stylesheet" href="style_Home.css">
 </head>
 <body>
- <div id="loginScreen">
+    <div id="loginScreen">
         <div class="login-box">
             <div class="login-header">
                 <div class="login-icon">
                     <img src="Assets/users.png" alt="User">
                 </div>
-                <h1>Bienvenue sur Val 95</h1>
-                <p>Sélectionnez votre session pour explorer le portfolio (ça change rien dans tout les cas)</p>
+                <h1>Bienvenue sur Val 95 : <br> Votre futur artiste multimédia</h1>
+                <p>Sélectionnez votre session pour explorer le portfolio</p>
             </div>
 
             <div class="user-select">
-                <div class="user-option selected" onclick="selectUser(this)">
-                    <img src="Assets/user.png" alt="Visiteur">
+                <div class="user-option selected" onclick="selectUser(this)" data-target="win95-portfolio.html">
+                    <img src="Assets/user.png" alt="win95">
                     <div class="user-info">
-                        <strong>Visiteur</strong>
-                        <span>Accès invité - Exploration du portfolio win95</span>
+                        <strong>Win95</strong>
+                        <span> Exploration du portfolio version win95</span>
                     </div>
                 </div>
 
-                <div class="user-option" onclick="selectUser(this)">
+                <div class="user-option" onclick="selectUser(this)" data-target="portfolio-modern.html">
                     <img src="Assets/user.png" alt="Curieux">
                     <div class="user-info">
                         <strong>Moderne</strong>
-                        <span>Interface Moderne du Portfolio, plus "traditionnel"</span>
-                    </div>
-                </div>
-
-                <div class="user-option" onclick="selectUser(this)">
-                    <img src="Assets/user.png" alt="Recruteur">
-                    <div class="user-info">
-                        <strong>Recruteur</strong>
-                        <span>Accès complet - CV et projets détaillés</span>
+                        <span> Interface Moderne du Portfolio, plus "conventionel"</span>
                     </div>
                 </div>
             </div>
 
             <div class="login-buttons">
                 <button class="login-button" onclick="cancelLogin()">Annuler</button>
-                <button class="login-button primary" onclick="window.location.href='win95-portfolio.html'">Entrer ▶</button>
+                <button class="login-button primary" onclick="login()">Entrer ▶</button>
             </div>
 
             <div class="login-footer">
@@ -56,5 +48,32 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function selectUser(element) {
+            // Retire la classe 'selected' de tous les utilisateurs
+            const allOptions = document.querySelectorAll('.user-option');
+            allOptions.forEach(option => option.classList.remove('selected'));
+            
+            // Ajoute la classe 'selected' à l'utilisateur cliqué
+            element.classList.add('selected');
+        }
+
+        function login() {
+            // Trouve l'utilisateur sélectionné
+            const selectedUser = document.querySelector('.user-option.selected');
+            
+            if (selectedUser) {
+                // Récupère l'URL cible depuis l'attribut data-target
+                const targetPage = selectedUser.getAttribute('data-target');
+                window.location.href = targetPage;
+            }
+        }
+
+        function cancelLogin() {
+            // Action d'annulation (vous pouvez personnaliser)
+            alert('Connexion annulée');
+        }
+    </script>
 </body>
-    
+</html>

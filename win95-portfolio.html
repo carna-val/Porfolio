@@ -52,12 +52,17 @@
 
         <div class="icon" data-window="cv">
             <img src="Assets/CV.png" alt="CV" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
-            <span>CV.pdf</span>
+            <span>CV</span>
         </div>
 
         <div class="icon" data-window="contact">
             <img src="Assets/mail.png" alt="Mail" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Contact</span>
+        </div>
+
+        <div class="icon" data-window="aboutme">
+            <img src="Assets/note.png" alt="AboutMe" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>AboutMe</span>
         </div>
 
         <div class="icon" data-window="paint">
@@ -429,7 +434,7 @@
     <div class="window" id="asso-window" style="left: 280px; top: 200px; width: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
-                <span>🎯</span> Engagements Associatifs
+                <span></span> Engagements Associatifs
             </div>
             <div class="title-bar-controls">
                 <button onclick="closeWindow('asso-window')">×</button>
@@ -437,10 +442,10 @@
         </div>
         <div class="window-body">
             <div class="about-content">
-                <h2>🏕️ EEDF - Éclaireuses Éclaireurs de France</h2>
+                <h2>EEDF - Éclaireuses Éclaireurs de France</h2>
                 <p>Mouvement de scoutisme laïque français, les EEDF prônent la solidarité, l'engagement citoyen et l'éducation par l'action.</p>
                 
-                <h2>🎯 Mon parcours</h2>
+                <h2>Mon parcours</h2>
                 <ul>
                     <li>Organisation de camps et sorties</li>
                     <li>Animation d'ateliers créatifs</li>
@@ -526,6 +531,29 @@
                 <p style="margin-top: 15px; padding: 10px; background: #ffffcc; border: 1px solid #000;">
                     <em>Disponible pour des projets freelance et stages !</em>
                 </p>
+            </div>
+        </div>
+    </div>
+
+        <div class="window" id="aboutme-window" style="left: 320px; top: 120px; width: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> About Me
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('aboutme-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>Mes Tops 5 pour apprendre à me connaitre :</h2>
+                <p><b>Jeux Vidéo</b></p>
+                <ul>
+                    <li>Baldur’s Gate III</li>
+                    <li>Opportunités professionnelles</li>
+                    <li>Questions ou échanges</li>
+                </ul>
+                <h2>Liens</h2>
             </div>
         </div>
     </div>
@@ -1197,24 +1225,6 @@
             }
         });
 
-        // EASTER EGGS
-        let easterEggsFound = 0;
-        const totalEasterEggs = 5;
-
-        function incrementEasterEgg() {
-            if (easterEggsFound < totalEasterEggs) {
-                easterEggsFound++;
-                document.getElementById('easterEggCount').textContent = easterEggsFound;
-                
-                if (easterEggsFound === totalEasterEggs) {
-                    setTimeout(() => {
-                        alert('ACHIEVEMENT UNLOCKED!\n\nTu as trouvé tous les Easter Eggs !\n\n Champion de la nostalgie !');
-                        launchConfetti();
-                    }, 300);
-                }
-            }
-        }
-
         // MATRIX MODE AMÉLIORÉ
         let matrixActive = false;
         let matrixAnimationId;
@@ -1329,7 +1339,7 @@
             }
 
             draw();
-            alert('🎮 MATRIX MODE ACTIVÉ !\n\nBouge ta souris pour interagir avec le code...');
+            alert('MATRIX MODE ACTIVÉ !\n\nBouge ta souris pour interagir avec le code...');
             
             setTimeout(() => {
                 matrixActive = false;
@@ -1345,7 +1355,7 @@
         document.addEventListener('keypress', (e) => {
             secretCode += e.key.toLowerCase();
             if (secretCode.includes('win95')) {
-                alert('🎊 CODE SECRET ACTIVÉ!\n\n"C\'est en 1995 que tout a commencé..."\n\nWindows 95 startup sound playing in your mind 🎵');
+                alert('C\'est en 1995 que tout a commencé..."\n\nWindows 95 startup sound playing in your mind');
                 incrementEasterEgg();
                 secretCode = '';
             }
@@ -1354,314 +1364,5 @@
             }
         });
     </script>
-
-    <style>
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        /* Resize handle */
-        .window::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 16px;
-            height: 16px;
-            background: linear-gradient(135deg, transparent 50%, #808080 50%);
-            cursor: nwse-resize;
-        }
-
-        /* Window focus effect */
-        .window.active .title-bar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-        }
-
-        .window:not(.active) .title-bar {
-            background: linear-gradient(90deg, #808080, #a0a0a0);
-        }
-
-        /* Selection highlight */
-        ::selection {
-            background: #000080;
-            color: white;
-        }
-
-        /* Loading cursor animation */
-        @keyframes cursorBlink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Pixel perfect borders */
-        .project-card:active {
-            border-color: #000000 #ffffff #ffffff #000000;
-            transform: translate(1px, 1px);
-        }
-
-        /* Scrollbar arrows */
-        ::-webkit-scrollbar-button {
-            background: #c0c0c0;
-            border: 1px solid;
-            border-color: #ffffff #000000 #000000 #ffffff;
-            width: 16px;
-            height: 16px;
-        }
-
-        ::-webkit-scrollbar-button:active {
-            border-color: #000000 #ffffff #ffffff #000000;
-        }
-
-        /* Desktop hover effect */
-        .desktop::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 28px;
-            pointer-events: none;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0,0,0,0.02) 2px,
-                    rgba(0,0,0,0.02) 4px
-                );
-        }
-
-        /* Icon selection effect */
-        .icon.selected {
-            background: rgba(0, 0, 128, 0.3);
-            outline: 1px dotted white;
-        }
-
-        /* Status bar for windows */
-        .window-status {
-            height: 20px;
-            border-top: 1px solid #808080;
-            padding: 2px 4px;
-            font-size: 10px;
-            color: #000;
-            background: #c0c0c0;
-        }
-
-        /* Menu bar */
-        .menu-bar {
-            background: #c0c0c0;
-            border-bottom: 1px solid #808080;
-            padding: 2px;
-            font-size: 11px;
-            display: flex;
-            gap: 8px;
-        }
-
-        .menu-item {
-            padding: 2px 8px;
-            cursor: pointer;
-        }
-
-        .menu-item:hover {
-            background: #000080;
-            color: white;
-        }
-
-        /* Tooltip style */
-        [title] {
-            position: relative;
-        }
-
-        /* Loading animation for projects */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .project-card {
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .project-card:nth-child(1) { animation-delay: 0.1s; }
-        .project-card:nth-child(2) { animation-delay: 0.2s; }
-        .project-card:nth-child(3) { animation-delay: 0.3s; }
-        .project-card:nth-child(4) { animation-delay: 0.4s; }
-
-        /* Paint styles */
-        .tool-btn {
-            cursor: pointer;
-            border: 2px solid;
-            border-color: #ffffff #000000 #000000 #ffffff;
-        }
-        .tool-btn:active {
-            border-color: #000000 #ffffff #ffffff #000000;
-        }
-
-        /* Démineur styles */
-        .mine-cell {
-            width: 30px;
-            height: 30px;
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            user-select: none;
-        }
-        .mine-cell.revealed {
-            border: 1px solid #808080;
-            background: #bdbdbd;
-        }
-        .mine-cell.flagged::after {
-            content: "";
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            background-image: url("Assets/Flag.png");
-            background-size: contain;
-            background-position: center;
-        }
-        .mine-cell.mine::after {
-            content: "";
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            background-image: url("Assets/Mine.png");
-            background-size: contain;
-            background-position: center;;
-        }
-
-        /* Winamp styles */
-        .track-item {
-            padding: 3px;
-            cursor: pointer;
-            color: #00ff00;
-        }
-        .track-item:hover {
-            background: #1a1a1a;
-        }
-        .track-item.active {
-            background: #003300;
-            font-weight: bold;
-        }
-
-        @keyframes visualize {
-            0%, 100% { height: 20%; }
-            50% { height: 100%; }
-        }
-
-        .bar {
-            animation: visualize 0.5s ease-in-out infinite;
-        }
-        .bar:nth-child(1) { animation-delay: 0s; }
-        .bar:nth-child(2) { animation-delay: 0.1s; }
-        .bar:nth-child(3) { animation-delay: 0.2s; }
-        .bar:nth-child(4) { animation-delay: 0.3s; }
-        .bar:nth-child(5) { animation-delay: 0.4s; }
-        .bar:nth-child(6) { animation-delay: 0.3s; }
-        .bar:nth-child(7) { animation-delay: 0.2s; }
-        .bar:nth-child(8) { animation-delay: 0.1s; }
-        .bar:nth-child(9) { animation-delay: 0.2s; }
-        .bar:nth-child(10) { animation-delay: 0.1s; }
-
-        /* Project detail styles */
-        .project-detail {
-            background: #ffffff;
-            border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .project-detail h3 {
-            color: #000080;
-            font-size: 14px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #c0c0c0;
-            padding-bottom: 5px;
-        }
-
-        .project-detail p {
-            margin: 8px 0;
-            line-height: 1.5;
-        }
-
-        .screenshots {
-            display: flex;
-            gap: 10px;     
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 10px auto;
-        }
-
-        .screenshots img {
-            width: 300px;
-            height: 169px; 
-            object-fit: cover; 
-            border: 2px solid; /* Style de bordure pour l'effet Windows 95 */
-            border-color: #808080 #ffffff #ffffff #808080;
-        }
-
-        .screenshots img:hover {
-            transform: scale(1.05);
-        }
-
-        .project-detail a {
-            color: #0000FF;
-            text-decoration: underline;
-        }
-
-        .project-detail a:visited {
-            color: #800080;
-        }
-
-        /* Confetti animation */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #f00;
-            position: absolute;
-            animation: confetti-fall 3s linear forwards;
-            pointer-events: none;
-            z-index: 99999;
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(0) rotateZ(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotateZ(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* Matrix Mode */
-        #matrixCanvas {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 5000;
-            pointer-events: none;
-        }
-
-        #matrixCanvas.active {
-            display: block;
-        }
-    </style>
 </body>
 </html>
