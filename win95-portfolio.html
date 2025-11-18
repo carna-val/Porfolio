@@ -239,6 +239,21 @@
         <div class="window-body" style="overflow-y: auto;">
             <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Portfolio Artistique</h2>
             
+            <div class="project-detail">
+                <h3>Une évolution constente</h3>
+                <p><strong>Description :</strong> Pour mesurer mes progrès, chaque année depuis 2021, vers novembre/décembre, je redessine la même illustration. C’est devenu mon petit rituel de level-up en dessin !</p>
+                <p><strong>Technique :</strong> Digital</p>
+                <p><strong>Logiciels :</strong> Ibis Paint</p>
+                <p><strong>Date :</strong> Novembre 2025 (dernière update)</p>
+                <div class="evolution">
+                    <img src="Images/oldArt21.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/oldArt22.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/oldArt23.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/oldArt24.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/Art25.png" alt="Illustration 2" onclick="openLightbox(this)">
+                </div>
+            </div>
+            
             <!-- Dessin 1 -->
             <div class="project-detail">
                 <h3>Photo de profil</h3>
@@ -1200,7 +1215,7 @@
         // On change le paramètre pour recevoir l'élément (this)
         function openLightbox(element) {
         // 1. On cherche le conteneur parent le plus proche (soit .screenshots, soit .draw)
-        const container = element.closest('.screenshots, .draw');
+        const container = element.closest('.screenshots, .draw, .evolution');
 
             if (container) {
                 // 2. On récupère uniquement les images DE CE conteneur

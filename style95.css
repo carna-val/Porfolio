@@ -532,10 +532,26 @@
             margin: 10px auto;
         }
 
+        .evolution {
+            display: flex;
+            gap: 10px;     
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px auto;
+        }
+
         .screenshots img {
             width: 300px;
             height: 169px; 
             object-fit: cover; 
+            border: 2px solid; /* Style de bordure pour l'effet Windows 95 */
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+
+        .evolution img {
+            width: auto;
+            height: auto; 
+            max-height: 169px; 
             border: 2px solid; /* Style de bordure pour l'effet Windows 95 */
             border-color: #808080 #ffffff #ffffff #808080;
         }
@@ -555,6 +571,10 @@
         }
 
         .draw img:hover {
+            transform: scale(1.05);
+        }
+
+        .evolution img:hover {
             transform: scale(1.05);
         }
 
