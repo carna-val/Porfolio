@@ -3,835 +3,1428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Val Lombart-Bertolus | Creative Dev</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@300;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root {
-            --bg-deep: #0b0d17;
-            --primary: #00f3ff; /* Cyan futuriste */
-            --secondary: #bc13fe; /* Violet néon */
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text: #e0e6ed;
-            --cursor-size: 20px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none; /* On cache le curseur par défaut pour mettre le nôtre */
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* --- CURSEUR PERSONNALISÉ --- */
-        .cursor-dot,
-        .cursor-outline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary);
-        }
-
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--primary);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-
-        /* Effet quand on survole un lien */
-        body.hovering .cursor-outline {
-            width: 70px;
-            height: 70px;
-            background-color: rgba(0, 243, 255, 0.1);
-            border-color: transparent;
-        }
-
-        /* --- CANVAS FOND --- */
-        #space-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at bottom, #131629 0%, #0b0d17 100%);
-        }
-
-        /* --- UTILS --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            line-height: 1.1;
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        a { text-decoration: none; color: inherit; cursor: none; }
-
-        /* --- NAV --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 25px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            background: linear-gradient(to bottom, rgba(11,13,23,0.9), transparent);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
-        .hub-btn {
-            padding: 10px 30px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.05);
-            border-radius: 50px;
-            color: var(--text);
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-        }
-
-        .hub-btn:hover {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 0 20px var(--primary);
-            transform: scale(1.05);
-        }
-
-        /* --- HERO --- */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 800px;
-        }
-
-        .hero-subtitle {
-            color: var(--primary);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            background: linear-gradient(to right, #fff, #8892b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #8892b0;
-            max-width: 500px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-
-        /* --- 3D TILT CARDS (Pour About, Top5 et Projets) --- */
-        .tilt-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-            transition: transform 0.1s; /* Très rapide pour suivre la souris */
-        }
-        
-        .tilt-inner {
-            transform: translateZ(20px); /* Effet de profondeur du texte */
-        }
-
-        /* --- ABOUT SECTION --- */
-        .section-padding {
-            padding: 150px 0;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .profile-img-container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 1/1;
-        }
-
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            filter: grayscale(20%);
-            transition: 0.5s;
-        }
-        
-        .profile-img-container:hover .profile-img {
-            filter: grayscale(0%);
-            box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
-        }
-
-        /* --- TOP 5 SECTION (NEW) --- */
-        .top5-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .top5-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-            border-top: 1px solid var(--glass-border);
-            padding: 30px;
-            border-radius: 15px;
-        }
-
-        .top5-card h3 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .top5-list li {
-            list-style: none;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            justify-content: space-between;
-            color: var(--text);
-            font-size: 0.95rem;
-        }
-
-        .top5-list li:last-child { border-bottom: none; }
-        .top5-list li span { opacity: 0.7; }
-
-        /* --- PROJECTS --- */
-        .filter-container {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--text);
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-family: 'Space Grotesk';
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--text);
-            color: var(--bg-deep);
-            border-color: var(--text);
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 40px;
-        }
-
-        .project-card {
-            height: 450px;
-            position: relative;
-            overflow: hidden;
-            border-radius: 20px;
-            background: #000;
-        }
-
-        .project-bg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-            transition: transform 0.6s;
-        }
-
-        .project-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 30px;
-            background: linear-gradient(to top, #000, transparent);
-            transform: translateY(20px);
-            transition: 0.4s;
-        }
-
-        .project-card:hover .project-bg {
-            transform: scale(1.1);
-            opacity: 1;
-        }
-
-        .project-card:hover .project-info {
-            transform: translateY(0);
-        }
-
-        .project-tag {
-            font-size: 0.8rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        /* --- FOOTER REDESIGN --- */
-        footer {
-            margin-top: 150px;
-            padding: 80px 0 40px;
-            border-top: 1px solid var(--glass-border);
-            background: linear-gradient(to bottom, transparent, #000);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 60px;
-        }
-
-        .footer-cta h2 {
-            font-family: 'Space Grotesk';
-            font-size: 3.5rem;
-            line-height: 1;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #8892b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .footer-col h4 {
-            color: var(--text);
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        .footer-link {
-            display: block;
-            color: #8892b0;
-            margin-bottom: 10px;
-            transition: 0.3s;
-            width: fit-content;
-        }
-        .footer-link:hover { color: var(--primary); transform: translateX(5px); }
-
-        .footer-bottom {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #555;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; }
-            .about-section, .footer-content { grid-template-columns: 1fr; }
-            #cursor, #cursor-follower { display: none; } /* Pas de curseur mobile */
-            * { cursor: auto; }
-            .card-info { transform: translateY(0); position: relative; background: var(--bg-deep); } /* Toujours visible sur mobile */
-        }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .about-grid { grid-template-columns: 1fr; }
-            .cursor-dot, .cursor-outline { display: none; } /* Pas de curseur custom sur mobile */
-            * { cursor: auto; }
-        }
-
-               /* --- BANNIÈRE LOGICIELS (SCROLL INFINI) --- */
-        .skills-marquee {
-            background: var(--glass);
-            border-top: 1px solid var(--glass-border);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 20px 0;
-            overflow: hidden;
-            position: relative;
-            white-space: nowrap;
-            margin: 50px 0;
-            backdrop-filter: blur(5px);
-        }
-
-        .marquee-content {
-            display: inline-block;
-            animation: scroll 20s linear infinite;
-        }
-
-        .skill-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0 40px;
-            font-family: 'Space Grotesk';
-            font-size: 1.2rem;
-            color: #8892b0;
-        }
-        .skill-item i { color: var(--primary); }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Déplace de la moitié (le duplicate) */
-        }
-
-    </style>
+    <title>Portfolio - Windows 95</title>
+    <link rel="stylesheet" href="font.css">
+    <link rel="stylesheet" href="style95.css">
+    
 </head>
 <body>
+    <div class="desktop" id="desktop">
+        <div class="icon" data-window="about">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23008080' width='32' height='32'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='20' fill='white' text-anchor='middle'%3Ei%3C/text%3E%3C/svg%3E" alt="Info" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>À propos</span>
+        </div>
+        
+        <div class="icon" data-window="projets">
+            <img src="Assets/folder.png" alt="Folder" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Mes Projets</span>
+        </div>
 
-    <div class="cursor-dot" data-cursor-dot></div>
-    <div class="cursor-outline" data-cursor-outline></div>
+        <div class="icon" data-window="design">
+            <img src="Assets/Design.png" alt="Design" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Design</span>
+        </div>
 
-    <canvas id="space-canvas"></canvas>
+        <div class="icon" data-window="dessins">
+            <img src="Assets/Dessin.png" alt="Dessin" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Dessins</span>
+        </div>
 
-    <nav>
-        <div class="logo">VAL<span style="color:var(--primary)">.</span></div>
-        <a href="home.html" class="hub-btn">
-            <i class="fa-solid fa-power-off"></i> Retour HUB
-        </a>
-    </nav>
+        <div class="icon" data-window="jeuxvideo">
+            <img src="Assets/Game.png" alt="Game" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Jeux Vidéo</span>
+        </div>
 
-    <main>
-        <section class="hero container">
-            <div class="hero-content reveal active">
-                <span class="hero-subtitle">PORTFOLIO 2025</span>
-                <h1>ARTISTE<br>MULTIMÉDIA &<br>DÉVELOPPEUR.</h1>
-                <p>Bienvenue dans mon univers. Je suis Val Lombart-Bertolus, étudiant MMI passionné par la création visuelle, le code et tout ce qui touche aux étoiles.</p>
-                <div style="display: flex; gap: 20px;">
-                    <a href="#projets" class="hub-btn" style="background: var(--text); color: var(--bg-deep);">Voir mes travaux</a>
-                    <a href="#about" class="hub-btn">En savoir plus</a>
-                </div>
+        <div class="icon" data-window="code">
+            <img src="Assets/code.png" alt="Code" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Code</span>
+        </div>
+
+        <div class="icon" data-window="sites">
+            <img src="Assets/Site_Web.png" alt="Sites Web">
+            <span>Sites Web</span>
+        </div>
+
+        <div class="icon" data-window="asso">
+            <img src="Assets/engagement.png" alt="Arbre" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Engagements</span>
+        </div>
+
+        <div class="icon" data-window="cv">
+            <img src="Assets/CV.png" alt="CV" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>CV</span>
+        </div>
+
+        <div class="icon" data-window="contact">
+            <img src="Assets/mail.png" alt="Mail" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Contact</span>
+        </div>
+
+        <div class="icon" data-window="top5">
+            <img src="Assets/note.png" alt="Top5" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>TOP_5.TXT</span>
+        </div>
+
+        <div class="icon" data-window="paint">
+            <img src="Assets/Paint.png" alt="Paint" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Paint</span>
+        </div>
+
+        <div class="icon" data-window="demineur">
+            <img src="Assets/Mine.png" alt="Démineur" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Démineur</span>
+        </div>
+
+        <div class="icon" data-window="winamp">
+            <img src="Assets/winamp.png" alt="Winamp" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Winamp</span>
+        </div>
+
+        <div class="icon">
+            <img src="Assets/recycle_bin.png" alt="Corbeille">
+            <span>Corbeille</span>
+        </div>
+    </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="window" id="about-window" style="left: 100px; top: 80px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> À propos
             </div>
-        </section>
-
-        <section id="about" class="section-padding container">
-            <div class="about-grid">
-                <div class="tilt-card" data-tilt>
-                    <div class="profile-img-container tilt-inner">
-                        <img src="Images/Val.png" alt="Val Portrait" class="profile-img">
-                    </div>
-                </div>
-                <div class="reveal">
-                    <h2 style="font-size: 3rem; margin-bottom: 20px;">À PROPOS<span style="color:var(--secondary)">.</span></h2>
-                    <p style="color: #8892b0; margin-bottom: 20px; font-size: 1.1rem;">
-                        J'aime explorer. Que ce soit dans un donjon de jeu vidéo, dans les couches de code d'un site web, ou sur une toile numérique.
-                    </p>
-                    <p style="color: #8892b0; margin-bottom: 30px;">
-                        Actuellement en 2ème année de BUT MMI, je cherche à fusionner le design graphique et le développement technique. Mon but ? Créer des expériences qui marquent, un peu comme ce portfolio (je l'espère !).
-                    </p>
-                    <a href="CV.pdf" target="_blank" style="color: var(--primary); border-bottom: 1px solid var(--primary);">Télécharger mon CV</a>
-                </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('about-window')">×</button>
             </div>
-
-            <div class="reveal" style="margin-top: 100px;">
-                <h2 style="text-align: center;">DATA_BASE_PERSO<span style="color:var(--primary)">.txt</span></h2>
-                <p style="text-align: center; color: #8892b0;">Ce qui m'inspire au quotidien</p>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>Salut ! Moi c'est Val !</h2>
+                <p> Bienvenue sur mon Portfolio inspiré du très célèbre Windows 95.Il suffit de double-clique sur les icons pour explorer mes projets.<br><b>Pssst...Si vous voulez une intérface plus conventionelle, n'hesitez pas à appuyer sur le bouton "Démarrer" en bas à gauche de votre écran !</b></p>
+                <p><br></p>
+                <p>Depuis toujours, je collectionne les passions comme d’autres collectionnent les mugs : dessin, design, informatique… chacune m’a poussée à plonger tête la première.</p>
+                <p>Entre créativité et technologie, j’ai trouvé mon équilibre en BUT Métiers du Multimédia et de l’Internet et aujourd'hui en 2ème année, mon objectif est clair : Mettre en lumière ma polyvalence pour créer l’avenir à mon image ! </p>
+                <p>En bref, je suis votre futur artiste multimédia et développeur créatif.</p>
+                <div style="width: 150px; height: 150px; background: #e0e0e0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; margin: 10px auto; display: flex; justify-content: center; color: #666; font-size: 12px;">
+                <img id="profilePhoto" src="Images/Val.png" alt="Ma photo" style="width: 100%; height: auto; object-fit: cover;">
+                </div>
                 
-                <div class="top5-grid">
-                    <div class="tilt-card top5-card" data-tilt>
-                        <div class="tilt-inner">
-                            <h3><i class="fa-solid fa-gamepad"></i> Jeux Vidéo</h3>
-                            <ul class="top5-list">
-                                <li>Baldur’s Gate III <span>RPG</span></li>
-                                <li>Fear & Hunger <span>Horror</span></li>
-                                <li>Cult of the Lamb <span>Rogue</span></li>
-                                <li>Mouthwashing <span>Indie</span></li>
-                                <li>Zelda Twilight Princess <span>Legend</span></li>
-                            </ul>
-                        </div>
-                    </div>
+                <h2>Mes domaines</h2>
+                <ul>
+                    <li><strong>Design</strong> - Interfaces, identité visuelle, UX/UI</li>
+                    <li><strong>Dessin</strong> - Illustration digitale et traditionnelle</li>
+                    <li><strong>Jeux Vidéo</strong> - Game design et développement</li>
+                    <li><strong>Code</strong> - Web dev, Python, et plus encore</li>
+                </ul>
 
-                    <div class="tilt-card top5-card" data-tilt>
-                        <div class="tilt-inner">
-                            <h3><i class="fa-solid fa-tv"></i> Séries</h3>
-                            <ul class="top5-list">
-                                <li>Good Omens <span>Fantasy</span></li>
-                                <li>Sherlock (2011) <span>Drama</span></li>
-                                <li>House MD <span>Medical</span></li>
-                                <li>Fleabag <span>Comedy</span></li>
-                                <li>Attack on Titan <span>Anime</span></li>
-                            </ul>
-                        </div>
-                    </div>
+                <h2>Engagements</h2>
+                <p><strong>EEDF (Éclaireuses Éclaireurs de France)</strong> - Scouts laïques<br>
+                Une expérience riche en apprentissage, solidarité et projets collectifs en pleine nature.</p>
+            </div>
+        </div>
+    </div>
 
-                    <div class="tilt-card top5-card" data-tilt>
-                        <div class="tilt-inner">
-                            <h3><i class="fa-solid fa-music"></i> Musique</h3>
-                            <ul class="top5-list">
-                                <li>Oh Ana <span>Mother Mother</span></li>
-                                <li>Christmas Kids <span>Roar</span></li>
-                                <li>Good Old Fashioned... <span>Queen</span></li>
-                                <li>Kid & Leveret <span>Yaelokre</span></li>
-                                <li>Jigsaw Falling... <span>Radiohead</span></li>
-                            </ul>
-                        </div>
-                    </div>
+    <div class="window" id="projets-window" style="left: 150px; top: 100px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Mes Projets
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('projets-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="folder-view">
+                <div class="folder-item" onclick="openWindow('design-window')">
+                    <img src="Assets/folder2.png" alt=""> <span> Design</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('dessins-window')">
+                    <img src="Assets/folder2.png" alt=""> <span>Dessins</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('jeuxvideo-window')">
+                    <img src="Assets/folder2.png" alt=""> <span>Jeux Vidéo</span>
+                </div>
+                <div class="folder-item" onclick="openWindow('code-window')">
+                    <img src="Assets/folder2.png" alt=""> <span>Code</span>
                 </div>
             </div>
-        </section>
-
-        </main> <div class="skills-marquee hover-target">
-        <div class="marquee-content">
-            <span class="skill-item"><i class="fa-brands fa-unity"></i> Unity</span>
-            <span class="skill-item"><i class="fa-solid fa-code"></i> C#</span>
-            <span class="skill-item"><i class="fa-brands fa-js"></i> JavaScript</span>
-            <span class="skill-item"><i class="fa-brands fa-python"></i> Python</span>
-            <span class="skill-item"><i class="fa-brands fa-figma"></i> Figma</span>
-            <span class="skill-item"><i class="fa-solid fa-paintbrush"></i> Clip Studio</span>
-            <span class="skill-item"><i class="fa-solid fa-pen-nib"></i> Illustrator</span>
-            <span class="skill-item"><i class="fa-brands fa-react"></i> React</span>
-            <span class="skill-item"><i class="fa-brands fa-unity"></i> Unity</span>
-            <span class="skill-item"><i class="fa-solid fa-code"></i> C#</span>
-            <span class="skill-item"><i class="fa-brands fa-js"></i> JavaScript</span>
-            <span class="skill-item"><i class="fa-brands fa-python"></i> Python</span>
-            <span class="skill-item"><i class="fa-brands fa-figma"></i> Figma</span>
-            <span class="skill-item"><i class="fa-solid fa-paintbrush"></i> Clip Studio</span>
-            <span class="skill-item"><i class="fa-solid fa-pen-nib"></i> Illustrator</span>
-            <span class="skill-item"><i class="fa-brands fa-react"></i> React</span>
         </div>
-        </div>
+    </div>
 
-        <section id="projets" class="section-padding container">
-            <h2 style="font-size: 3rem; margin-bottom: 40px;" class="reveal">PROJETS SÉLECTIONNÉS<span style="color:var(--secondary)">.</span></h2>
+    <div class="window" id="design-window" style="left: 200px; top: 120px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Design
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('design-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets de Design</h2>
             
-            <div class="filter-container reveal">
-                <button class="filter-btn active" onclick="filter('all')">Tout</button>
-                <button class="filter-btn" onclick="filter('dessin')">Dessins</button>
-                <button class="filter-btn" onclick="filter('game')">Jeux Vidéo</button>
-                <button class="filter-btn" onclick="filter('design')">Design</button>
-                <button class="filter-btn" onclick="filter('code')">Code</button>
+            <!-- Projet 1 -->
+            <div class="project-detail">
+                <h3>MOTION DESIGN</h3>
+                <p><strong>Description :</strong> En équipe, nous avons relevé le défi de créer un motion design pédagogique complet en une semaine pour illustrer la théorie des formats de la visibilité de Cardon.</p>
+                    <p>Ce sprint intensif a permis de : 
+                        <ul><li>Maîtriser rapidement After Effects et le design graphique pour l'animation.</li>
+                            <li>Concevoir et animer une vidéo fluide, transformant un concept théorique en un contenu visuel clair et engageant.</li>
+                            <li>Démontrer une forte capacité de travail d'équipe sous contrainte de temps.</li> </ul> <br>
+                    Tout les assets utilisé ont d'ailleurs été crées par mes soins via Illustrator.</p>
+                <p><strong>Outils :</strong> Figma, Illustrator, AfterEffect</p>
+                <p><strong>Date :</strong> Novembre 2024</p>
+                <div class="vidéo" style="width: 300px; height: 169px; background: #e0e0e0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; margin: 10px auto; display: flex; justify-content: center; align-items: center; color: #666; font-size: 12px;">
+                    <iframe 
+                        width="290" 
+                        height="159" 
+                        src="https://www.youtube.com/embed/2cuhMEu4OaY" 
+                        title="Motion Design - Formats de la Visibilité"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p><strong>🔗 Lien :</strong> <a href="#https://youtu.be/2cuhMEu4OaY">[Lien vers la vidéo]</a></p>
             </div>
 
-            <div class="project-grid">
-                <div class="project-card tilt-card reveal" data-category="dessin" data-tilt>
-                    <img src="Images/Dessin4.png" class="project-bg" alt="Dessin">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">Illustration</span>
-                        <h3>Dans les étoiles</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Auto-portrait digital painting.</p>
-                        <br>
-                        <a href="#" onclick="openLb('Images/Dessin4.png'); return false;" style="text-decoration: underline;">Voir le projet</a>
-                    </div>
+            <!-- Projet 2 -->
+            <div class="project-detail">
+                <h3>DISCU-TABLE</h3>
+                <p><strong>Description :</strong> Discu-table est une application web et initiative étudiante conçue pour le CROUS, visant à réduire le gaspillage alimentaire en collectant la note des restes d'assiette des étudiants. <br> 
+                    Mon rôle a été de garantir une adoption maximale par un Design d'Expérience (UX/UI) Mobile-First, offrant une notation ultra-rapide et intuitive. <br>
+                    J'ai également développé toute la stratégie et le Design de Communication (affiches, flyers). L'ensemble de la Direction Artistique (DA) a été rigoureusement conçue pour s'intégrer parfaitement à la Charte Graphique existante du CROUS, assurant un message clair et institutionnel. <br>
+                    Résultat : Un outil digital simple pour l'étudiant, fournissant des données précieuses aux équipes de cuisine pour un ajustement quotidien des quantités. <br>
+                    Il n'est malheuresement plus en ligne aujourd'hui.</p>
+                <p><strong>Outils :</strong> Figma, Photoshop</p>
+                <p><strong>Date :</strong> Avril 2025</p>
+                <div class="screenshots">
+                    <img src="Images/Discutable1.png" alt="Affiche pour la présentation du projet" onclick="openLightbox(this)">
+                    <img src="Images/Discutable2.png" alt="Brochure pliable pour insité les étudiants et consommateurs du Crous à utiliser l'appli" onclick="openLightbox(this)">
                 </div>
-
-                <div class="project-card tilt-card reveal" data-category="game" data-tilt>
-                    <img src="Assets/Game.png" class="project-bg" alt="Game">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">Unity / C#</span>
-                        <h3>Projet Unity</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Développement et Game Design d'un platformer.</p>
-                        <br>
-                        <a href="#" style="text-decoration: underline;">Jouer sur Itch.io</a>
-                    </div>
-                </div>
-
-                <div class="project-card tilt-card reveal" data-category="design" data-tilt>
-                    <img src="Images/Discutable1.png" class="project-bg" alt="Design">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">UI/UX Design</span>
-                        <h3>Discu-table CROUS</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Appli anti-gaspillage alimentaire.</p>
-                        <br>
-                        <a href="#" onclick="openLb('Images/Discutable2.png'); return false;" style="text-decoration: underline;">Voir Brochure</a>
-                    </div>
-                </div>
-
-                <div class="project-card tilt-card reveal" data-category="dessin" data-tilt>
-                    <img src="Images/Dessin1.png" class="project-bg" alt="Dessin">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">Character Design</span>
-                        <h3>OC Concept</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Recherche graphique pour personnage original.</p>
-                        <br>
-                        <a href="#" onclick="openLb('Images/Dessin1.png'); return false;" style="text-decoration: underline;">Voir le projet</a>
-                    </div>
-                </div>
-
-                 <div class="project-card tilt-card reveal" data-category="code" data-tilt>
-                    <img src="Assets/code.png" class="project-bg" alt="Code">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">Développement Web</span>
-                        <h3>Portfolio V1</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">L'ancienne version Windows 95.</p>
-                        <br>
-                        <a href="https://github.com/carna-val" target="_blank" style="text-decoration: underline;">Voir le repo</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-<footer>
-        <div class="container">
-            <div class="footer-content">
-                
-                <div class="footer-cta">
-                    <h2>CRÉONS<br>ENSEMBLE.</h2>
-                    <p style="color:#8892b0; max-width: 300px;">Disponible pour des projets de design, développement ou illustration.</p>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Réseaux</h4>
-                    <a href="https://www.linkedin.com/in/val-lombart-bertolus-4b6123332/" class="footer-link hover-target">LinkedIn</a>
-                    <a href="https://www.instagram.com/carna_.val/" class="footer-link hover-target">Instagram</a>
-                    <a href="https://github.com/carna-val" class="footer-link hover-target">GitHub</a>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <a href="mailto:val.lombart--bertolus@mmibordeaux.com" class="footer-link hover-target">Me contacter</a>
-                    <a href="CV.pdf" class="footer-link hover-target">Télécharger CV</a>
-                </div>
+                <p><strong>🔗 Lien :</strong> <a href="https://github.com/ImSakushi/discu-table">[Lien du Github]</a></p>
             </div>
 
-            <div class="footer-bottom">
-                <p>© 2025 Val Lombart-Bertolus. Fait avec des étoiles et du code.</p>
+            <!-- Projet 3 -->
+            <div class="project-detail">
+                <h3>CHAMPIGNONS SAUVAGES</h3>
+                <p><strong>Description :</strong> À l'issue de ma première année de MMI, j'ai effectué un stage d'immersion chez Champignons Sauvages. <br>
+                    Ma mission principale était de mener la refonte complète de l'identité visuelle de l'entreprise. Ce projet m'a permis de :
+                    <ul><li>Direction Artistique : Participer activement à la création de la nouvelle charte graphique.</li>
+                    <li>Création Web : Concevoir et réaliser le nouveau site internet, de la wireframe au déploiement</li>
+                    <li>Stratégie Digitale : Optimiser l'engagement et la visibilité du compte Instagram.</li></ul><br>
+                    Ce stage a été l'occasion d'appliquer mes acquis MMI à un projet réel, au croisement de la nature, de la pédagogie et du design.
+                <p><strong>Outils :</strong> Figma, Illustrator</p>
+                <p><strong>Date :</strong> Juin 2025 </p>
+                <div class="screenshots">
+                    <img src="Images/ChampiSauv1.png" alt="Création du logo de l'entreprise" onclick="openLightbox(this)">
+                    <img src="Images/ChampiSauv2.png" alt="Maquettage du site" onclick="openLightbox(this)">
+                    <img src="Images/ChampiSauv3.png" alt="Maquettage du site" onclick="openLightbox(this)">
+                    <img src="Images/ChampiSauv4.png" alt="Maquettage du site" onclick="openLightbox(this)">
+                </div>
             </div>
         </div>
-    </footer>
-    </main>
+    </div>
 
-    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
-        <img id="lb-img" src="">
+    <div class="window" id="dessins-window" style="left: 220px; top: 140px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Dessins
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('dessins-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Portfolio Artistique</h2>
+            
+            <div class="project-detail">
+                <h3>Une évolution constente</h3>
+                <p><strong>Description :</strong> Pour mesurer mes progrès, chaque année depuis 2021, vers novembre/décembre, je redessine la même illustration. C’est devenu mon petit rituel de level-up en dessin !</p>
+                <p><strong>Technique :</strong> Digital</p>
+                <p><strong>Logiciels :</strong> Ibis Paint</p>
+                <p><strong>Date :</strong> Novembre 2025 (dernière update)</p>
+                <div class="evolution">
+                    <img src="Images/oldArt21.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/oldArt22.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/oldArt23.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/oldArt24.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/Art25.png" alt="Illustration 2" onclick="openLightbox(this)">
+                </div>
+            </div>
+            
+            <!-- Dessin 1 -->
+            <div class="project-detail">
+                <h3>Photo de profil</h3>
+                <p><strong>Description :</strong> J'aime beaucoup les étoiles alors quand j'ai dû crée une photo de profil pour me représenter sur les réseaux sociaux, j'ai tout de suite su ce que je voulais faire ! Donc voilà, un petit auto-portrait de moi (littéralement) dans les étoiles !</p>
+                <p><strong>Technique :</strong> Digital</p>
+                <p><strong>Logiciels :</strong> Ibis Paint</p>
+                <p><strong>Date :</strong> Mi-2024</p>
+                <div class="draw">
+                    <img 
+                        src="Images/Dessin4.png" 
+                        alt="Illustration 1" 
+                        onclick="openLightbox(this)">
+                </div>
+            </div>
+
+            <!-- Dessin 2 -->
+            <div class="project-detail">
+                <h3>OC</h3>
+                <p><strong>Description :</strong> OC, c'est "Original Character", un personnage que j'ai crée de toute pièce et qui m'appartient !</p>
+                <p><strong>Technique :</strong> Digital</p>
+                <p><strong>Logiciels :</strong> Clip Studio Paint</p>
+                <p><strong>Date :</strong> Août 2025</p>
+                <div class="draw">
+                    <img src="Images/Dessin1.png" alt="Illustration 2" onclick="openLightbox(this)">
+                </div>
+            </div>
+
+            <!-- Dessin 3 -->
+            <div class="project-detail">
+                <h3>Commission</h3>
+                <p><strong>Description :</strong> Une commission dans le domaine artistique, c'est quand une personne vient voir un.e artiste pour lui demander de dessiner quelque chose en échange d'argent. En l'occurence, une personne est venue me voir pour créer et dessiner un design de son personnage dans l'univers de Donjon & Dragon.</p>
+                <p><strong>Logiciels :</strong> Clip Studio Paint</p>
+                <p><strong>Date :</strong> Novembre 2025</p>
+                <div class="draw">
+                    <img src="Images/Dessin2.png" alt="Illustration 3" onclick="openLightbox(this)">
+                </div>
+            </div>
+            <div class="project-detail">
+                <h3>Intrigué.e ?</h3>
+            <strong>Mon Instagram :</strong> <a href= https://www.instagram.com/carna_.val/> carna_.val</a><br>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="jeuxvideo-window" style="left: 240px; top: 160px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>🎮</span> Jeux Vidéo
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('jeuxvideo-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets Game Dev</h2>
+            
+            <!-- Jeu 1 -->
+            <div class="project-detail">
+                <h3>🕹️ [NOM DU JEU 1]</h3>
+                <p><strong>Description :</strong> [Décris le concept, les mécaniques de gameplay, l'univers]</p>
+                <p><strong>Genre :</strong> Platformer / Puzzle / Adventure / etc.</p>
+                <p><strong>Engine :</strong> Unity / Unreal / Game Maker / Godot / etc.</p>
+                <p><strong>Rôle :</strong> Game Designer / Programmer / Artist</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/8B008B/FFFFFF?text=Gameplay+Screenshot+1" alt="Gameplay 1" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/350x200/8B008B/FFFFFF?text=Gameplay+Screenshot+2" alt="Gameplay 2" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 Jouer :</strong> <a href="#">[itch.io / Steam / GitHub]</a></p>
+            </div>
+
+            <!-- Jeu 2 -->
+            <div class="project-detail">
+                <h3>🎯 [NOM DU JEU 2 - Game Jam]</h3>
+                <p><strong>Description :</strong> [Parle du contexte de la jam, du thème, de ta création]</p>
+                <p><strong>Game Jam :</strong> [Nom de la jam]</p>
+                <p><strong>Durée :</strong> 48h / 72h</p>
+                <p><strong>Engine :</strong> [Ton moteur]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/FF4500/FFFFFF?text=Game+Jam+Screenshot" alt="Game Jam" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 Jouer :</strong> <a href="#">[Lien itch.io]</a></p>
+            </div>
+
+            <!-- Jeu 3 -->
+            <div class="project-detail">
+                <h3>🎨 [PROJET ASSETS / GAME DESIGN]</h3>
+                <p><strong>Description :</strong> [Parle de ta contribution - sprites, level design, etc.]</p>
+                <p><strong>Type :</strong> Pixel Art / 3D / Concept Art</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/32CD32/FFFFFF?text=Asset+Pack" alt="Assets" onclick="openLightbox(this)">
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Sites Web Window -->
+    <div class="window" id="sites-window" style="left: 180px; top: 100px; width: 600px; height: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">🌐 Sites Web</div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('sites-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px;">Mes Sites Web</h2>
+            
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE 1]</h3>
+                <p><strong>Description :</strong> [Décris ton site web]</p>
+                <p><strong>Technologies :</strong> HTML, CSS, JavaScript</p>
+                <p><strong>Date :</strong> [Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/4682B4/FFFFFF?text=Site+1" alt="Site 1" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
+            </div>
+
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE 2]</h3>
+                <p><strong>Description :</strong> [Décris ton site web]</p>
+                <p><strong>Technologies :</strong> React, Node.js</p>
+                <p><strong>Date :</strong> [Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/300x200/9370DB/FFFFFF?text=Site+2" alt="Site 2" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="code-window" style="left: 260px; top: 180px; width: 700px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>💻</span> Code
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('code-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="overflow-y: auto;">
+            <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets de Développement</h2>
+            
+            <!-- Projet Code 1 -->
+            <div class="project-detail">
+                <h3>🌐 [NOM DU SITE WEB]</h3>
+                <p><strong>Description :</strong> [Décris le site - fonctionnalités, objectifs, public cible]</p>
+                <p><strong>Technologies :</strong> HTML5, CSS3, JavaScript, React, etc.</p>
+                <p><strong>Fonctionnalités :</strong> [Liste les features principales]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Homepage" alt="Homepage" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Page+intérieure" alt="Page 2" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 Liens :</strong> <a href="#">[Site live]</a> | <a href="#">[GitHub]</a></p>
+            </div>
+
+            <!-- Projet Code 2 -->
+            <div class="project-detail">
+                <h3>🐍 [PROJET PYTHON]</h3>
+                <p><strong>Description :</strong> [Script, automatisation, data viz, bot, etc.]</p>
+                <p><strong>Technologies :</strong> Python, bibliothèques utilisées</p>
+                <p><strong>Utilité :</strong> [À quoi sert ce projet]</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/228B22/FFFFFF?text=Code+Preview" alt="Code" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 GitHub :</strong> <a href="#">[Lien repo]</a></p>
+            </div>
+
+            <!-- Projet Code 3 -->
+            <div class="project-detail">
+                <h3>⚛️ [APPLICATION REACT]</h3>
+                <p><strong>Description :</strong> [Ton app interactive]</p>
+                <p><strong>Technologies :</strong> React, APIs, etc.</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/9370DB/FFFFFF?text=App+Screenshot" alt="App" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 Démo :</strong> <a href="#">[Lien démo]</a></p>
+            </div>
+
+            <!-- Projet Code 4 -->
+            <div class="project-detail">
+                <h3>🎨 [CREATIVE CODING]</h3>
+                <p><strong>Description :</strong> [Expérimentation artistique avec du code]</p>
+                <p><strong>Technologies :</strong> p5.js / Three.js / Canvas</p>
+                <p><strong>Date :</strong> [Mois Année]</p>
+                <div class="screenshots">
+                    <img src="https://via.placeholder.com/350x200/FF1493/FFFFFF?text=Creative+Code" alt="Creative" onclick="openLightbox(this)">
+                </div>
+                <p><strong>🔗 Voir :</strong> <a href="#">[CodePen / Observable]</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="asso-window" style="left: 280px; top: 200px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Engagements Associatifs
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('asso-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>EEDF - Éclaireuses Éclaireurs de France</h2>
+                <p>Mouvement de scoutisme laïque français, les EEDF prônent la solidarité, l'engagement citoyen et l'éducation par l'action.</p>
+                
+                <h2>Mon parcours</h2>
+                <ul>
+                    <li>Organisation de camps et sorties</li>
+                    <li>Animation d'ateliers créatifs</li>
+                    <li>Projets solidaires et environnementaux</li>
+                    <li>Développement de compétences en leadership</li>
+                </ul>
+
+                <h2>Apports</h2>
+                <p>Cette expérience m'a permis de développer mon autonomie, ma créativité et mon sens du collectif - des valeurs que j'applique dans tous mes projets.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="cv-window" style="left: 300px; top: 100px; width: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> CV.pdf
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('cv-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>Curriculum Vitae</h2>
+                
+                <h2>Formation et Diplome</h2>
+                <p><strong>BUT MMI - 2ème année (2025-2027)</strong><br>
+                Métiers du Multimédia et de l'Internet</p>
+                <p><strong>BAC général spécialité Maths/NSI (2021-2024)</strong><br>
+                Lycée Sud Medoc (Saint Aubin de Medoc)</p>
+
+                <h2>Compétences</h2>
+                <ul>
+                    <li><strong>Design :</strong> Suit Adobe, Figma, Wordpress</li>
+                    <li><strong>Dessin :</strong> Digital painting, traditional art</li>
+                    <li><strong>Développement :</strong> HTML/CSS, JavaScript, Python, C#, PHP</li>
+                    <li><strong>Montage :</strong> Davinci</li>
+                </ul>
+
+                <h2>Soft Skills</h2>
+                <ul>
+                    <li>Créativité et innovation</li>
+                    <li>Travail en équipe</li>
+                    <li>Gestion de projets</li>
+                    <li>Communication visuelle</li>
+                </ul>
+
+                    <p style="margin-top: 15px; padding: 10px; background: #ffffcc; border: 1px solid #000;">
+                    <em><a href="CV.pdf" download="CV_Val_Lombart--Bertolus.pdf">Cliquez ici pour télécharger le PDF</a></em>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="contact-window" style="left: 320px; top: 120px; width: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Contact
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('contact-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>Me contacter</h2>
+                <p>N'hésite pas à me contacter pour :</p>
+                <ul>
+                    <li>Projets collaboratifs</li>
+                    <li>Opportunités professionnelles</li>
+                    <li>Questions ou échanges</li>
+                </ul>
+
+                <h2>Liens</h2>
+                <p style="margin-top: 10px;">
+                    <strong>Email :</strong> <a href="mailto:val.lombart--bertolus@mmibordeaux.com">val.lombart--bertolus@mmibordeaux.com</a><br>
+                    <strong>LinkedIn :</strong> <a href= https://www.linkedin.com/in/val-lombart-bertolus-4b6123332/> Val Lombart--Bertolus</a><br>
+                    <strong>Instagram :</strong> <a href= https://www.instagram.com/carna_.val/> carna_.val</a><br>
+                    <strong>GitHub :</strong> <a href= https://github.com/carna-val> carna-val</a>
+                </p>
+
+                <p style="margin-top: 15px; padding: 10px; background: #ffffcc; border: 1px solid #000;">
+                    <em>Disponible pour des projets freelance et stages !</em>
+                </p>
+            </div>
+        </div>
+    </div>
+
+        <div class="window" id="top5-window" style="left: 320px; top: 120px; width: 450px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span>TOP_5.TXT
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('top5-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="about-content">
+                <h2>Mes Tops 5 pour apprendre à me connaitre :</h2>
+                <p><b>Jeux Vidéo</b></p>
+                <ul>
+                    <li>Baldur’s Gate III</li>
+                    <li>Fear & Hunger/Fear & Hunger: Termina</li>
+                    <li>Cult of the Lamb</li>
+                    <li>Mouthwashing</li>
+                    <li>Zelda Twilight Princess</li>
+                </ul>
+                <p><b>Séries</b></p>
+                <ul>
+                    <li>Good Omens</li>
+                    <li>Sherlock (2011)</li>
+                    <li>House MD</li>
+                    <li>Fleabag</li>
+                    <li>Attack of Titans</li>
+                </ul>
+                <p><b>Musique</b></p>
+                <ul>
+                    <li>Oh Ana - Mother Mother</li>
+                    <li>Christmas Kids - Roar</li>
+                    <li>Good Old Fashioned Lover Boy - Queen</li>
+                    <li>Kid & Leveret - Yaelokre</li>
+                    <li>Jigsaw Falling into Places - RadioHead</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paint Window -->
+    <div class="window" id="paint-window" style="left: 150px; top: 100px; width: 600px; height: 500px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Paint
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('paint-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 0; display: flex; flex-direction: column;">
+            <div style="background: #c0c0c0; padding: 4px; border-bottom: 1px solid #808080; display: flex; gap: 4px; flex-wrap: wrap;">
+                <button class="tool-btn" onclick="setPaintTool('pen')" style="background: #000; width: 24px; height: 24px; border: 2px solid #fff;"></button>
+                <button class="tool-btn" onclick="setPaintTool('eraser')" style="background: #fff; width: 24px; height: 24px; border: 2px solid #000;"></button>
+                <input type="color" id="paintColor" value="#000000" style="width: 30px; height: 24px;">
+                <button onclick="clearPaint()" style="padding: 2px 8px; font-size: 10px;">Effacer</button>
+                <select id="brushSize" style="font-size: 10px;">
+                    <option value="2">Petit</option>
+                    <option value="5" selected>Moyen</option>
+                    <option value="10">Gros</option>
+                </select>
+            </div>
+            <canvas id="paintCanvas" width="580" height="420" style="background: white; cursor: crosshair; flex: 1;"></canvas>
+        </div>
+    </div>
+
+    <!-- Démineur Window -->
+    <div class="window" id="demineur-window" style="left: 200px; top: 120px; width: 320px; height: 420px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Démineur
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('demineur-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 5px; display: flex; flex-direction: column; gap: 5px;">
+            <div style="background: #c0c0c0; padding: 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; display: flex; justify-content: space-between; align-items: center;">
+                <div style="background: #000; color: #f00; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; padding: 2px 6px; border: 1px solid #808080;" id="mineCount">010</div>
+                <button onclick="resetDemineur()" style="font-size: 16px; padding: 0; width: 26px; height: 26px; background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff; display: flex; align-items: center; justify-content: center;">
+                    <img src="Assets/smiley.png" alt="Smiley" style="width: 40px; height: 40px;">
+                </button>
+                <div style="background: #000; color: #f00; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; padding: 2px 6px; border: 1px solid #808080;" id="timer">000</div>
+            </div>
+            <div id="mineGrid" style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 0; border: 3px solid; border-color: #808080 #fff #fff #808080;"></div>
+        </div>
+    </div>
+
+    <!-- Winamp Window -->
+    <div class="window" id="winamp-window" style="left: 250px; top: 140px; width: 275px; height: 320px;">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span></span> Winamp
+            </div>
+            <div class="title-bar-controls">
+                <button onclick="closeWindow('winamp-window')">×</button>
+            </div>
+        </div>
+        <div class="window-body" style="padding: 0; background: linear-gradient(180deg, #1a1a1a, #0d0d0d); color: #00ff00;">
+            <div style="padding: 10px;">
+                <div style="background: #000; border: 1px solid #333; padding: 8px; font-family: monospace; font-size: 12px; margin-bottom: 10px;">
+                    <div id="trackTitle" style="color: #00ff00;">♪ Portfolio BGM - Chill Beats</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; color: #00ff00; font-size: 10px;">
+                        <span id="currentTime">0:00</span>
+                        <span id="duration">3:45</span>
+                    </div>
+                </div>
+                
+                <div style="background: #000; height: 60px; margin-bottom: 10px; border: 1px solid #333; display: flex; align-items: center; justify-content: center;" id="visualizer">
+                    <div style="display: flex; gap: 2px; height: 40px; align-items: flex-end;">
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 20%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 40%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 80%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 60%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 100%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 70%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 30%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 50%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 90%;"></div>
+                        <div class="bar" style="width: 4px; background: #00ff00; height: 40%;"></div>
+                    </div>
+                </div>
+
+                <input type="range" id="progressBar" value="0" max="100" style="width: 100%; margin-bottom: 10px;">
+
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                    <button onclick="prevTrack()" style="width: 40px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">⏮</button>
+                    <button onclick="togglePlay()" id="playBtn" style="width: 50px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">▶</button>
+                    <button onclick="stopTrack()" style="width: 40px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">⏹</button>
+                    <button onclick="nextTrack()" style="width: 40px; height: 40px; font-size: 18px; background: #2a2a2a; color: #00ff00; border: 1px solid #444;">⏭</button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 10px;">🔊</span>
+                    <input type="range" id="volumeSlider" value="70" max="100" style="flex: 1;">
+                    <span id="volumeDisplay" style="font-size: 10px;">70%</span>
+                </div>
+
+                <div id="playlist" style="margin-top: 10px; max-height: 80px; overflow-y: auto; font-size: 10px; background: #000; border: 1px solid #333; padding: 5px;">
+                    <div class="track-item active" onclick="selectTrack(0)">1. Portfolio BGM - Chill Beats</div>
+                    <div class="track-item" onclick="selectTrack(1)">2. Windows 95 Startup Sound</div>
+                    <div class="track-item" onclick="selectTrack(2)">3. Creative Flow - Lofi Hip Hop</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matrix Canvas -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- Lightbox -->
+    <div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:20000; align-items:center; justify-content:center; flex-direction:column;">
+        <button onclick="closeLightbox()" style="position:absolute; top:30px; right:40px; font-size:32px; background:none; color:white; border:none; cursor:pointer;">×</button>
+        <div style="display:flex; align-items:center; justify-content:center; gap:30px;">
+            <button onclick="lightboxPrev()" style="font-size:32px; background:none; color:white; border:none; cursor:pointer;">⟨</button>
+            <img id="lightboxImg" src="" alt="Lightbox" style="max-width:80vw; max-height:80vh; box-shadow:0 0 20px #000; border:4px solid #fff;">
+            <button onclick="lightboxNext()" style="font-size:32px; background:none; color:white; border:none; cursor:pointer;">⟩</button>
+        </div>
+    </div>
+
+    <!-- Start Menu -->
+    <div id="startMenu" style="display:none; position:fixed; left:2px; bottom:30px; width:220px; background:#c0c0c0; border:2px solid #000; z-index:10001; box-shadow:2px 2px 8px #000;">
+        <div style="background:#000080; color:white; padding:8px; font-weight:bold; font-size:13px;">Menu Démarrer</div>
+        <div style="padding:6px; display:flex; flex-direction:column; gap:4px;">
+            <button onclick="openWindow('about-window');toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">À propos</button>
+            <hr>
+            <button onclick="window.location.href='portfolio-modern.html';" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Portfolio Modern</button>
+            <hr>
+            <button onclick="matrixMode();toggleStartMenu();" style="width:100%; text-align:left; background:#c0c0c0; border:none; padding:6px; cursor:pointer;">Matrix Mode</button>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" onclick="toggleStartMenu()">
+            <img src="Assets/win_logo.png" alt="Start" style="width: 60px; height: 40px;">
+            Démarrer
+        </div>
+        <div class="clock" id="clock">12:00</div>
     </div>
 
     <script>
-        /**
-         * 1. CUSTOM CURSOR LOGIC
-         */
-        const cursorDot = document.querySelector('[data-cursor-dot]');
-        const cursorOutline = document.querySelector('[data-cursor-outline]');
-
-        window.addEventListener("mousemove", function(e) {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            // Dot suit instantanément
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-
-            // Outline suit avec un petit délai (smooth)
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
-
-        // Hover effect sur les liens
-        const links = document.querySelectorAll('a, button, .tilt-card');
-        links.forEach(link => {
-            link.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            link.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
-
-        /**
-         * 2. CANVAS "CONSTELLATION" EFFECT
-         */
-        const canvas = document.getElementById('space-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-
-        function initCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            createParticles();
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
         }
+        updateClock();
+        setInterval(updateClock, 1000);
 
-        function createParticles() {
-            particles = [];
-            const count = (width * height) / 9000; // Densité
-            for(let i = 0; i < count; i++) {
-                particles.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.5, // Vitesse lente
-                    vy: (Math.random() - 0.5) * 0.5,
-                    size: Math.random() * 2,
-                    color: Math.random() > 0.9 ? '#bc13fe' : '#ffffff' // Quelques étoiles violettes
-                });
-            }
-        }
+        // Window management
+        let zIndexCounter = 1000;
+        let activeWindow = null;
 
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
+        function openWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (!win) return;
             
-            // Update positions
-            for(let i = 0; i < particles.length; i++) {
-                let p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
+            win.classList.add('active');
+            win.style.display = 'flex';
+            win.style.zIndex = ++zIndexCounter;
+            activeWindow = win;
+        }
 
-                // Rebond sur les bords
-                if(p.x < 0 || p.x > width) p.vx *= -1;
-                if(p.y < 0 || p.y > height) p.vy *= -1;
+        function closeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (!win) return;
+            
+            win.classList.remove('active');
+            win.style.display = 'none';
+        }
 
-                // Dessiner point
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.fill();
+        // Desktop icons click
+        document.querySelectorAll('.icon').forEach(icon => {
+            icon.addEventListener('dblclick', (e) => {
+                const windowId = icon.getAttribute('data-window') + '-window';
+                openWindow(windowId);
+            });
+        });
 
-                // Lignes de connexion (Constellation)
-                // On connecte si la distance entre points est faible
-                for(let j = i + 1; j < particles.length; j++) {
-                    let p2 = particles[j];
-                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if(dist < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - dist/1000})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
+        // Draggable windows
+        let isDragging = false;
+        let currentWindow = null;
+        let offsetX, offsetY;
+
+        document.querySelectorAll('.title-bar').forEach(titleBar => {
+            titleBar.addEventListener('mousedown', (e) => {
+                if (e.target.tagName === 'BUTTON') return;
+                
+                isDragging = true;
+                currentWindow = titleBar.closest('.window');
+                currentWindow.style.zIndex = ++zIndexCounter;
+                
+                const rect = currentWindow.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+                
+                currentWindow.style.cursor = 'move';
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging || !currentWindow) return;
+            
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+            
+            // Keep window in viewport
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+            
+            currentWindow.style.left = newX + 'px';
+            currentWindow.style.top = newY + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (currentWindow) {
+                currentWindow.style.cursor = 'default';
+            }
+            isDragging = false;
+            currentWindow = null;
+        });
+
+        // Prevent text selection while dragging
+        document.addEventListener('selectstart', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+            }
+        });
+
+        // Easter egg - Konami code
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            if (konamiCode.length > 10) konamiCode.shift();
+            
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+                document.body.style.animation = 'rainbow 2s infinite';
+                konamiCode = [];
+            }
+        });
+
+        // Random window position on first open
+        const windows = document.querySelectorAll('.window');
+        windows.forEach((win, index) => {
+            const randomX = 100 + (index * 30);
+            const randomY = 80 + (index * 30);
+            win.style.left = randomX + 'px';
+            win.style.top = randomY + 'px';
+        });
+
+        // Welcome message
+        setTimeout(() => {
+            const welcomeMsg = true;
+            if (welcomeMsg) {
+                openWindow('about-window');
+            }
+        }, 500);
+
+        // Responsive mobile warning
+        if (window.innerWidth < 768) {
+            setTimeout(() => {
+                alert('📱 Info : Ce portfolio est optimisé pour desktop.\nPour une meilleure expérience, visite-le sur ordinateur !');
+            }, 1000);
+        }
+
+        // PAINT FUNCTIONALITY
+        const paintCanvas = document.getElementById('paintCanvas');
+        const paintCtx = paintCanvas ? paintCanvas.getContext('2d') : null;
+        let isPainting = false;
+        let paintTool = 'pen';
+
+        if (paintCanvas) {
+            paintCanvas.addEventListener('mousedown', startPaint);
+            paintCanvas.addEventListener('mousemove', paint);
+            paintCanvas.addEventListener('mouseup', stopPaint);
+            paintCanvas.addEventListener('mouseleave', stopPaint);
+        }
+
+        function startPaint(e) {
+            isPainting = true;
+            const rect = paintCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            paintCtx.beginPath();
+            paintCtx.moveTo(x, y);
+        }
+
+        function paint(e) {
+            if (!isPainting) return;
+            const rect = paintCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const color = document.getElementById('paintColor').value;
+            const size = parseInt(document.getElementById('brushSize').value);
+            
+            paintCtx.lineCap = 'round';
+            paintCtx.lineWidth = size;
+            paintCtx.strokeStyle = paintTool === 'eraser' ? '#ffffff' : color;
+            paintCtx.lineTo(x, y);
+            paintCtx.stroke();
+            paintCtx.beginPath();
+            paintCtx.moveTo(x, y);
+        }
+
+        function stopPaint() {
+            isPainting = false;
+            paintCtx.beginPath();
+        }
+
+        function setPaintTool(tool) {
+            paintTool = tool;
+        }
+
+        function clearPaint() {
+            paintCtx.fillStyle = 'white';
+            paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+        }
+
+        // DÉMINEUR FUNCTIONALITY
+        let mineGrid = [];
+        let mineGameOver = false;
+        let mineTimer = 0;
+        let mineTimerInterval;
+        const GRID_SIZE = 9;
+        const MINE_COUNT = 10;
+
+        function initDemineur() {
+            mineGrid = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill().map(() => ({
+                isMine: false,
+                isRevealed: false,
+                isFlagged: false,
+                neighborMines: 0
+            })));
+            
+            // Place mines
+            let placed = 0;
+            while (placed < MINE_COUNT) {
+                const row = Math.floor(Math.random() * GRID_SIZE);
+                const col = Math.floor(Math.random() * GRID_SIZE);
+                if (!mineGrid[row][col].isMine) {
+                    mineGrid[row][col].isMine = true;
+                    placed++;
+                }
+            }
+            
+            // Calculate neighbor mines
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (!mineGrid[row][col].isMine) {
+                        let count = 0;
+                        for (let dr = -1; dr <= 1; dr++) {
+                            for (let dc = -1; dc <= 1; dc++) {
+                                const nr = row + dr;
+                                const nc = col + dc;
+                                if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+                                    if (mineGrid[nr][nc].isMine) count++;
+                                }
+                            }
+                        }
+                        mineGrid[row][col].neighborMines = count;
                     }
                 }
             }
-            requestAnimationFrame(animateCanvas);
+            
+            renderDemineur();
+            mineGameOver = false;
+            mineTimer = 0;
+            document.getElementById('timer').textContent = '000';
+            if (mineTimerInterval) clearInterval(mineTimerInterval);
         }
 
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-        animateCanvas();
-
-        /**
-         * 3. SCROLL REVEAL (Apparition au défilement)
-         */
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealOnScroll = () => {
-            const windowHeight = window.innerHeight;
-            revealElements.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
-                if(elementTop < windowHeight - 100) {
-                    el.classList.add('active');
-                }
-            });
-        };
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Trigger once on load
-
-        /**
-         * 4. 3D TILT EFFECT (Vanilla JS, pas de librairie lourde)
-         */
-        document.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('[data-tilt]');
+        function renderDemineur() {
+            const gridEl = document.getElementById('mineGrid');
+            if (!gridEl) return;
+            gridEl.innerHTML = '';
             
-            cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                // Check si la souris est sur la carte
-                if(x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'mine-cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
                     
-                    const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
-                    const rotateY = ((x - centerX) / centerX) * 10;
-
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-                } else {
-                    // Reset si souris sort
-                    card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+                    if (mineGrid[row][col].isRevealed) {
+                        cell.classList.add('revealed');
+                        if (mineGrid[row][col].isMine) {
+                            cell.classList.add('mine');
+                        } else if (mineGrid[row][col].neighborMines > 0) {
+                            cell.textContent = mineGrid[row][col].neighborMines;
+                            const colors = ['', '#0000FF', '#008000', '#FF0000', '#000080', '#800000', '#008080', '#000000', '#808080'];
+                            cell.style.color = colors[mineGrid[row][col].neighborMines];
+                        }
+                    } else if (mineGrid[row][col].isFlagged) {
+                        cell.classList.add('flagged');
+                    }
+                    
+                    cell.addEventListener('click', () => revealCell(row, col));
+                    cell.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        toggleFlag(row, col);
+                    });
+                    
+                    gridEl.appendChild(cell);
                 }
+            }
+        }
+
+        function revealCell(row, col) {
+            if (mineGameOver || mineGrid[row][col].isRevealed || mineGrid[row][col].isFlagged) return;
+            
+            if (!mineTimerInterval) {
+                mineTimerInterval = setInterval(() => {
+                    mineTimer++;
+                    document.getElementById('timer').textContent = String(mineTimer).padStart(3, '0');
+                }, 1000);
+            }
+            
+            if (mineGrid[row][col].isMine) {
+                mineGameOver = true;
+                revealAllMines();
+                clearInterval(mineTimerInterval);
+                setTimeout(() => alert('💥 BOOM ! Partie terminée !'), 100);
+                return;
+            }
+            
+            mineGrid[row][col].isRevealed = true;
+            
+            if (mineGrid[row][col].neighborMines === 0) {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        const nr = row + dr;
+                        const nc = col + dc;
+                        if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+                            if (!mineGrid[nr][nc].isRevealed) {
+                                revealCell(nr, nc);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            renderDemineur();
+            checkWin();
+        }
+
+        function toggleFlag(row, col) {
+            if (mineGameOver || mineGrid[row][col].isRevealed) return;
+            mineGrid[row][col].isFlagged = !mineGrid[row][col].isFlagged;
+            renderDemineur();
+        }
+
+        function revealAllMines() {
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (mineGrid[row][col].isMine) {
+                        mineGrid[row][col].isRevealed = true;
+                    }
+                }
+            }
+            renderDemineur();
+        }
+
+        function checkWin() {
+            let revealedCount = 0;
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    if (mineGrid[row][col].isRevealed && !mineGrid[row][col].isMine) {
+                        revealedCount++;
+                    }
+                }
+            }
+            if (revealedCount === GRID_SIZE * GRID_SIZE - MINE_COUNT) {
+                mineGameOver = true;
+                clearInterval(mineTimerInterval);
+                
+                // CONFETTI EASTER EGG! 🎉
+                launchConfetti();
+                
+                setTimeout(() => alert('🎉 BRAVO ! Tu as gagné au Démineur !\n\nTemps : ' + mineTimer + ' secondes\n\nTu mérites des confettis ! 🎊'), 500);
+            }
+        }
+
+        function launchConfetti() {
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#FF69B4'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = '0s';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+            
+            // Son de victoire simulé
+            console.log('🎵 *Windows XP Victory Sound* 🎵');
+        }
+
+        function resetDemineur() {
+            if (mineTimerInterval) clearInterval(mineTimerInterval);
+            initDemineur();
+        }
+
+        initDemineur();
+
+        // WINAMP FUNCTIONALITY
+        let isPlaying = false;
+        let currentTrack = 0;
+        let currentTime = 0;
+        let winampInterval;
+        const tracks = [
+            { title: 'Portfolio BGM - Chill Beats', duration: 225 },
+            { title: 'Windows 95 Startup Sound', duration: 6 },
+            { title: 'Creative Flow - Lofi Hip Hop', duration: 180 }
+        ];
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playBtn');
+            if (isPlaying) {
+                btn.textContent = '⏸';
+                startWinampTimer();
+            } else {
+                btn.textContent = '▶';
+                if (winampInterval) clearInterval(winampInterval);
+            }
+        }
+
+        function stopTrack() {
+            isPlaying = false;
+            currentTime = 0;
+            document.getElementById('playBtn').textContent = '▶';
+            document.getElementById('currentTime').textContent = '0:00';
+            document.getElementById('progressBar').value = 0;
+            if (winampInterval) clearInterval(winampInterval);
+        }
+
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % tracks.length;
+            selectTrack(currentTrack);
+        }
+
+        function prevTrack() {
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+            selectTrack(currentTrack);
+        }
+
+        function selectTrack(index) {
+            currentTrack = index;
+            currentTime = 0;
+            document.getElementById('trackTitle').textContent = '♪ ' + tracks[index].title;
+            document.getElementById('duration').textContent = formatTime(tracks[index].duration);
+            document.getElementById('currentTime').textContent = '0:00';
+            document.getElementById('progressBar').value = 0;
+            
+            document.querySelectorAll('.track-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
             });
+            
+            if (isPlaying) {
+                if (winampInterval) clearInterval(winampInterval);
+                startWinampTimer();
+            }
+        }
+
+        function startWinampTimer() {
+            winampInterval = setInterval(() => {
+                currentTime++;
+                const duration = tracks[currentTrack].duration;
+                document.getElementById('currentTime').textContent = formatTime(currentTime);
+                document.getElementById('progressBar').value = (currentTime / duration) * 100;
+                
+                if (currentTime >= duration) {
+                    nextTrack();
+                    if (isPlaying) {
+                        currentTime = 0;
+                        startWinampTimer();
+                    }
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${String(secs).padStart(2, '0')}`;
+        }
+
+        document.getElementById('volumeSlider').addEventListener('input', (e) => {
+            document.getElementById('volumeDisplay').textContent = e.target.value + '%';
         });
 
-        /**
-         * 5. FILTRES PROJETS
-         */
-        function filter(cat) {
-            // Active btn
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+        document.getElementById('progressBar').addEventListener('input', (e) => {
+            const duration = tracks[currentTrack].duration;
+            currentTime = Math.floor((e.target.value / 100) * duration);
+            document.getElementById('currentTime').textContent = formatTime(currentTime);
+        });
 
-            // Filter logic
-            document.querySelectorAll('.project-card').forEach(card => {
-                if(cat === 'all' || card.dataset.category === cat) {
-                    card.style.display = 'block';
-                    setTimeout(() => card.style.opacity = 1, 50);
-                } else {
-                    card.style.display = 'none';
-                    card.style.opacity = 0;
-                }
-            });
+        // LIGHTBOX FUNCTIONALITY
+        let currentImageIndex = 0;
+        let allImages = [];
+
+        // On change le paramètre pour recevoir l'élément (this)
+        function openLightbox(element) {
+        // 1. On cherche le conteneur parent le plus proche (soit .screenshots, soit .draw)
+        const container = element.closest('.screenshots, .draw, .evolution');
+
+            if (container) {
+                // 2. On récupère uniquement les images DE CE conteneur
+                allImages = Array.from(container.querySelectorAll('img')).map(img => img.src);
+            } else {
+                // Fallback de sécurité si jamais l'image est hors conteneur
+                allImages = [element.src];
         }
 
-        /**
-         * 6. LIGHTBOX
-         */
-        function openLb(src) {
-            document.getElementById('lb-img').src = src;
+            // 3. Mise à jour de l'index et affichage
+            currentImageIndex = allImages.indexOf(element.src);
+    
+            document.getElementById('lightboxImg').src = element.src;
             document.getElementById('lightbox').style.display = 'flex';
+
+            // Bonus : Cacher les flèches s'il n'y a qu'une seule image dans le groupe
+            toggleArrows(allImages.length > 1);
         }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        function lightboxNext() {
+            if (allImages.length <= 1) return; // Ne rien faire si image seule
+            currentImageIndex = (currentImageIndex + 1) % allImages.length;
+            document.getElementById('lightboxImg').src = allImages[currentImageIndex];
+        }
+
+        function lightboxPrev() {
+            if (allImages.length <= 1) return; // Ne rien faire si image seule
+            currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+            document.getElementById('lightboxImg').src = allImages[currentImageIndex];
+        }
+
+        // Fonction utilitaire pour gérer l'affichage des boutons
+        function toggleArrows(show) {
+            const displayValue = show ? 'flex' : 'none'; // ou 'block' selon votre CSS
+            // Remplacez '.nav-btn' par la classe ou l'ID réel de vos boutons Next/Prev
+            const buttons = document.querySelectorAll('.nav-btn, #prevBtn, #nextBtn'); 
+            buttons.forEach(btn => btn.style.display = displayValue);
+        }
+
+        // Close lightbox with ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                if (e.key === 'ArrowRight') lightboxNext();
+                if (e.key === 'ArrowLeft') lightboxPrev();
+            }
+        });
+
+        // START MENU
+        function toggleStartMenu() {
+            const menu = document.getElementById('startMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Close start menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('startMenu');
+            const startBtn = document.querySelector('.start-button');
+            if (!menu.contains(e.target) && !startBtn.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // MATRIX MODE AMÉLIORÉ
+        let matrixActive = false;
+        let matrixAnimationId;
+
+        function matrixMode() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            if (matrixActive) {
+                matrixActive = false;
+                cancelAnimationFrame(matrixAnimationId);
+                canvas.classList.remove('active');
+                return;
+            }
+
+            matrixActive = true;
+            canvas.classList.add('active');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ01';
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+            
+            let mouseX = canvas.width / 2;
+            let mouseY = canvas.height / 2;
+            let particles = [];
+
+            // Écouter les mouvements de souris sur le canvas
+            const handleMouseMove = (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Créer des particules au passage de la souris
+                for (let i = 0; i < 3; i++) {
+                    particles.push({
+                        x: mouseX + (Math.random() - 0.5) * 50,
+                        y: mouseY + (Math.random() - 0.5) * 50,
+                        vx: (Math.random() - 0.5) * 4,
+                        vy: (Math.random() - 0.5) * 4,
+                        life: 1,
+                        size: Math.random() * 3 + 2
+                    });
+                }
+            };
+            
+            document.addEventListener('mousemove', handleMouseMove);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Dessiner les particules de souris
+                particles = particles.filter(p => p.life > 0);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.02;
+                    
+                    ctx.fillStyle = `rgba(0, 255, 0, ${p.life})`;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                    
+                    // Traînée
+                    ctx.fillStyle = `rgba(0, 255, 0, ${p.life * 0.3})`;
+                    ctx.fillRect(p.x - p.vx * 2, p.y - p.vy * 2, p.size * 0.5, p.size * 0.5);
+                });
+
+                // Effet Matrix classique avec interaction souris
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    
+                    // Calculer distance avec la souris
+                    const dx = x - mouseX;
+                    const dy = y - mouseY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const maxDistance = 150;
+                    
+                    if (distance < maxDistance) {
+                        // Effet de "répulsion" - les caractères s'éloignent de la souris
+                        const intensity = 1 - (distance / maxDistance);
+                        const offsetX = (dx / distance) * intensity * 30;
+                        const offsetY = (dy / distance) * intensity * 30;
+                        
+                        ctx.fillStyle = `rgba(0, 255, 100, ${0.8 + intensity * 0.2})`;
+                        ctx.font = `bold ${fontSize + intensity * 8}px monospace`;
+                        ctx.fillText(char, x + offsetX, y + offsetY);
+                        
+                        // Effet de lueur
+                        ctx.shadowBlur = 20 * intensity;
+                        ctx.shadowColor = '#00ff00';
+                    } else {
+                        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+                        ctx.font = fontSize + 'px monospace';
+                        ctx.shadowBlur = 0;
+                        ctx.fillText(char, x, y);
+                    }
+                    
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+                
+                if (matrixActive) {
+                    matrixAnimationId = requestAnimationFrame(draw);
+                }
+            }
+
+            draw();
+            alert('MATRIX MODE ACTIVÉ !\n\nBouge ta souris pour interagir avec le code...');
+            
+            setTimeout(() => {
+                matrixActive = false;
+                cancelAnimationFrame(matrixAnimationId);
+                canvas.classList.remove('active');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.removeEventListener('mousemove', handleMouseMove);
+            }, 15000);
+        }
+
+        // Secret: Type "win95" anywhere
+        let secretCode = '';
+        document.addEventListener('keypress', (e) => {
+            secretCode += e.key.toLowerCase();
+            if (secretCode.includes('win95')) {
+                alert('C\'est en 1995 que tout a commencé..."\n\nWindows 95 startup sound playing in your mind');
+                incrementEasterEgg();
+                secretCode = '';
+            }
+            if (secretCode.length > 10) {
+                secretCode = secretCode.slice(-10);
+            }
+        });
     </script>
 </body>
 </html>
