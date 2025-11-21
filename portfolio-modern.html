@@ -501,6 +501,21 @@
         }
 
         /* === PROJETS === */
+
+        .lb-desc a {
+            color: var(--primary); /* Le cyan néon */
+            text-decoration: none;
+            border-bottom: 1px solid var(--primary);
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+
+        .lb-desc a:hover {
+            background: rgba(0, 243, 255, 0.1);
+            padding: 0 5px;
+            border-radius: 4px;
+        }
+
         .filter-container {
             display: flex;
             gap: 20px;
@@ -986,7 +1001,7 @@
                      onclick="openLb(this)"
                      data-type="gallery"
                      data-title="Évolution Artistique"
-                     data-desc="Une rétrospective de mon parcours artistique sur 5 ans. Cliquez pour remonter le temps et voir l'évolution de mon style graphique à travers les âges."
+                     data-desc="Une rétrospective de mon parcours artistique sur 5 ans. Cliquez pour remonter le temps et voir l'évolution de mon style graphique à travers les âges. </br><br> <a href='https://www.instagram.com/carna_.val/' target='_blank'>Voir plus de projets sur mon Instagram</a>"
                      data-tag="Digital Art"
                      data-gallery='[
                         {"src": "Images/Art25.png", "year": "2025 - Actuel, Clip Studio Paint"},
@@ -1068,7 +1083,7 @@
                      data-tilt 
                      onclick="openLb(this)"
                      data-title="Projet Unity"
-                     data-desc="Pimp my Sewer est un jeu d'exploration et d'énigmes 3D développé en Unity. Incarnez un sans-abri prenant refuge dans les égouts et qui décide de les rénover." 
+                     data-desc="Pimp my Sewer est un jeu d'exploration et d'énigmes 3D développé en Unity. <br> Incarnez un sans-abri prenant refuge dans les égouts et qui décide de les rénover. <br><br> <a href='https://xnaveman.itch.io/pimp-my-sewers' target='_blank'>Voir le itchi.io</a>" 
                      data-img="Images/pms.gif"
                      data-tag="Unity / C#">
                     
@@ -1087,7 +1102,7 @@
                      data-tilt 
                      onclick="openLb(this)"
                      data-title="Portfolio V1 (Win95)"
-                     data-desc="Une autre version de mon portfolio reprenant l'esthétique de Windows 95. Un hommage nostalgique codé en HTML/CSS et JS."
+                     data-desc="Une autre version de mon portfolio reprenant l'esthétique de Windows 95. Un hommage nostalgique codé en HTML/CSS et JS. <br><br> <a href='win95-portfolio.html' target='_blank'>Voir cette version du site</a>"
                      data-img="Images/portfolio.png"
                      data-tag="Développement Web">
                     
@@ -1097,6 +1112,52 @@
                         <h3>Portfolio V1</h3>
                         <p style="color: #ccc; font-size: 0.9rem;">Version Windows 95.</p>
                         <a href="https://github.com/carna-val" target="_blank">Voir le repo</a>
+                    </div>
+                </div>
+
+                <div class="project-card tilt-card reveal" 
+                     data-category="design" 
+                    data-tilt 
+                    onclick="openLb(this)"
+                    data-type="gallery"  data-title="Discu-table"
+                    data-desc="Discu-table est une application web et initiative étudiante conçue pour le CROUS, visant à réduire le gaspillage alimentaire en collectant la note des restes d'assiette des étudiants. <br>
+
+                    Mon rôle a été de garantir une adoption maximale par un Design d'Expérience (UX/UI) Mobile-First, offrant une notation ultra-rapide et intuitive. <br>
+
+                    J'ai également développé toute la stratégie et le Design de Communication (affiches, flyers). L'ensemble de la Direction Artistique (DA) a été rigoureusement conçue pour s'intégrer parfaitement à la Charte Graphique existante du CROUS, assurant un message clair et institutionnel. <br>
+
+                    Résultat : Un outil digital simple pour l'étudiant, fournissant des données précieuses aux équipes de cuisine pour un ajustement quotidien des quantités. <br>
+
+                    Il n'est malheuresement plus en ligne aujourd'hui. <br><br> <a href='https://github.com/ImSakushi/discu-table' target='_blank'>Voir le repo</a>"
+                     data-tag="Design et Communication"
+                     data-gallery='[
+                        {"src": "Images/Discutable1.png", "year": "Affiche de présentation"},
+                        {"src": "Images/Discutable2.png", "year": "Brochure étudiante"}
+                     ]'>
+    
+                <img src="Images/Discutable1.png" class="project-bg" alt="Discutable">
+                <div class="project-info tilt-inner">
+                <span class="project-tag">Design et Communication</span>
+                <h3>Discu-table</h3>
+                <p style="color: #ccc; font-size: 0.9rem;">Création d'une application web et de son Design.</p>
+                <a href="#">En savoir plus</a>
+                </div>
+            </div>
+
+                <div class="project-card tilt-card reveal" 
+                     data-category="code" 
+                     data-tilt 
+                     onclick="openLb(this)"
+                     data-title="zweeter"
+                     data-desc="Zweeter à été conçu comme une parodie de X en beaucoup plus chaotique, une fois votre ''compte'' crée, d'autres utilisateurs peuvent l'utiliser. <br><br> <a href='https://zweeter.osc-fr1.scalingo.io/' target='_blank'>Voir le site</a><br><a href='https://github.com/carna-val/zweeter' target='_blank'>Voir le repo</a>"
+                     data-tag="Développement Web">
+                    
+                    <img src="Images/zweeter.png" class="project-bg" alt="Code">
+                    <div class="project-info tilt-inner">
+                        <span class="project-tag">Ruby on Rails</span>
+                        <h3>Zweeter</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">Une parodie de X/Tweeter.</p>
+                        <a href="https://github.com/carna-val" target="_blank">Voir le site</a>
                     </div>
                 </div>
 
@@ -1352,7 +1413,7 @@
             
             // Remplissage infos
             title.textContent = el.dataset.title;
-            desc.textContent = el.dataset.desc;
+            desc.innerHTML = el.dataset.desc;
             tag.textContent = el.dataset.tag;
             const type = el.dataset.type || 'image';
 
