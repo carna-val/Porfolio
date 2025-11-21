@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Val Lombart-Bertolus | Creative Developer</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@300;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* === VARIABLES & RESET === */
         :root {
             --bg-deep: #0b0d17;
             --primary: #00f3ff;
@@ -17,13 +20,14 @@
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
             --text: #e0e6ed;
+            --text-muted: #8892b0;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
+            cursor: none; /* Curseur natif caché pour laisser place au custom */
         }
 
         body {
@@ -102,7 +106,7 @@
             left: 0;
             transform: translate(-50%, -50%);
             border-radius: 50%;
-            z-index: 9999;
+            z-index: 20000; /* Toujours au-dessus */
             pointer-events: none;
             transition: all 0.1s ease;
         }
@@ -134,7 +138,7 @@
             height: 30px;
         }
 
-        /* === CANVAS ÉTOILÉ === */
+        /* === CANVAS ÉTOILÉ (FOND ANIMÉ) === */
         #space-canvas {
             position: fixed;
             top: 0;
@@ -152,7 +156,7 @@
             padding: 0 20px;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-family: 'Space Grotesk', sans-serif;
             line-height: 1.1;
         }
@@ -160,7 +164,7 @@
         .reveal {
             opacity: 0;
             transform: translateY(50px);
-            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .reveal.active {
@@ -342,7 +346,7 @@
             animation: fadeInUp 1s ease 3.4s forwards;
         }
 
-        /* === CARTES 3D === */
+        /* === CARTES 3D & TILT === */
         .tilt-card {
             background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
             border: 1px solid var(--glass-border);
@@ -534,6 +538,7 @@
             border-radius: 24px;
             background: #000;
             transition: opacity 0.3s, transform 0.3s;
+            cursor: none;
         }
 
         .project-bg {
@@ -567,6 +572,7 @@
             opacity: 0;
             mix-blend-mode: overlay;
             transition: opacity 0.4s;
+            pointer-events: none;
         }
 
         .project-card:hover::after {
@@ -602,23 +608,169 @@
             font-family: 'Space Grotesk';
         }
 
-        .project-info a {
-            display: inline-block;
-            margin-top: 15px;
-            color: var(--primary);
-            font-weight: 600;
+        /* === LIGHTBOX MODE CINÉMA (GRAND FORMAT) === */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000; 
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            background: #0f121e;
+            width: 95vw;  /* Largeur max */
+            height: 90vh; /* Hauteur max */
+            max-width: 1600px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
+            display: flex;
+            overflow: hidden;
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lb-visual {
+            flex: 3.5; /* Priorité à l'image/PDF */
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-right: 1px solid var(--glass-border);
+        }
+
+        .lb-visual iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .lb-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+        
+        .lb-details {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: rgba(11, 13, 23, 0.5);
+        }
+
+        .lb-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             transition: 0.3s;
+            cursor: none;
+            z-index: 50;
         }
 
-        .project-info a::after {
-            content: '→';
-            margin-left: 10px;
-            transition: margin-left 0.3s;
+        .lb-close:hover {
+            background: white;
+            color: black;
+            transform: rotate(90deg);
         }
 
-        .project-info a:hover::after {
-            margin-left: 20px;
+        .lb-category {
+            color: var(--primary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .lb-title {
+            font-size: 2.5rem;
+            line-height: 1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lb-desc {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        /* --- GALERIE SLIDER CONTROLS --- */
+        .lb-controls {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+        .lb-control-btn {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--glass-border);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            font-size: 1.2rem;
+        }
+        .lb-control-btn:hover {
+            background: var(--primary);
+            color: black;
+            transform: scale(1.1);
+        }
+        .gallery-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0,0,0,0.8);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            color: var(--primary);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
         }
 
         /* === FOOTER === */
@@ -672,80 +824,26 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* === LIGHTBOX === */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 0 100px rgba(0, 243, 255, 0.3);
-            animation: zoomIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        @keyframes zoomIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .lightbox::before {
-            content: '✕';
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            font-size: 2rem;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .lightbox:hover::before {
-            color: var(--primary);
-            transform: rotate(90deg);
-        }
-
         /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .lightbox-content { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto; }
+            .lb-visual { height: 40vh; flex: none; width: 100%; border-right: none; border-bottom: 1px solid var(--glass-border); }
+            .lb-details { padding: 25px; width: 100%; }
+            .lb-title { font-size: 1.8rem; }
+        }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
             .about-grid, .footer-content { grid-template-columns: 1fr; }
             .cursor-dot, .cursor-outline { display: none; }
             * { cursor: auto; }
             nav { padding: 20px; }
-            .loader-text { font-size: 2rem; }
             .project-grid { grid-template-columns: 1fr; }
-            .hero-buttons { flex-direction: column; }
-            .top5-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- LOADER -->
     <div class="loader">
         <div class="loader-text">VAL.</div>
         <div class="loader-bar">
@@ -766,7 +864,6 @@
     </nav>
 
     <main>
-        <!-- HERO -->
         <section class="hero container">
             <div class="hero-content">
                 <span class="hero-subtitle">PORTFOLIO 2025</span>
@@ -779,7 +876,6 @@
             </div>
         </section>
 
-        <!-- ABOUT -->
         <section id="about" class="section-padding container">
             <div class="about-grid">
                 <div class="tilt-card" data-tilt>
@@ -793,13 +889,12 @@
                         J'aime explorer. Que ce soit dans un donjon de jeu vidéo, dans les couches de code d'un site web, ou sur une toile numérique.
                     </p>
                     <p style="color: #8892b0; margin-bottom: 30px;">
-                        Actuellement en 2ème année de BUT MMI, je cherche à fusionner le design graphique et le développement technique. Mon but ? Créer des expériences qui marquent, un peu comme ce portfolio (je l'espère !).
+                        Actuellement en 2ème année de BUT MMI, je cherche à fusionner le design graphique et le développement technique. Mon but ? Créer des expériences qui marquent, un peu comme ce portfolio.
                     </p>
                     <a href="CV.pdf" target="_blank" style="color: var(--primary); border-bottom: 1px solid var(--primary);">Télécharger mon CV</a>
                 </div>
             </div>
 
-            <!-- TOP 5 -->
             <div class="reveal" style="margin-top: 100px;">
                 <h2 style="text-align: center; font-size: 2.5rem;">DATA_BASE_PERSO<span style="color:var(--primary)">.txt</span></h2>
                 <p style="text-align: center; color: #8892b0; margin-top: 10px;">Ce qui m'inspire au quotidien</p>
@@ -847,7 +942,6 @@
             </div>
         </section>
 
-        <!-- MARQUEE SKILLS -->
         <div class="skills-marquee">
             <div class="marquee-content">
                 <span class="skill-item"><i class="fa-brands fa-unity"></i> Unity</span>
@@ -858,7 +952,6 @@
                 <span class="skill-item"><i class="fa-solid fa-paintbrush"></i> Clip Studio</span>
                 <span class="skill-item"><i class="fa-solid fa-pen-nib"></i> Illustrator</span>
                 <span class="skill-item"><i class="fa-brands fa-react"></i> React</span>
-                <!-- Duplicate pour loop infini -->
                 <span class="skill-item"><i class="fa-brands fa-unity"></i> Unity</span>
                 <span class="skill-item"><i class="fa-solid fa-code"></i> C#</span>
                 <span class="skill-item"><i class="fa-brands fa-js"></i> JavaScript</span>
@@ -870,88 +963,143 @@
             </div>
         </div>
 
-        <!-- PROJETS -->
         <section id="projets" class="section-padding container">
             <h2 style="font-size: 3rem; margin-bottom: 40px;" class="reveal">PROJETS SÉLECTIONNÉS<span style="color:var(--secondary)">.</span></h2>
             
             <div class="filter-container reveal">
                 <button class="filter-btn active" onclick="filter('all')">Tout</button>
-                <button class="filter-btn" onclick="filter('dessin')">Dessins</button>
+                <button class="filter-btn" onclick="filter('dessin')">Art</button>
                 <button class="filter-btn" onclick="filter('game')">Jeux Vidéo</button>
                 <button class="filter-btn" onclick="filter('design')">Design</button>
                 <button class="filter-btn" onclick="filter('code')">Code</button>
+                <button class="filter-btn" onclick="filter('audiovisuel')">Audio Visuel</button>
+
             </div>
 
             <div class="project-grid">
-                <!-- Projet 1 -->
-                <div class="project-card tilt-card reveal" data-category="dessin" data-tilt>
-                    <img src="Images/Dessin4.png" class="project-bg" alt="Dessin">
+                
+                <div class="project-card tilt-card reveal" 
+                     data-category="dessin" 
+                     data-tilt 
+                     onclick="openLb(this)"
+                     data-type="gallery"
+                     data-title="Évolution Artistique"
+                     data-desc="Une rétrospective de mon parcours artistique sur 5 ans. Cliquez pour remonter le temps et voir l'évolution de mon style graphique à travers les âges."
+                     data-tag="Digital Art"
+                     data-gallery='[
+                        {"src": "Images/Art25.png", "year": "2025 - Actuel, Clip Studio Paint"},
+                        {"src": "Images/oldArt24.png", "year": "2024 - Ibis Paint X "},
+                        {"src": "Images/oldArt23.png", "year": "2023 - Ibis Paint X"},
+                        {"src": "Images/oldArt22.png", "year": "2022 - Ibis Paint X"},
+                        {"src": "Images/oldArt21.png", "year": "2021 - Premiers essais en digital, Ibis Paint X sur mon téléphone"}
+                     ]'>
+                    
+                    <img src="Images/Art25.png" class="project-bg" alt="Art 25">
                     <div class="project-info tilt-inner">
-                        <span class="project-tag">Illustration</span>
-                        <h3>Dans les étoiles</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Auto-portrait digital painting.</p>
-                        <a href="#" onclick="openLb('Images/Dessin4.png'); return false;">Voir le projet</a>
+                        <span class="project-tag">Galerie Évolutive</span>
+                        <h3>Évolution 2021-2025</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">5 ans de dessin en un coup d'œil.</p>
+                        <a href="#">Voir l'évolution</a>
                     </div>
                 </div>
 
-                <!-- Projet 2 -->
-                <div class="project-card tilt-card reveal" data-category="game" data-tilt>
+                <div class="project-card tilt-card reveal" 
+                     data-category="audiovisuel" 
+                     data-tilt 
+                     onclick="openLb(this)"
+                     data-type="pdf"
+                     data-title="Book Photo"
+                     data-desc="''Child of the Net'' est un projet fait en 2024 qui explore la relation entre la gen Z et le monde numérique à travers les memes et la culture internet."
+                     data-src="PDF/Book.pdf"
+                     data-tag="Photographie">
+                    
+                    <img src="Images/Book.png" class="project-bg" alt="Book Cover">
+                    <div class="project-info tilt-inner">
+                        <span class="project-tag">Photographie</span>
+                        <h3>Book Photo 2025 - Child of the Net</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">Consulter le book interactif.</p>
+                        <a href="#">Feuilleter</a>
+                    </div>
+                </div>
+
+                <div class="project-card tilt-card reveal" 
+                     data-category="design" 
+                     data-tilt 
+                     onclick="openLb(this)"
+                     data-type="video"
+                     data-title="Motion Design Showreel"
+                     data-desc="En équipe, nous avons relevé le défi de créer un motion design pédagogique complet en une semaine pour illustrer la théorie des formats de la visibilité de Cardon.
+                    Tout les assets utilisé ont d'ailleurs été crées par mes soins via Illustrator."
+                     data-video-id="2cuhMEu4OaY"
+                     data-tag="Motion Design">
+                    
+                    <img src="https://img.youtube.com/vi/2cuhMEu4OaY/maxresdefault.jpg" class="project-bg" alt="Motion">
+                    <div class="project-info tilt-inner">
+                        <span class="project-tag">Motion Design</span>
+                        <h3>Showreel Motion</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">Animation graphique & rythme.</p>
+                        <a href="#">Regarder</a>
+                    </div>
+                </div>
+
+                <div class="project-card tilt-card reveal" 
+                     data-category="audiovisuel" 
+                     data-tilt 
+                     onclick="openLb(this)"
+                     data-type="video"
+                     data-title="Anna's Log - Épisode 1"
+                     data-desc="Réalisation et montage du pilote de l'émission 'Anna's Log' par l'équipe Red Thread. Une plongée dans l'horreur vidéoludique, ses codes et son ambiance sonore."
+                     data-video-id="6CxvEXCPvKw"
+                     data-tag="Réalisation Vidéo">
+                    
+                    <img src="https://img.youtube.com/vi/6CxvEXCPvKw/maxresdefault.jpg" class="project-bg" alt="Anna's Log">
+                    <div class="project-info tilt-inner">
+                        <span class="project-tag">Multimédia</span>
+                        <h3>Anna's Log - Ép. 1</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">Émission sur l'horreur (Red Thread).</p>
+                        <a href="#">Visionner</a>
+                    </div>
+                </div>
+
+                <div class="project-card tilt-card reveal" 
+                     data-category="game" 
+                     data-tilt 
+                     onclick="openLb(this)"
+                     data-title="Projet Unity"
+                     data-desc="Développement et Game Design d'un platformer en C#. Gestion de la physique, des collisions et création de l'interface utilisateur."
+                     data-img="Assets/Game.png"
+                     data-tag="Unity / C#">
+                    
                     <img src="Assets/Game.png" class="project-bg" alt="Game">
                     <div class="project-info tilt-inner">
                         <span class="project-tag">Unity / C#</span>
                         <h3>Projet Unity</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Développement et Game Design d'un platformer.</p>
-                        <a href="#" onclick="alert('Lien vers Itch.io')">Jouer sur Itch.io</a>
+                        <p style="color: #ccc; font-size: 0.9rem;">Platformer 2D.</p>
+                        <a href="#">Détails</a>
                     </div>
                 </div>
 
-                <!-- Projet 3 -->
-                <div class="project-card tilt-card reveal" data-category="design" data-tilt>
-                    <img src="Images/Discutable1.png" class="project-bg" alt="Design">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">UI/UX Design</span>
-                        <h3>Discu-table CROUS</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Appli anti-gaspillage alimentaire.</p>
-                        <a href="#" onclick="openLb('Images/Discutable2.png'); return false;">Voir Brochure</a>
-                    </div>
-                </div>
-
-                <!-- Projet 4 -->
-                <div class="project-card tilt-card reveal" data-category="dessin" data-tilt>
-                    <img src="Images/Dessin1.png" class="project-bg" alt="Dessin">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">Character Design</span>
-                        <h3>OC Concept</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Recherche graphique pour personnage original.</p>
-                        <a href="#" onclick="openLb('Images/Dessin1.png'); return false;">Voir le projet</a>
-                    </div>
-                </div>
-
-                <!-- Projet 5 -->
-                <div class="project-card tilt-card reveal" data-category="code" data-tilt>
+                <div class="project-card tilt-card reveal" 
+                     data-category="code" 
+                     data-tilt 
+                     onclick="openLb(this)"
+                     data-title="Portfolio V1 (Win95)"
+                     data-desc="L'ancienne version de mon portfolio reprenant l'esthétique de Windows 95. Un hommage nostalgique codé en HTML/CSS pur."
+                     data-img="Assets/code.png"
+                     data-tag="Développement Web">
+                    
                     <img src="Assets/code.png" class="project-bg" alt="Code">
                     <div class="project-info tilt-inner">
                         <span class="project-tag">Développement Web</span>
                         <h3>Portfolio V1</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">L'ancienne version Windows 95.</p>
+                        <p style="color: #ccc; font-size: 0.9rem;">Version Windows 95.</p>
                         <a href="https://github.com/carna-val" target="_blank">Voir le repo</a>
                     </div>
                 </div>
 
-                <!-- Projet 6 - Nouveau -->
-                <div class="project-card tilt-card reveal" data-category="design" data-tilt>
-                    <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800" class="project-bg" alt="Branding">
-                    <div class="project-info tilt-inner">
-                        <span class="project-tag">Branding</span>
-                        <h3>Identité Visuelle</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Charte graphique complète pour startup tech.</p>
-                        <a href="#" onclick="alert('Coming soon')">Découvrir</a>
-                    </div>
-                </div>
             </div>
         </section>
 
-        <!-- FOOTER -->
         <footer>
             <div class="container">
                 <div class="footer-content">
@@ -982,24 +1130,34 @@
         </footer>
     </main>
 
-    <!-- LIGHTBOX -->
-    <div id="lightbox" class="lightbox" onclick="this.style.display='none'; document.body.style.overflow='auto';">
-        <img id="lb-img" src="">
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <div class="lb-close" onclick="closeLb()">✕</div>
+            
+            <div id="lb-visual-container" class="lb-visual">
+                </div>
+
+            <div class="lb-details">
+                <div id="lb-tag" class="lb-category">TAG</div>
+                <h2 id="lb-title" class="lb-title">Titre du Projet</h2>
+                <div id="lb-desc" class="lb-desc">Description...</div>
+                
+                <div id="lb-extra-controls"></div>
+            </div>
+        </div>
     </div>
 
     <script>
-        /**
-         * === LOADER ===
-         */
+        /* === LOADER === */
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.querySelector('.loader').classList.add('fade-out');
-            }, 2000);
+            }, 1500);
+            initCanvas();
+            animateCanvas();
         });
 
-        /**
-         * === CURSEUR MAGNÉTIQUE ===
-         */
+        /* === CURSEUR MAGNÉTIQUE === */
         const cursorDot = document.querySelector('[data-cursor-dot]');
         const cursorOutline = document.querySelector('[data-cursor-outline]');
         let mouseX = 0, mouseY = 0;
@@ -1008,40 +1166,29 @@
         window.addEventListener("mousemove", function(e) {
             mouseX = e.clientX;
             mouseY = e.clientY;
-
             cursorDot.style.left = `${mouseX}px`;
             cursorDot.style.top = `${mouseY}px`;
         });
 
-        // Smooth suiveur pour l'outline
         function animateCursor() {
-            const distX = mouseX - outlineX;
-            const distY = mouseY - outlineY;
-            
-            outlineX += distX * 0.15;
-            outlineY += distY * 0.15;
-            
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
             cursorOutline.style.left = `${outlineX}px`;
             cursorOutline.style.top = `${outlineY}px`;
-            
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        // Effets hover
-        const interactiveElements = document.querySelectorAll('a, button, .tilt-card, .project-card, .filter-btn');
-        interactiveElements.forEach(el => {
+        // Interaction Hover
+        document.querySelectorAll('a, button, .tilt-card, .project-card, .filter-btn, .lb-close').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        // Effet clic
         document.addEventListener('mousedown', () => document.body.classList.add('clicking'));
         document.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
 
-        /**
-         * === CANVAS PARTICULES ===
-         */
+        /* === CANVAS PARTICULES === */
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -1058,16 +1205,16 @@
 
         function createParticles() {
             particles = [];
-            const count = (width * height) / 8000;
+            const count = (width * height) / 9000; // Densité ajustée
             for(let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    size: Math.random() * 2.5,
-                    color: Math.random() > 0.85 ? '#bc13fe' : '#ffffff',
-                    opacity: Math.random() * 0.5 + 0.5
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.2,
+                    size: Math.random() * 2,
+                    color: Math.random() > 0.9 ? '#bc13fe' : '#ffffff',
+                    opacity: Math.random() * 0.5 + 0.3
                 });
             }
         }
@@ -1083,39 +1230,30 @@
             for(let i = 0; i < particles.length; i++) {
                 let p = particles[i];
                 
-                // Interaction souris
+                // Interaction Souris
                 const dx = mouse.x - p.x;
                 const dy = mouse.y - p.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 
                 if(dist < 150) {
                     const force = (150 - dist) / 150;
-                    p.vx -= (dx / dist) * force * 0.2;
-                    p.vy -= (dy / dist) * force * 0.2;
+                    p.vx -= (dx / dist) * force * 0.1;
+                    p.vy -= (dy / dist) * force * 0.1;
                 }
                 
                 p.x += p.vx;
                 p.y += p.vy;
                 
-                // Friction
-                p.vx *= 0.99;
-                p.vy *= 0.99;
-
+                // Rebond bords
                 if(p.x < 0 || p.x > width) p.vx *= -1;
                 if(p.y < 0 || p.y > height) p.vy *= -1;
 
-                // Dessiner étoile avec glow
+                // Dessin
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = p.color;
                 ctx.globalAlpha = p.opacity;
                 ctx.fill();
-                
-                // Glow effect
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = p.color;
-                ctx.fill();
-                ctx.shadowBlur = 0;
                 ctx.globalAlpha = 1;
 
                 // Constellations
@@ -1124,7 +1262,7 @@
                     let distance = Math.hypot(p.x - p2.x, p.y - p2.y);
                     if(distance < 120) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 - distance/800})`;
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.1 - distance/1200})`;
                         ctx.lineWidth = 0.5;
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
@@ -1134,36 +1272,25 @@
             }
             requestAnimationFrame(animateCanvas);
         }
-
         window.addEventListener('resize', initCanvas);
-        initCanvas();
-        animateCanvas();
 
-        /**
-         * === SCROLL REVEAL ===
-         */
-        const revealElements = document.querySelectorAll('.reveal');
+        /* === SCROLL REVEAL === */
         const revealOnScroll = () => {
-            const windowHeight = window.innerHeight;
-            revealElements.forEach((el, index) => {
+            document.querySelectorAll('.reveal').forEach((el, index) => {
                 const elementTop = el.getBoundingClientRect().top;
-                if(elementTop < windowHeight - 100) {
+                if(elementTop < window.innerHeight - 100) {
                     setTimeout(() => {
                         el.classList.add('active');
-                    }, index * 100);
+                    }, index * 50);
                 }
             });
         };
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll();
 
-        /**
-         * === TILT 3D ===
-         */
+        /* === TILT 3D === */
         document.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('[data-tilt]');
-            
-            cards.forEach(card => {
+            document.querySelectorAll('[data-tilt]').forEach(card => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
@@ -1171,37 +1298,31 @@
                 if(x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    
-                    const rotateX = ((y - centerY) / centerY) * -12;
-                    const rotateY = ((x - centerX) / centerX) * 12;
+                    const rotateX = ((y - centerY) / centerY) * -10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
 
-                    // Calcul position souris en %
-                    const mouseXPercent = (x / rect.width) * 100;
-                    const mouseYPercent = (y / rect.height) * 100;
-
-                    card.style.setProperty('--mouse-x', `${mouseXPercent}%`);
-                    card.style.setProperty('--mouse-y', `${mouseYPercent}%`);
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+                    card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+                    card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 } else {
                     card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
                 }
             });
         });
 
-        /**
-         * === FILTRES PROJETS ===
-         */
+        /* === FILTRES === */
         function filter(cat) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
 
             document.querySelectorAll('.project-card').forEach((card, index) => {
-                if(cat === 'all' || card.dataset.category === cat) {
+                const matches = cat === 'all' || card.dataset.category === cat;
+                if(matches) {
                     card.style.display = 'block';
                     setTimeout(() => {
                         card.style.opacity = '1';
                         card.style.transform = 'scale(1)';
-                    }, index * 50);
+                    }, index * 30);
                 } else {
                     card.style.opacity = '0';
                     card.style.transform = 'scale(0.8)';
@@ -1210,40 +1331,112 @@
             });
         }
 
-        /**
-         * === LIGHTBOX ===
-         */
-        function openLb(src) {
-            const lightbox = document.getElementById('lightbox');
-            document.getElementById('lb-img').src = src;
-            lightbox.style.display = 'flex';
+        /* === LIGHTBOX LOGIC === */
+        let currentGallery = [];
+        let currentIndex = 0;
+
+        function openLb(el) {
+            event.preventDefault();
+            const lb = document.getElementById('lightbox');
+            const container = document.getElementById('lb-visual-container');
+            const title = document.getElementById('lb-title');
+            const desc = document.getElementById('lb-desc');
+            const tag = document.getElementById('lb-tag');
+            
+            // Reset
+            container.innerHTML = '';
+            document.getElementById('lb-extra-controls').innerHTML = '';
+            
+            // Remplissage infos
+            title.textContent = el.dataset.title;
+            desc.textContent = el.dataset.desc;
+            tag.textContent = el.dataset.tag;
+            const type = el.dataset.type || 'image';
+
+            // Logique par Type
+            if (type === 'video') {
+                const videoId = el.dataset.videoId;
+                container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+            
+            } else if (type === 'pdf') {
+                const src = el.dataset.src;
+                container.innerHTML = `<iframe src="${src}#toolbar=0&navpanes=0&scrollbar=0" style="background:white;"></iframe>`;
+            
+            } else if (type === 'gallery') {
+                currentGallery = JSON.parse(el.dataset.gallery);
+                currentIndex = 0;
+                updateGalleryImage(container);
+            
+            } else {
+                // Image simple (avec fallback sur img interne)
+                const img = document.createElement('img');
+                img.src = el.dataset.img || el.querySelector('.project-bg').src;
+                container.appendChild(img);
+            }
+
+            lb.style.display = 'flex';
+            setTimeout(() => lb.classList.add('active'), 10);
             document.body.style.overflow = 'hidden';
         }
 
-        /**
-         * === PARALLAX HERO ===
-         */
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-content');
-            if(hero && scrolled < 1000) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-                hero.style.opacity = Math.max(0, 1 - (scrolled / 700));
-            }
+        function updateGalleryImage(container) {
+            container.innerHTML = '';
+            const item = currentGallery[currentIndex];
+            
+            // Image
+            const img = document.createElement('img');
+            img.src = item.src;
+            img.style.animation = "fadeIn 0.5s ease";
+            container.appendChild(img);
+
+            // Indicateur Année
+            const indicator = document.createElement('div');
+            indicator.className = 'gallery-indicator';
+            indicator.innerHTML = `<i class="fa-regular fa-calendar"></i> ${item.year}`;
+            container.appendChild(indicator);
+
+            // Contrôles
+            const controls = document.createElement('div');
+            controls.className = 'lb-controls';
+            controls.innerHTML = `
+                <button class="lb-control-btn" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="lb-control-btn" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            `;
+            container.appendChild(controls);
+        }
+
+        function changeSlide(dir) {
+            event.stopPropagation();
+            currentIndex += dir;
+            if(currentIndex < 0) currentIndex = currentGallery.length - 1;
+            if(currentIndex >= currentGallery.length) currentIndex = 0;
+            
+            const container = document.getElementById('lb-visual-container');
+            updateGalleryImage(container);
+        }
+
+        function closeLb() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.remove('active');
+            setTimeout(() => {
+                lb.style.display = 'none';
+                document.getElementById('lb-visual-container').innerHTML = ''; 
+                document.body.style.overflow = 'auto';
+            }, 400);
+        }
+
+        // Fermeture sur clic background
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLb();
         });
 
-        /**
-         * === SMOOTH SCROLL ===
-         */
+        /* === SMOOTH SCROLL === */
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if(target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
