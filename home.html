@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio - Windows 95</title>
     <link rel="stylesheet" href="font.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style_Home.css">
 </head>
 <body>
@@ -88,10 +91,6 @@
             }
         }
 
-        function cancelLogin() {
-            alert('Connexion annulée');
-        }
-
         // === CANVAS PARTICULES (pour la transition moderne) ===
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
@@ -159,6 +158,48 @@
                 initCanvas();
             }
         });
+
+        function selectUser(element) {
+    // Retire la classe 'selected' de tous les utilisateurs
+    const allOptions = document.querySelectorAll('.user-option');
+    allOptions.forEach(option => option.classList.remove('selected'));
+    
+    // Ajoute la classe 'selected' à l'utilisateur cliqué
+    element.classList.add('selected');
+    
+    // Stocke la cible sélectionnée
+    selectedTarget = element.getAttribute('data-target');
+
+    // Récupération des éléments images à modifier
+    const loginScreen = document.getElementById('loginScreen');
+    const headerIconImg = document.querySelector('.login-icon img'); // L'image principale du haut
+    // On cible spécifiquement l'image DANS l'option moderne
+    const modernUserImg = document.querySelector('.user-option[data-target="portfolio-modern.html"] img');
+    const win95UserImg = document.querySelector('.user-option[data-target="win95-portfolio.html"] img');
+
+    // LOGIQUE DE TRANSITION
+    if(selectedTarget === 'portfolio-modern.html') {
+        // 1. Activer le style CSS Moderne (Background, Font Outfit, etc.)
+        loginScreen.classList.add('transition-modern');
+        
+        // 2. Changer les images pour les assets "Espace"
+        headerIconImg.src = 'Assets/stars.png'; // L'icône du haut devient stars.png
+        modernUserImg.src = 'Assets/star.png';  // L'icône utilisateur devient star.png
+        win95UserImg.src = 'Assets/star.png';
+        // 3. Lancer les particules
+        initCanvas();
+        animateCanvas();
+        
+    } else {
+        // REVIENT AU MODE WIN95
+        loginScreen.classList.remove('transition-modern');
+        
+        // Remettre les images d'origine
+        headerIconImg.src = 'Assets/users.png';
+        modernUserImg.src = 'Assets/user.png';
+        win95UserImg.src = 'Assets/user.png';
+    }
+}
     </script>
 </body>
 </html>

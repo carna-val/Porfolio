@@ -92,6 +92,22 @@
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
         }
 
+        #loginScreen.transition-modern {
+        background: #0b0d17;
+        /* On force la police sur le conteneur et ses enfants */
+        font-family: 'Outfit', sans-serif !important; 
+     }
+
+        /* On s'assure que les titres et boutons héritent bien ou changent aussi */
+        #loginScreen.transition-modern h1,
+        #loginScreen.transition-modern p,
+        #loginScreen.transition-modern button,
+        #loginScreen.transition-modern .user-info strong,
+        #loginScreen.transition-modern .user-info span {
+        font-family: 'Outfit', sans-serif !important;
+        letter-spacing: 0.5px; /* Petit bonus esthétique pour le moderne */
+}
+
         .login-icon img {
             width: 64px;
             height: 64px;
