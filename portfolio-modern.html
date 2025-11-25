@@ -1383,25 +1383,38 @@
             for(let i = 0; i < particles.length; i++) {
                 let p = particles[i];
                 
-                // Interaction Souris
+                // --- 1. Interaction Souris (Stabilisée) ---
                 const dx = mouse.x - p.x;
                 const dy = mouse.y - p.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 
                 if(dist < 150) {
                     const force = (150 - dist) / 150;
-                    p.vx -= (dx / dist) * force * 0.1;
-                    p.vy -= (dy / dist) * force * 0.1;
+                    // On repousse doucement (0.5 au lieu de l'accumulation infinie)
+                    const pushForce = force * 0.5;
+                    p.vx -= (dx / dist) * pushForce;
+                    p.vy -= (dy / dist) * pushForce;
                 }
+
+                // --- 2. Gestion de la Vitesse (Le frein) ---
+                // Calcul de la vitesse actuelle
+                const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
                 
+                // Si la particule va plus vite que 0.3 (vitesse de base), on la freine
+                if (speed > 0.3) {
+                    p.vx *= 0.96; // Friction de 4% par frame
+                    p.vy *= 0.96;
+                }
+
+                // --- 3. Mouvement ---
                 p.x += p.vx;
                 p.y += p.vy;
                 
-                // Rebond bords
+                // Rebond sur les murs
                 if(p.x < 0 || p.x > width) p.vx *= -1;
                 if(p.y < 0 || p.y > height) p.vy *= -1;
 
-                // Dessin
+                // Dessin de l'étoile
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = p.color;
@@ -1409,13 +1422,26 @@
                 ctx.fill();
                 ctx.globalAlpha = 1;
 
-                // Constellations
+                // --- 4. Constellations & Collisions entre particules ---
                 for(let j = i + 1; j < particles.length; j++) {
                     let p2 = particles[j];
                     let distance = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    
+                    // PETITE COLLISION (Rebond entre étoiles)
+                    // Si elles sont trop proches, on les écarte un peu
+                    if(distance < 5) { 
+                        const angle = Math.atan2(p.y - p2.y, p.x - p2.x);
+                        const repulse = 0.02; // Force de rebond très légère
+                        p.vx += Math.cos(angle) * repulse;
+                        p.vy += Math.sin(angle) * repulse;
+                        p2.vx -= Math.cos(angle) * repulse;
+                        p2.vy -= Math.sin(angle) * repulse;
+                    }
+
+                    // Lignes des constellations
                     if(distance < 120) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.1 - distance/1200})`;
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 - distance/800})`;
                         ctx.lineWidth = 0.5;
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
