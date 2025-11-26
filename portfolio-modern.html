@@ -681,7 +681,9 @@
             border: none;
         }
 
-        .lb-visual img {
+        /* REMPLACE CECI */
+        .lb-visual img, 
+        .lb-visual video {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -1004,14 +1006,14 @@
                      data-desc="Abyss est un des plus gros projet dans lequel je me suis lancé. Un jeu d'aventure/Roguelite en 2.5D développé sous Unity avec C# dans mon temps libre. </br><br> Le jeu est encore en développement mais j'ai déjà pu créer de nombreux assets graphiques (personnages, ennemis, décors). <br> Nous jouons un petit chat magicien aventurier appelé pour explorer les profondeurs d'un abysse mystérieux rempli de dangers."
                      data-tag="WIP Game Dev et Création"
                      data-gallery='[
-                        {"src": "Images/Abyss/MC-Idle.gif", "year": "Notre personnage principal (animation idle)"},
-                        {"src": "Images/Abyss/MC-attack.gif", "year": "Notre personnage principal (animation attack)"},
-                        {"src": "Images/Abyss/MC-Moving.gif", "year": "Notre personnage principal (animation déplacement)"},
-                        {"src": "Images/Abyss/Enemy2-Idle.gif", "year": "Un des nombreux enemmi de l abyss (animation idle)"},
-                        {"src": "Images/Abyss/Enemy1-Idle.gif", "year": "Un autre enemmi de l abyss (animation idle)"}
+                        {"src": "Images/Abyss/MC-Idle.mp4", "year": "Notre personnage principal (animation idle)"},
+                        {"src": "Images/Abyss/MC-Attack.mp4", "year": "Notre personnage principal (animation attack)"},
+                        {"src": "Images/Abyss/MC-Moving.mp4", "year": "Notre personnage principal (animation déplacement)"},
+                        {"src": "Images/Abyss/Enemy2-Idle.mp4", "year": "Un des nombreux enemmi de l abyss (animation idle)"},
+                        {"src": "Images/Abyss/Enemy1-Idle.mp4", "year": "Un autre enemmi de l abyss (animation idle)"}
                      ]'>
                     
-                    <img src="Images/Abyss/MC-Idle.gif" class="project-bg" alt="Art 25">
+                    <img src="Images/Abyss/MC-Idle.mp4" class="project-bg" alt="Abyss">
                     <div class="project-info tilt-inner">
                         <span class="project-tag">WIP Game Dev et Création</span>
                         <h3>WIP - Abyss</h3>
@@ -1547,10 +1549,28 @@
                 updateGalleryImage(container);
             
             } else {
-                // Image simple (avec fallback sur img interne)
-                const img = document.createElement('img');
-                img.src = el.dataset.img || el.querySelector('.project-bg').src;
-                container.appendChild(img);
+                // Récupération de la source (data-img OU l'image de fond)
+                const src = el.dataset.img || el.querySelector('.project-bg').src;
+                
+                // Détection de fichier vidéo (.mp4, .webm, .mov)
+                if (src.includes('.mp4') || src.includes('.webm') || src.includes('.mov')) {
+                    const vid = document.createElement('video');
+                    vid.src = src;
+                    vid.autoplay = true; // Lecture auto
+                    vid.loop = true;     // Boucle
+                    vid.controls = true; // Affiche les contrôles (play/pause/son)
+                    vid.muted = false;   // Met sur 'true' si tu veux couper le son au démarrage
+                    
+                    // Petite astuce pour forcer le play sur certains navigateurs
+                    vid.playsInline = true; 
+                    
+                    container.appendChild(vid);
+                } else {
+                    // Sinon, c'est une image classique
+                    const img = document.createElement('img');
+                    img.src = src;
+                    container.appendChild(img);
+                }
             }
 
             lb.style.display = 'flex';
