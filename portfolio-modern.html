@@ -998,29 +998,30 @@
             <div class="project-grid">
                 
                 <div class="project-card tilt-card reveal" 
-                     data-category="game" 
-                     data-tilt 
-                     onclick="openLb(this)"
-                     data-type="gallery"
-                     data-title="Abyss"
-                     data-desc="Abyss est un des plus gros projet dans lequel je me suis lancé. Un jeu d'aventure/Roguelite en 2.5D développé sous Unity avec C# dans mon temps libre. </br><br> Le jeu est encore en développement mais j'ai déjà pu créer de nombreux assets graphiques (personnages, ennemis, décors). <br> Nous jouons un petit chat magicien aventurier appelé pour explorer les profondeurs d'un abysse mystérieux rempli de dangers."
-                     data-tag="WIP Game Dev et Création"
-                     data-gallery='[
+                    data-category="game" 
+                    data-tilt 
+                    onclick="openLb(this)"
+                    data-type="gallery"
+                    data-title="Abyss"
+                    data-desc="Abyss est un des plus gros projet dans lequel je me suis lancé. Un jeu d'aventure/Roguelite en 2.5D développé sous Unity avec C# dans mon temps libre. </br><br> Le jeu est encore en développement mais j'ai déjà pu créer de nombreux assets graphiques (personnages, ennemis, décors). <br> Nous jouons un petit chat magicien aventurier appelé pour explorer les profondeurs d'un abysse mystérieux rempli de dangers."
+                    data-tag="WIP Game Dev et Création"
+                    data-gallery='[
                         {"src": "Images/Abyss/MC-Idle.mp4", "year": "Notre personnage principal (animation idle)"},
                         {"src": "Images/Abyss/MC-Attack.mp4", "year": "Notre personnage principal (animation attack)"},
                         {"src": "Images/Abyss/MC-Moving.mp4", "year": "Notre personnage principal (animation déplacement)"},
                         {"src": "Images/Abyss/Enemy2-Idle.mp4", "year": "Un des nombreux enemmi de l abyss (animation idle)"},
                         {"src": "Images/Abyss/Enemy1-Idle.mp4", "year": "Un autre enemmi de l abyss (animation idle)"}
-                     ]'>
-                    
-                    <img src="Images/Abyss/MC-Idle.mp4" class="project-bg" alt="Abyss">
+                    ]'>
+    
+                    <video src="Images/Abyss/MC-Idle.mp4" class="project-bg" autoplay loop muted playsinline></video>
+    
                     <div class="project-info tilt-inner">
-                        <span class="project-tag">WIP Game Dev et Création</span>
-                        <h3>WIP - Abyss</h3>
-                        <p style="color: #ccc; font-size: 0.9rem;">Mon projet à la une.</p>
-                        <a href="#">Voir le jeu</a>
-                    </div>
+                    <span class="project-tag">WIP Game Dev et Création</span>
+                    <h3>WIP - Abyss</h3>
+                    <p style="color: #ccc; font-size: 0.9rem;">Mon projet à la une.</p>
+                    <a href="#">Voir le jeu</a>
                 </div>
+            </div>
 
                 <div class="project-card tilt-card reveal" 
                      data-category="dessin" 
@@ -1582,11 +1583,25 @@
             container.innerHTML = '';
             const item = currentGallery[currentIndex];
             
-            // Image
-            const img = document.createElement('img');
-            img.src = item.src;
-            img.style.animation = "fadeIn 0.5s ease";
-            container.appendChild(img);
+            // --- MODIFICATION ICI : Détection Vidéo vs Image ---
+            if (item.src.includes('.mp4') || item.src.includes('.webm')) {
+                // Création d'un élément VIDEO
+                const vid = document.createElement('video');
+                vid.src = item.src;
+                vid.autoplay = true;
+                vid.loop = true;
+                vid.muted = true; // Obligatoire pour l'autoplay
+                vid.playsInline = true;
+                vid.style.animation = "fadeIn 0.5s ease"; // Même animation que l'image
+                container.appendChild(vid);
+            } else {
+                // Création d'un élément IMAGE (Code d'avant)
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.style.animation = "fadeIn 0.5s ease";
+                container.appendChild(img);
+            }
+            // ----------------------------------------------------
 
             // Indicateur Année
             const indicator = document.createElement('div');
