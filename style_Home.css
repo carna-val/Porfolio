@@ -170,6 +170,11 @@
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
         }
 
+        #loginScreen.transition-modern .user-option:not(.selected) .user-info strong,
+        #loginScreen.transition-modern .user-option:not(.selected) .user-info span {
+            color: #e0e6ed;
+        }
+
         .user-option img {
             width: 32px;
             height: 32px;
