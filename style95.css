@@ -541,7 +541,8 @@
             margin: 10px auto;
         }
 
-        .screenshots img {
+        .screenshots img,
+        .screenshots video {
             width: 300px;
             height: 169px; 
             object-fit: cover; 
@@ -567,7 +568,8 @@
         }
 
 
-        .screenshots img:hover {
+        .screenshots img:hover,
+        .screenshots video:hover {
             transform: scale(1.05);
         }
 

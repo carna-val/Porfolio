@@ -36,13 +36,13 @@
         </div>
 
         <div class="icon" data-window="code">
-            <img src="Assets/code.png" alt="Code" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <img src="Assets/Site_Web.png" alt="Code" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
             <span>Code</span>
         </div>
 
-        <div class="icon" data-window="sites">
-            <img src="Assets/Site_Web.png" alt="Sites Web">
-            <span>Sites Web</span>
+        <div class="icon" data-window="audiovisuel">
+            <img src="Assets/photo.png" alt="AudioVisuel" width="32" height="32" style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+            <span>Audio Visuel</span>
         </div>
 
         <div class="icon" data-window="asso">
@@ -87,7 +87,6 @@
     </div>
     </div>
 
-    <!-- Windows -->
     <div class="window" id="about-window" style="left: 100px; top: 80px; width: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
@@ -100,7 +99,7 @@
         <div class="window-body">
             <div class="about-content">
                 <h2>Salut ! Moi c'est Val !</h2>
-                <p> Bienvenue sur mon Portfolio inspiré du très célèbre Windows 95.Il suffit de double-clique sur les icons pour explorer mes projets.<br><b>Pssst...Si vous voulez une intérface plus conventionelle, n'hesitez pas à appuyer sur le bouton "Démarrer" en bas à gauche de votre écran !</b></p>
+                <p> Bienvenue sur mon Portfolio inspiré du très célèbre Windows 95. Il suffit de double-cliquer sur les icônes pour explorer mes projets.<br><b>Pssst...Si vous voulez une interface plus conventionnelle, n'hésitez pas à appuyer sur le bouton "Démarrer" en bas à gauche de votre écran !</b></p>
                 <p><br></p>
                 <p>J'aime explorer. Que ce soit dans un donjon de jeu vidéo, dans les couches de code d'un site web, ou sur une toile numérique.</p>
                 <p>Entre créativité et technologie, j’ai trouvé mon équilibre en BUT Métiers du Multimédia et de l’Internet et aujourd'hui en 2ème année, mon objectif est clair : Mettre en lumière ma polyvalence pour créer l’avenir à mon image ! </p>
@@ -147,6 +146,9 @@
                 <div class="folder-item" onclick="openWindow('code-window')">
                     <img src="Assets/folder2.png" alt=""> <span>Code</span>
                 </div>
+                 <div class="folder-item" onclick="openWindow('audiovisuel-window')">
+                    <img src="Assets/folder2.png" alt=""> <span>Audio Visuel</span>
+                </div>
             </div>
         </div>
     </div>
@@ -163,16 +165,15 @@
         <div class="window-body" style="overflow-y: auto;">
             <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets de Design</h2>
             
-            <!-- Projet 1 -->
             <div class="project-detail">
-                <h3>MOTION DESIGN</h3>
+                <h3>MOTION DESIGN - VISIBILITÉ</h3>
                 <p><strong>Description :</strong> En équipe, nous avons relevé le défi de créer un motion design pédagogique complet en une semaine pour illustrer la théorie des formats de la visibilité de Cardon.</p>
                     <p>Ce sprint intensif a permis de : 
                         <ul><li>Maîtriser rapidement After Effects et le design graphique pour l'animation.</li>
                             <li>Concevoir et animer une vidéo fluide, transformant un concept théorique en un contenu visuel clair et engageant.</li>
                             <li>Démontrer une forte capacité de travail d'équipe sous contrainte de temps.</li> </ul> <br>
-                    Tout les assets utilisé ont d'ailleurs été crées par mes soins via Illustrator.</p>
-                <p><strong>Outils :</strong> Figma, Illustrator, AfterEffect</p>
+                    Tous les assets utilisés ont d'ailleurs été créés par mes soins via Illustrator.</p>
+                <p><strong>Outils :</strong> Figma, Illustrator, After Effects</p>
                 <p><strong>Date :</strong> Novembre 2024</p>
                 <div class="vidéo" style="width: 300px; height: 169px; background: #e0e0e0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; margin: 10px auto; display: flex; justify-content: center; align-items: center; color: #666; font-size: 12px;">
                     <iframe 
@@ -186,27 +187,24 @@
                         allowfullscreen>
                     </iframe>
                 </div>
-                <p><strong>🔗 Lien :</strong> <a href="#https://youtu.be/2cuhMEu4OaY">[Lien vers la vidéo]</a></p>
             </div>
 
-            <!-- Projet 2 -->
             <div class="project-detail">
                 <h3>DISCU-TABLE</h3>
                 <p><strong>Description :</strong> Discu-table est une application web et initiative étudiante conçue pour le CROUS, visant à réduire le gaspillage alimentaire en collectant la note des restes d'assiette des étudiants. <br> 
                     Mon rôle a été de garantir une adoption maximale par un Design d'Expérience (UX/UI) Mobile-First, offrant une notation ultra-rapide et intuitive. <br>
                     J'ai également développé toute la stratégie et le Design de Communication (affiches, flyers). L'ensemble de la Direction Artistique (DA) a été rigoureusement conçue pour s'intégrer parfaitement à la Charte Graphique existante du CROUS, assurant un message clair et institutionnel. <br>
                     Résultat : Un outil digital simple pour l'étudiant, fournissant des données précieuses aux équipes de cuisine pour un ajustement quotidien des quantités. <br>
-                    Il n'est malheuresement plus en ligne aujourd'hui.</p>
+                    Il n'est malheureusement plus en ligne aujourd'hui.</p>
                 <p><strong>Outils :</strong> Figma, Photoshop</p>
                 <p><strong>Date :</strong> Avril 2025</p>
                 <div class="screenshots">
                     <img src="Images/Discutable1.png" alt="Affiche pour la présentation du projet" onclick="openLightbox(this)">
-                    <img src="Images/Discutable2.png" alt="Brochure pliable pour insité les étudiants et consommateurs du Crous à utiliser l'appli" onclick="openLightbox(this)">
+                    <img src="Images/Discutable2.png" alt="Brochure pliable" onclick="openLightbox(this)">
                 </div>
-                <p><strong>🔗 Lien :</strong> <a href="https://github.com/ImSakushi/discu-table">[Lien du Github]</a></p>
+                <p><strong>🔗 Lien :</strong> <a href="https://github.com/ImSakushi/discu-table" target="_blank">[Voir le repo]</a></p>
             </div>
 
-            <!-- Projet 3 -->
             <div class="project-detail">
                 <h3>CHAMPIGNONS SAUVAGES</h3>
                 <p><strong>Description :</strong> À l'issue de ma première année de MMI, j'ai effectué un stage d'immersion chez Champignons Sauvages. <br>
@@ -240,60 +238,54 @@
             <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Portfolio Artistique</h2>
             
             <div class="project-detail">
-                <h3>Une évolution constente</h3>
+                <h3>Une évolution constante</h3>
                 <p><strong>Description :</strong> Pour mesurer mes progrès, chaque année depuis 2021, vers novembre/décembre, je redessine la même illustration. C’est devenu mon petit rituel de level-up en dessin !</p>
                 <p><strong>Technique :</strong> Digital</p>
-                <p><strong>Logiciels :</strong> Ibis Paint</p>
+                <p><strong>Logiciels :</strong> Ibis Paint / Clip Studio</p>
                 <p><strong>Date :</strong> Novembre 2025 (dernière update)</p>
                 <div class="evolution">
-                    <img src="Images/oldArt21.png" alt="Illustration 2" onclick="openLightbox(this)">
-                    <img src="Images/oldArt22.png" alt="Illustration 2" onclick="openLightbox(this)">
-                    <img src="Images/oldArt23.png" alt="Illustration 2" onclick="openLightbox(this)">
-                    <img src="Images/oldArt24.png" alt="Illustration 2" onclick="openLightbox(this)">
-                    <img src="Images/Art25.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/oldArt21.png" alt="2021 - Premiers essais" onclick="openLightbox(this)">
+                    <img src="Images/oldArt22.png" alt="2022" onclick="openLightbox(this)">
+                    <img src="Images/oldArt23.png" alt="2023" onclick="openLightbox(this)">
+                    <img src="Images/oldArt24.png" alt="2024" onclick="openLightbox(this)">
+                    <img src="Images/Art25.png" alt="2025 - Actuel" onclick="openLightbox(this)">
                 </div>
             </div>
             
-            <!-- Dessin 1 -->
             <div class="project-detail">
                 <h3>Photo de profil</h3>
-                <p><strong>Description :</strong> J'aime beaucoup les étoiles alors quand j'ai dû crée une photo de profil pour me représenter sur les réseaux sociaux, j'ai tout de suite su ce que je voulais faire ! Donc voilà, un petit auto-portrait de moi (littéralement) dans les étoiles !</p>
+                <p><strong>Description :</strong> J'aime beaucoup les étoiles alors quand j'ai dû créer une photo de profil pour me représenter sur les réseaux sociaux, j'ai tout de suite su ce que je voulais faire ! Donc voilà, un petit auto-portrait de moi (littéralement) dans les étoiles !</p>
                 <p><strong>Technique :</strong> Digital</p>
                 <p><strong>Logiciels :</strong> Ibis Paint</p>
                 <p><strong>Date :</strong> Mi-2024</p>
                 <div class="draw">
-                    <img 
-                        src="Images/Dessin4.png" 
-                        alt="Illustration 1" 
-                        onclick="openLightbox(this)">
+                    <img src="Images/Dessin4.png" alt="PP Etoiles" onclick="openLightbox(this)">
                 </div>
             </div>
 
-            <!-- Dessin 2 -->
             <div class="project-detail">
-                <h3>OC</h3>
-                <p><strong>Description :</strong> OC, c'est "Original Character", un personnage que j'ai crée de toute pièce et qui m'appartient !</p>
+                <h3>Original Character (OC)</h3>
+                <p><strong>Description :</strong> OC, c'est "Original Character", un personnage que j'ai créé de toutes pièces et qui m'appartient !</p>
                 <p><strong>Technique :</strong> Digital</p>
                 <p><strong>Logiciels :</strong> Clip Studio Paint</p>
                 <p><strong>Date :</strong> Août 2025</p>
                 <div class="draw">
-                    <img src="Images/Dessin1.png" alt="Illustration 2" onclick="openLightbox(this)">
+                    <img src="Images/Dessin1.png" alt="OC Illustration" onclick="openLightbox(this)">
                 </div>
             </div>
 
-            <!-- Dessin 3 -->
             <div class="project-detail">
-                <h3>Commission</h3>
-                <p><strong>Description :</strong> Une commission dans le domaine artistique, c'est quand une personne vient voir un.e artiste pour lui demander de dessiner quelque chose en échange d'argent. En l'occurence, une personne est venue me voir pour créer et dessiner un design de son personnage dans l'univers de Donjon & Dragon.</p>
+                <h3>Commission D&D</h3>
+                <p><strong>Description :</strong> Une commission pour un design de personnage dans l'univers de Donjon & Dragon.</p>
                 <p><strong>Logiciels :</strong> Clip Studio Paint</p>
                 <p><strong>Date :</strong> Novembre 2025</p>
                 <div class="draw">
-                    <img src="Images/Dessin2.png" alt="Illustration 3" onclick="openLightbox(this)">
+                    <img src="Images/Dessin2.png" alt="Commission D&D" onclick="openLightbox(this)">
                 </div>
             </div>
             <div class="project-detail">
                 <h3>Intrigué.e ?</h3>
-            <strong>Mon Instagram :</strong> <a href= https://www.instagram.com/carna_.val/> carna_.val</a><br>
+            <strong>Mon Instagram :</strong> <a href="https://www.instagram.com/carna_.val/" target="_blank"> carna_.val</a><br>
             </div>
         </div>
     </div>
@@ -310,78 +302,70 @@
         <div class="window-body" style="overflow-y: auto;">
             <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets Game Dev</h2>
             
-            <!-- Jeu 1 -->
+            <div class="project-detail">
+                <h3>WIP - ABYSS</h3>
+                <p><strong>Description :</strong> Abyss est un des plus gros projets dans lequel je me suis lancé. Un jeu d'aventure/Roguelite en 2.5D développé sous Unity avec C# dans mon temps libre. <br> Le jeu est encore en développement mais j'ai déjà pu créer de nombreux assets graphiques (personnages, ennemis, décors). <br> Nous jouons un petit chat magicien aventurier appelé pour explorer les profondeurs d'un abysse mystérieux rempli de dangers.</p>
+                <p><strong>Genre :</strong> Adventure / Roguelite</p>
+                <p><strong>Engine :</strong> Unity (C#)</p>
+                <p><strong>Statut :</strong> En développement</p>
+                <div class="screenshots">
+                    <video src="Images/Abyss/MC-Idle.mp4" autoplay loop muted playsinline></video>
+                    <video src="Images/Abyss/MC-Moving.mp4" autoplay loop muted playsinline></video>
+                    <video src="Images/Abyss/MC-Attack.mp4" autoplay loop muted playsinline></video>
+                    <video src="Images/Abyss/Enemy1-Idle.mp4" autoplay loop muted playsinline></video>
+                    <video src="Images/Abyss/Enemy2-Idle.mp4" autoplay loop muted playsinline></video>
+                </div>
+        </div>
+
             <div class="project-detail">
                 <h3>Pimp My Sewers</h3>
-                <p><strong>Description :</strong> Pimp my Sewer est un jeu d'exploration et d'énigmes 3D développé en Unity. Incarnez un sans-abri prenant refuge dans les égouts et qui décide de les rénover."</p>
+                <p><strong>Description :</strong> Pimp my Sewer est un jeu d'exploration et d'énigmes 3D développé en Unity. Incarnez un sans-abri prenant refuge dans les égouts et qui décide de les rénover.</p>
                 <p><strong>Genre :</strong> Adventure / Exploration / Labyrinthe</p>
                 <p><strong>Engine :</strong> Unity</p>
                 <p><strong>Rôle :</strong> Game Designer / Programmer / Artist</p>
-                <p><strong>Date :</strong> [Mois Année]</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/8B008B/FFFFFF?text=Gameplay+Screenshot+1" alt="Gameplay 1" onclick="openLightbox(this)">
-                    <img src="https://via.placeholder.com/350x200/8B008B/FFFFFF?text=Gameplay+Screenshot+2" alt="Gameplay 2" onclick="openLightbox(this)">
+                    <img src="Images/pms.png" alt="Pimp My Sewers Gameplay" onclick="openLightbox(this)">
                 </div>
-                <p><strong>🔗 Jouer :</strong> <a href="#">[itch.io / Steam / GitHub]</a></p>
-            </div>
-
-            <!-- Jeu 2 -->
-            <div class="project-detail">
-                <h3>🎯 [NOM DU JEU 2 - Game Jam]</h3>
-                <p><strong>Description :</strong> [Parle du contexte de la jam, du thème, de ta création]</p>
-                <p><strong>Game Jam :</strong> [Nom de la jam]</p>
-                <p><strong>Durée :</strong> 48h / 72h</p>
-                <p><strong>Engine :</strong> [Ton moteur]</p>
-                <p><strong>Date :</strong> [Mois Année]</p>
-                <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/FF4500/FFFFFF?text=Game+Jam+Screenshot" alt="Game Jam" onclick="openLightbox(this)">
-                </div>
-                <p><strong>🔗 Jouer :</strong> <a href="#">[Lien itch.io]</a></p>
-            </div>
-
-            <!-- Jeu 3 -->
-            <div class="project-detail">
-                <h3>🎨 [PROJET ASSETS / GAME DESIGN]</h3>
-                <p><strong>Description :</strong> [Parle de ta contribution - sprites, level design, etc.]</p>
-                <p><strong>Type :</strong> Pixel Art / 3D / Concept Art</p>
-                <p><strong>Date :</strong> [Mois Année]</p>
-                <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/32CD32/FFFFFF?text=Asset+Pack" alt="Assets" onclick="openLightbox(this)">
-                </div>
+                <p><strong>🔗 Jouer :</strong> <a href="https://xnaveman.itch.io/pimp-my-sewers" target="_blank">[Voir sur itch.io]</a></p>
             </div>
         </div>
     </div>
-        <!-- Sites Web Window -->
-    <div class="window" id="sites-window" style="left: 180px; top: 100px; width: 600px; height: 450px;">
+    
+    <div class="window" id="audiovisuel-window" style="left: 280px; top: 180px; width: 600px; height: 450px;">
         <div class="title-bar">
-            <div class="title-bar-text">🌐 Sites Web</div>
+            <div class="title-bar-text"><span>🎥</span> Audio Visuel</div>
             <div class="title-bar-controls">
-                <button onclick="closeWindow('sites-window')">×</button>
+                <button onclick="closeWindow('audiovisuel-window')">×</button>
             </div>
         </div>
         <div class="window-body" style="overflow-y: auto;">
-            <h2 style="color: #000080; margin-bottom: 15px;">Mes Sites Web</h2>
-            
-            <div class="project-detail">
-                <h3>🌐 [NOM DU SITE 1]</h3>
-                <p><strong>Description :</strong> [Décris ton site web]</p>
-                <p><strong>Technologies :</strong> HTML, CSS, JavaScript</p>
-                <p><strong>Date :</strong> [Année]</p>
+             <h2 style="color: #000080; margin-bottom: 15px;">Projets Vidéo & Photo</h2>
+
+             <div class="project-detail">
+                <h3>BOOK PHOTO - CHILD OF THE NET</h3>
+                <p><strong>Description :</strong> "Child of the Net" est un projet fait en 2024 qui explore la relation entre la gen Z et le monde numérique à travers les memes et la culture internet.</p>
+                <p><strong>Type :</strong> Photographie / Mise en page</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/300x200/4682B4/FFFFFF?text=Site+1" alt="Site 1" onclick="openLightbox(this)">
+                    <img src="Images/Book.png" alt="Couverture Book Photo" onclick="openLightbox(this)">
                 </div>
-                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
+                <p><strong>🔗 Voir :</strong> <a href="PDF/Book.pdf" target="_blank">[Ouvrir le PDF]</a></p>
             </div>
 
             <div class="project-detail">
-                <h3>🌐 [NOM DU SITE 2]</h3>
-                <p><strong>Description :</strong> [Décris ton site web]</p>
-                <p><strong>Technologies :</strong> React, Node.js</p>
-                <p><strong>Date :</strong> [Année]</p>
-                <div class="screenshots">
-                    <img src="https://via.placeholder.com/300x200/9370DB/FFFFFF?text=Site+2" alt="Site 2" onclick="openLightbox(this)">
+                <h3>ANNA'S LOG - EPISODE 1</h3>
+                <p><strong>Description :</strong> Réalisation et montage du pilote de l'émission 'Anna's Log' par l'équipe Red Thread. Une plongée dans l'horreur vidéoludique, ses codes et son ambiance sonore.</p>
+                <p><strong>Rôle :</strong> Réalisation / Montage</p>
+                 <div class="vidéo" style="width: 300px; height: 169px; background: #e0e0e0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; margin: 10px auto; display: flex; justify-content: center; align-items: center;">
+                    <iframe 
+                        width="290" 
+                        height="159" 
+                        src="https://www.youtube.com/embed/6CxvEXCPvKw" 
+                        title="Anna's Log Episode 1"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
-                <p><strong>🔗 Visiter :</strong> <a href="#" target="_blank">[URL du site]</a></p>
             </div>
         </div>
     </div>
@@ -389,7 +373,7 @@
     <div class="window" id="code-window" style="left: 260px; top: 180px; width: 700px; height: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
-                <span>💻</span> Code
+                <span></span> Code
             </div>
             <div class="title-bar-controls">
                 <button onclick="closeWindow('code-window')">×</button>
@@ -398,55 +382,25 @@
         <div class="window-body" style="overflow-y: auto;">
             <h2 style="color: #000080; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 5px;">Projets de Développement</h2>
             
-            <!-- Projet Code 1 -->
             <div class="project-detail">
-                <h3>🌐 [NOM DU SITE WEB]</h3>
-                <p><strong>Description :</strong> [Décris le site - fonctionnalités, objectifs, public cible]</p>
-                <p><strong>Technologies :</strong> HTML5, CSS3, JavaScript, React, etc.</p>
-                <p><strong>Fonctionnalités :</strong> [Liste les features principales]</p>
-                <p><strong>Date :</strong> [Mois Année]</p>
+                <h3>ZWEETER (Parodie X/Twitter)</h3>
+                <p><strong>Description :</strong> Zweeter a été conçu comme une parodie de X en beaucoup plus chaotique. Une fois votre "compte" créé, d'autres utilisateurs peuvent l'utiliser. Un chaos social organisé.</p>
+                <p><strong>Technologies :</strong> Ruby on Rails, HTML/CSS</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Homepage" alt="Homepage" onclick="openLightbox(this)">
-                    <img src="https://via.placeholder.com/350x200/4682B4/FFFFFF?text=Page+intérieure" alt="Page 2" onclick="openLightbox(this)">
+                    <img src="Images/zweeter.png" alt="Zweeter Homepage" onclick="openLightbox(this)">
                 </div>
-                <p><strong>🔗 Liens :</strong> <a href="#">[Site live]</a> | <a href="#">[GitHub]</a></p>
+                <p><strong>🔗 Liens :</strong> <a href="https://zweeter.osc-fr1.scalingo.io/" target="_blank">[Voir le site]</a> | <a href="https://github.com/carna-val/zweeter" target="_blank">[Repo GitHub]</a></p>
             </div>
 
-            <!-- Projet Code 2 -->
             <div class="project-detail">
-                <h3>🐍 [PROJET PYTHON]</h3>
-                <p><strong>Description :</strong> [Script, automatisation, data viz, bot, etc.]</p>
-                <p><strong>Technologies :</strong> Python, bibliothèques utilisées</p>
-                <p><strong>Utilité :</strong> [À quoi sert ce projet]</p>
-                <p><strong>Date :</strong> [Mois Année]</p>
+                <h3>PORTFOLIO Moderne</h3>
+                <p><strong>Description :</strong> Une autre version de mon portfolio prenant en compte ma passion pour les étoiles et l'espace. <br> Réalisé en HTML, CSS et JavaScript.</p>
+                <p><strong>Technologies :</strong> HTML, CSS, JavaScript</p>
                 <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/228B22/FFFFFF?text=Code+Preview" alt="Code" onclick="openLightbox(this)">
+                    <img src="Images/portfolio-modern.png" alt="Portfolio Modern Preview" onclick="openLightbox(this)">
                 </div>
-                <p><strong>🔗 GitHub :</strong> <a href="#">[Lien repo]</a></p>
-            </div>
-
-            <!-- Projet Code 3 -->
-            <div class="project-detail">
-                <h3>⚛️ [APPLICATION REACT]</h3>
-                <p><strong>Description :</strong> [Ton app interactive]</p>
-                <p><strong>Technologies :</strong> React, APIs, etc.</p>
-                <p><strong>Date :</strong> [Mois Année]</p>
-                <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/9370DB/FFFFFF?text=App+Screenshot" alt="App" onclick="openLightbox(this)">
-                </div>
-                <p><strong>🔗 Démo :</strong> <a href="#">[Lien démo]</a></p>
-            </div>
-
-            <!-- Projet Code 4 -->
-            <div class="project-detail">
-                <h3>🎨 [CREATIVE CODING]</h3>
-                <p><strong>Description :</strong> [Expérimentation artistique avec du code]</p>
-                <p><strong>Technologies :</strong> p5.js / Three.js / Canvas</p>
-                <p><strong>Date :</strong> [Mois Année]</p>
-                <div class="screenshots">
-                    <img src="https://via.placeholder.com/350x200/FF1493/FFFFFF?text=Creative+Code" alt="Creative" onclick="openLightbox(this)">
-                </div>
-                <p><strong>🔗 Voir :</strong> <a href="#">[CodePen / Observable]</a></p>
+                <p><strong>🔗 GitHub :</strong> <a href="https://github.com/carna-val" target="_blank">[Voir le repo]</a></p>
+                <p><strong>🔗 Le site :</strong> <a href="portfolio-modern.html" target="_blank">Portfolio</a></p>
             </div>
         </div>
     </div>
@@ -492,7 +446,7 @@
             <div class="about-content">
                 <h2>Curriculum Vitae</h2>
                 
-                <h2>Formation et Diplome</h2>
+                <h2>Formation et Diplôme</h2>
                 <p><strong>BUT MMI - 2ème année (2025-2027)</strong><br>
                 Métiers du Multimédia et de l'Internet</p>
                 <p><strong>BAC général spécialité Maths/NSI (2021-2024)</strong><br>
@@ -500,10 +454,10 @@
 
                 <h2>Compétences</h2>
                 <ul>
-                    <li><strong>Design :</strong> Suit Adobe, Figma, Wordpress</li>
+                    <li><strong>Design :</strong> Suite Adobe, Figma, Wordpress</li>
                     <li><strong>Dessin :</strong> Digital painting, traditional art</li>
                     <li><strong>Développement :</strong> HTML/CSS, JavaScript, Python, C#, PHP</li>
-                    <li><strong>Montage :</strong> Davinci</li>
+                    <li><strong>Montage :</strong> DaVinci Resolve</li>
                 </ul>
 
                 <h2>Soft Skills</h2>
@@ -543,9 +497,9 @@
                 <h2>Liens</h2>
                 <p style="margin-top: 10px;">
                     <strong>Email :</strong> <a href="mailto:val.lombart--bertolus@mmibordeaux.com">val.lombart--bertolus@mmibordeaux.com</a><br>
-                    <strong>LinkedIn :</strong> <a href= https://www.linkedin.com/in/val-lombart-bertolus-4b6123332/> Val Lombart--Bertolus</a><br>
-                    <strong>Instagram :</strong> <a href= https://www.instagram.com/carna_.val/> carna_.val</a><br>
-                    <strong>GitHub :</strong> <a href= https://github.com/carna-val> carna-val</a>
+                    <strong>LinkedIn :</strong> <a href="https://www.linkedin.com/in/val-lombart-bertolus-4b6123332/" target="_blank"> Val Lombart--Bertolus</a><br>
+                    <strong>Instagram :</strong> <a href="https://www.instagram.com/carna_.val/" target="_blank"> carna_.val</a><br>
+                    <strong>GitHub :</strong> <a href="https://github.com/carna-val" target="_blank"> carna-val</a>
                 </p>
 
                 <p style="margin-top: 15px; padding: 10px; background: #ffffcc; border: 1px solid #000;">
@@ -566,7 +520,7 @@
         </div>
         <div class="window-body">
             <div class="about-content">
-                <h2>Mes Tops 5 pour apprendre à me connaitre :</h2>
+                <h2>Mes Tops 5 pour apprendre à me connaître :</h2>
                 <p><b>Jeux Vidéo</b></p>
                 <ul>
                     <li>Baldur’s Gate III</li>
@@ -581,7 +535,7 @@
                     <li>Sherlock (2011)</li>
                     <li>House MD</li>
                     <li>Fleabag</li>
-                    <li>Attack of Titans</li>
+                    <li>Attack on Titan</li>
                 </ul>
                 <p><b>Musique</b></p>
                 <ul>
@@ -589,13 +543,12 @@
                     <li>Christmas Kids - Roar</li>
                     <li>Good Old Fashioned Lover Boy - Queen</li>
                     <li>Kid & Leveret - Yaelokre</li>
-                    <li>Jigsaw Falling into Places - RadioHead</li>
+                    <li>Jigsaw Falling into Places - Radiohead</li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <!-- Paint Window -->
     <div class="window" id="paint-window" style="left: 150px; top: 100px; width: 600px; height: 500px;">
         <div class="title-bar">
             <div class="title-bar-text">
@@ -621,7 +574,6 @@
         </div>
     </div>
 
-    <!-- Démineur Window -->
     <div class="window" id="demineur-window" style="left: 200px; top: 120px; width: 320px; height: 420px;">
         <div class="title-bar">
             <div class="title-bar-text">
@@ -643,7 +595,6 @@
         </div>
     </div>
 
-    <!-- Winamp Window -->
     <div class="window" id="winamp-window" style="left: 250px; top: 140px; width: 275px; height: 320px;">
         <div class="title-bar">
             <div class="title-bar-text">
@@ -702,10 +653,8 @@
         </div>
     </div>
 
-    <!-- Matrix Canvas -->
     <canvas id="matrixCanvas"></canvas>
 
-    <!-- Lightbox -->
     <div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:20000; align-items:center; justify-content:center; flex-direction:column;">
         <button onclick="closeLightbox()" style="position:absolute; top:30px; right:40px; font-size:32px; background:none; color:white; border:none; cursor:pointer;">×</button>
         <div style="display:flex; align-items:center; justify-content:center; gap:30px;">
@@ -715,7 +664,6 @@
         </div>
     </div>
 
-    <!-- Start Menu -->
     <div id="startMenu" style="display:none; position:fixed; left:2px; bottom:30px; width:220px; background:#c0c0c0; border:2px solid #000; z-index:10001; box-shadow:2px 2px 8px #000;">
         <div style="background:#000080; color:white; padding:8px; font-weight:bold; font-size:13px;">Menu Démarrer</div>
         <div style="padding:6px; display:flex; flex-direction:column; gap:4px;">
@@ -729,7 +677,6 @@
         </div>
     </div>
 
-    <!-- Taskbar -->
     <div class="taskbar">
         <div class="start-button" onclick="toggleStartMenu()">
             <img src="Assets/win_logo.png" alt="Start" style="width: 60px; height: 40px;">
