@@ -406,11 +406,7 @@
             filter: grayscale(20%);
             transition: 0.5s;
         }
-        
-        .profile-img-container:hover .profile-img {
-            filter: grayscale(0%);
-            box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
-        }
+    
 
         /* === TOP 5 GRIDS === */
         .top5-grid {
