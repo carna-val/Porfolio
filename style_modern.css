@@ -1,19 +1,24 @@
     /* === VARIABLES & RESET === */
         :root {
-            --bg-deep: #0b0d17;
-            --primary: #00f3ff;
-            --secondary: #bc13fe;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text: #e0e6ed;
-            --text-muted: #8892b0;
+            /* Palette Stellaire — mise à jour */
+            --bg-deep: #070f1b;        /* Bleu Nuit Profond */
+            --primary: #FFD700;        /* Or Galactique (boutons, accents) */
+            --secondary: #a848c8;      /* Violet Améthyste (secondaire) */
+            --glass: rgba(224, 224, 224, 0.03);
+            --glass-border: rgba(224, 224, 224, 0.08);
+            --text: #E0E0E0;           /* Blanc cassé doux */
+            --text-muted: #9b88b0;
+            /* Utility vars (rgb) */
+            --primary-rgb: 255,215,0;  /* for rgba usage */
+            --secondary-rgb: 106,13,173;
+            --text-dim: rgba(224,224,224,0.6);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Curseur natif caché pour laisser place au custom */
+            cursor: none;
         }
 
         body {
@@ -23,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* === LOADER CINÉMATIQUE === */
         .loader {
             position: fixed;
             top: 0;
@@ -53,7 +57,7 @@
         .loader-bar {
             width: 300px;
             height: 3px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(224,224,224,0.06);
             border-radius: 10px;
             overflow: hidden;
             position: relative;
@@ -114,7 +118,7 @@
         body.hovering .cursor-outline {
             width: 70px;
             height: 70px;
-            background-color: rgba(0, 243, 255, 0.1);
+            background-color: rgba(var(--primary-rgb), 0.06);
             border-color: var(--secondary);
             border-radius: 10px;
         }
@@ -132,7 +136,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at bottom, #131629 0%, #0b0d17 100%);
+            background: radial-gradient(circle at bottom, #131629 0%, var(--bg-deep) 100%);
         }
 
         /* === UTILITAIRES === */
@@ -241,20 +245,20 @@
         }
 
         .hub-btn:hover {
-            color: #000;
+            color: var(--bg-deep);
             border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.35);
             transform: translateY(-3px);
         }
 
         .hub-btn.primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
-            color: #000;
+            color: var(--bg-deep);
         }
 
         .hub-btn.primary:hover {
-            box-shadow: 0 0 40px rgba(188, 19, 254, 0.6);
+            box-shadow: 0 0 40px rgba(var(--secondary-rgb), 0.4);
             transform: translateY(-5px) scale(1.05);
         }
 
@@ -287,7 +291,7 @@
         .hero h1 {
             font-size: clamp(3rem, 8vw, 7rem);
             font-weight: 700;
-            background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--text), var(--primary), var(--secondary));
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -316,7 +320,7 @@
 
         .hero p {
             font-size: 1.2rem;
-            color: #8892b0;
+            color: var(--text-muted);
             max-width: 500px;
             line-height: 1.8;
             margin-bottom: 40px;
@@ -334,7 +338,7 @@
 
         /* === CARTES 3D & TILT === */
         .tilt-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            background: linear-gradient(135deg, rgba(224,224,224,0.05), rgba(224,224,224,0.01));
             border: 1px solid var(--glass-border);
             border-radius: 24px;
             padding: 40px;
@@ -355,7 +359,7 @@
             bottom: 0;
             background: radial-gradient(
                 800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                rgba(0, 243, 255, 0.1),
+                rgba(var(--primary-rgb), 0.06),
                 transparent 40%
             );
             opacity: 0;
@@ -368,8 +372,8 @@
         }
 
         .tilt-card:hover {
-            box-shadow: 0 20px 60px rgba(0, 243, 255, 0.2);
-            border-color: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(var(--primary-rgb), 0.12);
+            border-color: rgba(var(--primary-rgb), 0.18);
         }
         
         .tilt-inner {
@@ -378,12 +382,9 @@
             z-index: 1;
         }
 
-        /* === SECTION PADDING === */
         .section-padding {
             padding: 100px 0;
         }
-
-        /* === ABOUT === */
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -407,8 +408,6 @@
             transition: 0.5s;
         }
     
-
-        /* === TOP 5 GRIDS === */
         .top5-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -417,7 +416,7 @@
         }
 
         .top5-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            background: linear-gradient(145deg, rgba(224,224,224,0.05), rgba(224,224,224,0.01));
             border-top: 1px solid var(--glass-border);
             padding: 30px;
             border-radius: 15px;
@@ -438,7 +437,7 @@
 
         .top5-list li {
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(224,224,224,0.05);
             display: flex;
             justify-content: space-between;
             color: var(--text);
@@ -448,7 +447,6 @@
         .top5-list li:last-child { border-bottom: none; }
         .top5-list li span { opacity: 0.7; }
 
-        /* === MARQUEE SKILLS === */
         .skills-marquee {
             background: var(--glass);
             border-top: 1px solid var(--glass-border);
@@ -473,7 +471,7 @@
             margin: 0 40px;
             font-family: 'Space Grotesk';
             font-size: 1.2rem;
-            color: #8892b0;
+            color: var(--text-muted);
         }
         .skill-item i { color: var(--primary); }
 
@@ -485,7 +483,7 @@
         /* === PROJETS === */
 
         .lb-desc a {
-            color: var(--primary); /* Le cyan néon */
+            color: var(--primary);
             text-decoration: none;
             border-bottom: 1px solid var(--primary);
             transition: all 0.3s ease;
@@ -533,7 +531,7 @@
             position: relative;
             overflow: hidden;
             border-radius: 24px;
-            background: #000;
+            background: var(--bg-deep);
             transition: opacity 0.3s, transform 0.3s;
             cursor: none;
         }
@@ -594,9 +592,9 @@
             margin-bottom: 15px;
             display: inline-block;
             padding: 5px 15px;
-            background: rgba(0, 243, 255, 0.1);
+            background: rgba(var(--primary-rgb), 0.06);
             border-radius: 20px;
-            border: 1px solid rgba(0, 243, 255, 0.3);
+            border: 1px solid rgba(var(--primary-rgb), 0.18);
         }
 
         .project-info h3 {
@@ -613,7 +611,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(10, 25, 49, 0.95);
             z-index: 10000; 
             align-items: center;
             justify-content: center;
@@ -628,9 +626,9 @@
         }
 
         .lightbox-content {
-            background: #0f121e;
-            width: 95vw;  /* Largeur max */
-            height: 90vh; /* Hauteur max */
+            background: var(--bg-deep);
+            width: 95vw;
+            height: 90vh;
             max-width: 1600px;
             border-radius: 20px;
             border: 1px solid var(--glass-border);
@@ -648,7 +646,7 @@
 
         .lb-visual {
             flex: 3.5; /* Priorité à l'image/PDF */
-            background: #000;
+            background: var(--bg-deep);
             position: relative;
             display: flex;
             align-items: center;
@@ -689,7 +687,7 @@
             height: 40px;
             border-radius: 50%;
             background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(224,224,224,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -717,7 +715,7 @@
             font-size: 2.5rem;
             line-height: 1;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff, var(--text-muted));
+            background: linear-gradient(135deg, var(--text), var(--text-muted));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -727,11 +725,10 @@
             color: var(--text-muted);
             line-height: 1.6;
             margin-bottom: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(224,224,224,0.1);
             padding-top: 20px;
         }
 
-        /* --- GALERIE SLIDER CONTROLS --- */
         .lb-controls {
             position: absolute;
             bottom: 30px;
@@ -776,7 +773,7 @@
             margin-top: 150px;
             padding: 80px 0 40px;
             border-top: 1px solid var(--glass-border);
-            background: linear-gradient(to bottom, transparent, #000);
+            background: linear-gradient(to bottom, transparent, var(--bg-deep));
         }
 
         .footer-content {
@@ -791,7 +788,7 @@
             font-size: 3.5rem;
             line-height: 1;
             margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #8892b0);
+            background: linear-gradient(to right, var(--text), var(--text-muted));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -804,7 +801,7 @@
 
         .footer-link {
             display: block;
-            color: #8892b0;
+            color: var(--text-muted);
             margin-bottom: 10px;
             transition: 0.3s;
             width: fit-content;
@@ -817,9 +814,9 @@
         .footer-bottom {
             text-align: center;
             font-size: 0.8rem;
-            color: #555;
+            color: var(--text-dim);
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(224,224,224,0.05);
         }
 
         /* ========================================= */
